@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowDown, Sparkles } from 'lucide-react';
+import { ArrowDown, Sparkles, Zap, Cog } from 'lucide-react';
 
 const HeroSection = () => {
   return (
@@ -52,17 +52,17 @@ const HeroSection = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <a
-              href="https://www.workana.com/freelancer/e981109bbe37ec5cdc520ecad7213947"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-90 transition-all animate-pulse-glow"
+              href="#contact"
+              className="group px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-90 transition-all animate-pulse-glow flex items-center gap-2"
             >
-              Hire on Workana
+              <Zap className="w-5 h-5 group-hover:animate-pulse" />
+              Get a Free System Audit
             </a>
             <a
               href="#projects"
-              className="px-8 py-4 rounded-xl glass-card text-foreground font-semibold text-lg hover-lift cyber-border"
+              className="px-8 py-4 rounded-xl glass-card text-foreground font-semibold text-lg hover-lift cyber-border flex items-center gap-2"
             >
+              <Cog className="w-5 h-5" />
               View Projects
             </a>
           </motion.div>

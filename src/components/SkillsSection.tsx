@@ -2,18 +2,51 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 
-const skills = [
-  { name: "n8n", level: 95, category: "Automation" },
-  { name: "JavaScript", level: 90, category: "Programming" },
-  { name: "Groq AI", level: 88, category: "AI/ML" },
-  { name: "Whisper API", level: 85, category: "AI/ML" },
-  { name: "SerpAPI", level: 82, category: "Integration" },
-  { name: "Custom API Integration", level: 92, category: "Integration" },
-  { name: "RAG Architecture", level: 87, category: "AI/ML" },
-  { name: "No-Code/Low-Code", level: 95, category: "Development" },
+const skillCategories = [
+  {
+    title: "Automation",
+    color: "primary",
+    skills: [
+      { name: "n8n Workflows", level: 95 },
+      { name: "Zapier / Make", level: 88 },
+      { name: "Process Orchestration", level: 92 },
+    ]
+  },
+  {
+    title: "AI & LLMs",
+    color: "secondary",
+    skills: [
+      { name: "LLM Orchestration (GPT-4, Claude, Groq)", level: 90 },
+      { name: "RAG Architecture", level: 87 },
+      { name: "Prompt Engineering", level: 92 },
+    ]
+  },
+  {
+    title: "APIs & Backend",
+    color: "primary",
+    skills: [
+      { name: "Advanced API Integration", level: 94 },
+      { name: "Google Cloud Console & OAuth", level: 85 },
+      { name: "Webhook Development", level: 90 },
+    ]
+  },
+  {
+    title: "Frontend Systems",
+    color: "secondary",
+    skills: [
+      { name: "JavaScript / TypeScript", level: 88 },
+      { name: "No-Code / Low-Code", level: 95 },
+      { name: "React & Modern Frameworks", level: 82 },
+    ]
+  }
 ];
 
-const SkillBar = ({ skill, index, isInView }: { skill: typeof skills[0]; index: number; isInView: boolean }) => {
+const SkillBar = ({ skill, index, isInView, color }: { 
+  skill: { name: string; level: number }; 
+  index: number; 
+  isInView: boolean;
+  color: string;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: -30 }}
@@ -22,7 +55,7 @@ const SkillBar = ({ skill, index, isInView }: { skill: typeof skills[0]; index: 
       className="group"
     >
       <div className="flex justify-between items-center mb-2">
-        <span className="font-medium">{skill.name}</span>
+        <span className="font-medium text-sm">{skill.name}</span>
         <span className="text-sm text-muted-foreground">{skill.level}%</span>
       </div>
       <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -30,14 +63,23 @@ const SkillBar = ({ skill, index, isInView }: { skill: typeof skills[0]; index: 
           initial={{ width: 0 }}
           animate={isInView ? { width: `${skill.level}%` } : { width: 0 }}
           transition={{ duration: 1, delay: 0.3 + index * 0.1, ease: "easeOut" }}
-          className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
+          className={`h-full rounded-full ${
+            color === 'primary' 
+              ? 'bg-gradient-to-r from-primary to-primary/70' 
+              : 'bg-gradient-to-r from-secondary to-secondary/70'
+          }`}
         />
       </div>
     </motion.div>
   );
 };
 
-const StatsCard = ({ value, label, delay, isInView }: { value: string; label: string; delay: number; isInView: boolean }) => {
+const StatsCard = ({ value, label, delay, isInView }: { 
+  value: string; 
+  label: string; 
+  delay: number; 
+  isInView: boolean 
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -80,31 +122,35 @@ const SkillsSection = () => {
           <StatsCard value="10x" label="Efficiency Increase" delay={0.3} isInView={isInView} />
         </div>
 
-        {/* Skills Grid */}
+        {/* Skills Grid - 4 Categories */}
         <div className="grid md:grid-cols-2 gap-8">
-          <div className="glass-card p-8">
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-primary" />
-              Core Technologies
-            </h3>
-            <div className="space-y-6">
-              {skills.slice(0, 4).map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} index={index} isInView={isInView} />
-              ))}
-            </div>
-          </div>
-          
-          <div className="glass-card p-8">
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-secondary" />
-              Integration & AI
-            </h3>
-            <div className="space-y-6">
-              {skills.slice(4).map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} index={index + 4} isInView={isInView} />
-              ))}
-            </div>
-          </div>
+          {skillCategories.map((category, catIndex) => (
+            <motion.div
+              key={category.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.6, delay: catIndex * 0.1 }}
+              className="glass-card p-8"
+            >
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <span className={`w-3 h-3 rounded-full ${
+                  category.color === 'primary' ? 'bg-primary' : 'bg-secondary'
+                }`} />
+                {category.title}
+              </h3>
+              <div className="space-y-5">
+                {category.skills.map((skill, index) => (
+                  <SkillBar 
+                    key={skill.name} 
+                    skill={skill} 
+                    index={catIndex * 3 + index} 
+                    isInView={isInView}
+                    color={category.color}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Zap } from 'lucide-react';
 
 const Header = () => {
   return (
@@ -29,12 +30,11 @@ const Header = () => {
             <span className="text-muted-foreground hidden sm:inline">Systems Operational</span>
           </div>
           <a
-            href="https://www.workana.com/freelancer/e981109bbe37ec5cdc520ecad7213947"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity"
+            href="#contact"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity flex items-center gap-2"
           >
-            Hire Me
+            <Zap className="w-4 h-4" />
+            Free Audit
           </a>
         </div>
       </div>
