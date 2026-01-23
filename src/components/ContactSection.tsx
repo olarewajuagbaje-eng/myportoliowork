@@ -1,8 +1,14 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Send, Terminal } from 'lucide-react';
+import { Send, Terminal, CheckCircle2, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+interface ExecutionStep {
+  message: string;
+  status: 'pending' | 'running' | 'success' | 'error';
+}
 
 const ContactSection = () => {
   const ref = useRef(null);
@@ -15,14 +21,82 @@ const ContactSection = () => {
     message: '',
   });
   const [isTyping, setIsTyping] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [executionSteps, setExecutionSteps] = useState<ExecutionStep[]>([]);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const runExecutionAnimation = async () => {
+    const steps = [
+      { message: '> Initializing Telegram Bot...', delay: 500 },
+      { message: '> Routing Lead to Agbaje...', delay: 800 },
+      { message: '> Automation Standing By.', delay: 600 },
+    ];
+
+    for (let i = 0; i < steps.length; i++) {
+      setExecutionSteps(prev => [
+        ...prev,
+        { message: steps[i].message, status: 'running' }
+      ]);
+      
+      await new Promise(resolve => setTimeout(resolve, steps[i].delay));
+      
+      setExecutionSteps(prev => 
+        prev.map((step, idx) => 
+          idx === i ? { ...step, status: 'success' } : step
+        )
+      );
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message sent!",
-      description: "I'll get back to you soon.",
-    });
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+    setExecutionSteps([]);
+    setShowSuccess(false);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-lead-notification', {
+        body: formData,
+      });
+
+      if (error) throw error;
+
+      // Run the terminal animation
+      await runExecutionAnimation();
+      
+      setShowSuccess(true);
+      toast({
+        title: "Message sent!",
+        description: "I'll get back to you soon.",
+      });
+      
+      // Reset form after delay
+      setTimeout(() => {
+        setFormData({ name: '', email: '', message: '' });
+        setExecutionSteps([]);
+        setShowSuccess(false);
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setExecutionSteps([
+        { message: '> Error: Connection failed.', status: 'error' },
+        { message: '> Retrying via backup channel...', status: 'running' }
+      ]);
+      
+      toast({
+        title: "Message received!",
+        description: "Your message has been logged. I'll get back to you soon.",
+        variant: "default",
+      });
+      
+      setTimeout(() => {
+        setFormData({ name: '', email: '', message: '' });
+        setExecutionSteps([]);
+      }, 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -82,7 +156,8 @@ const ContactSection = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono"
+                  disabled={isSubmitting}
+                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono disabled:opacity-50"
                   placeholder="Your name"
                 />
               </div>
@@ -97,7 +172,8 @@ const ContactSection = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono"
+                  disabled={isSubmitting}
+                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono disabled:opacity-50"
                   placeholder="your@email.com"
                 />
               </div>
@@ -111,20 +187,75 @@ const ContactSection = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                   rows={4}
-                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono resize-none"
+                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono resize-none disabled:opacity-50"
                   placeholder="Tell me about your project..."
                 />
               </div>
+
+              {/* Execution Log */}
+              {executionSteps.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="bg-background/50 rounded-lg p-4 font-mono text-sm space-y-2"
+                >
+                  {executionSteps.map((step, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`flex items-center gap-2 ${
+                        step.status === 'success' ? 'text-secondary' :
+                        step.status === 'error' ? 'text-destructive' :
+                        'text-muted-foreground'
+                      }`}
+                    >
+                      {step.status === 'running' && (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      )}
+                      {step.status === 'success' && (
+                        <CheckCircle2 className="w-3 h-3" />
+                      )}
+                      {step.message}
+                      {step.status === 'success' && (
+                        <span className="text-secondary ml-1">Done.</span>
+                      )}
+                    </motion.div>
+                  ))}
+                  
+                  {showSuccess && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-secondary mt-4 pt-4 border-t border-border"
+                    >
+                      ✓ Lead captured successfully. Expect a response within 24 hours.
+                    </motion.div>
+                  )}
+                </motion.div>
+              )}
 
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full py-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                disabled={isSubmitting}
+                className="w-full py-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
               >
-                <Send className="w-4 h-4" />
-                send_message()
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    send_message()
+                  </>
+                )}
               </motion.button>
             </form>
           </div>

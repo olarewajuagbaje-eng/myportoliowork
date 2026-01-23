@@ -1,4 +1,4 @@
-import NodeLinkBackground from '@/components/NodeLinkBackground';
+import N8nWorkflowBackground from '@/components/N8nWorkflowBackground';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <NodeLinkBackground />
+      <N8nWorkflowBackground />
       <Header />
       <main className="relative z-10">
         <HeroSection />

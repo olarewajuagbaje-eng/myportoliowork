@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, ExternalLink } from 'lucide-react';
+import { Github, Linkedin, Twitter, Zap, Cog } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -22,18 +22,25 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* CTA */}
-          <div className="text-center">
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="https://www.workana.com/freelancer/e981109bbe37ec5cdc520ecad7213947"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#contact"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
             >
-              Hire on Workana
-              <ExternalLink className="w-4 h-4" />
+              <Zap className="w-4 h-4" />
+              Get a Free System Audit
+            </motion.a>
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg glass-card font-semibold hover:bg-muted transition-colors"
+            >
+              <Cog className="w-4 h-4" />
+              Build My Workflow
             </motion.a>
           </div>
 

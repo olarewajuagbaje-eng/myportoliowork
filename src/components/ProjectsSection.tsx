@@ -1,238 +1,113 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Bot, Mail, MessageSquare, Users, Workflow, X } from 'lucide-react';
+import { Bot, Mail, MessageSquare, Database, Workflow, ChevronDown } from 'lucide-react';
+import ProjectDetailModal from './ProjectDetailModal';
 
-interface Project {
-  id: number;
-  icon: React.ElementType;
-  title: string;
-  subtitle: string;
-  problem: string;
-  solution: string;
-  tech: string[];
-  color: 'purple' | 'emerald';
-}
-
-const projects: Project[] = [
+const projects = [
   {
     id: 1,
+    title: "The Executive AI Shadow",
+    description: "A Telegram-powered Digital Chief of Staff using Groq AI and Gmail API to handle executive comms via voice/text.",
+    problem: "Executives spend hours daily managing emails, scheduling, and communications. Critical messages get buried, responses are delayed, and valuable time is lost to administrative overhead.",
+    solution: "Built an AI-powered assistant that monitors Telegram for voice/text commands, processes them with Groq AI, drafts contextual email responses via Gmail API, and manages scheduling—all hands-free.",
+    tools: ["n8n", "Telegram Bot API", "Groq AI", "Gmail API", "Voice Recognition"],
+    images: ["https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"],
     icon: Bot,
-    title: "Executive AI Shadow",
-    subtitle: "Digital Chief of Staff",
-    problem: "Executives drowning in communication chaos—missed messages, delayed responses, and scattered priorities.",
-    solution: "A Telegram-powered AI assistant using Groq AI and Gmail API that handles executive comms via voice/text, prioritizes tasks, and responds intelligently.",
-    tech: ["Telegram API", "Groq AI", "Gmail API", "n8n"],
-    color: 'purple'
   },
   {
     id: 2,
-    icon: Users,
     title: "Automated Recruitment Pipeline",
-    subtitle: "AI-Powered HR System",
-    problem: "Manual CV screening taking hours, inconsistent candidate evaluation, and scheduling nightmares.",
-    solution: "AI-powered CV parsing and screening that auto-scores candidates, schedules interviews, and notifies via Gmail—reducing hiring time by 80%.",
-    tech: ["AI/ML", "Gmail API", "Google Sheets", "n8n"],
-    color: 'emerald'
+    description: "AI-powered CV screening and interview scheduling that parses data and auto-notifies candidates via Gmail.",
+    problem: "HR teams manually review hundreds of CVs, schedule interviews through endless email chains, and lose qualified candidates due to slow response times.",
+    solution: "Created an end-to-end pipeline that auto-parses incoming CVs, scores candidates using AI, schedules interviews based on availability, and sends personalized notifications—reducing hiring time by 80%.",
+    tools: ["n8n", "OpenAI", "Google Sheets", "Gmail API", "Calendar API"],
+    images: ["https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop"],
+    icon: Mail,
   },
   {
     id: 3,
-    icon: MessageSquare,
     title: "WhatsApp AI Lead Bot",
-    subtitle: "RAG-Based Chatbot",
-    problem: "Lost leads due to slow response times and inability to answer complex queries 24/7.",
-    solution: "A RAG-based chatbot that collects leads, books appointments, and provides smart answers using your knowledge base—available 24/7.",
-    tech: ["WhatsApp API", "RAG", "Vector DB", "n8n"],
-    color: 'purple'
+    description: "A RAG-based chatbot for lead collection, booking, and smart answers using retrieval-augmented generation.",
+    problem: "Businesses miss leads outside business hours. Manual responses are slow and inconsistent. Booking appointments requires back-and-forth messaging.",
+    solution: "Deployed a WhatsApp bot with RAG architecture that instantly answers questions from a knowledge base, qualifies leads, and books appointments directly—24/7 without human intervention.",
+    tools: ["n8n", "WhatsApp Business API", "Pinecone", "OpenAI Embeddings", "RAG"],
+    images: ["https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=800&h=600&fit=crop"],
+    icon: MessageSquare,
   },
   {
     id: 4,
-    icon: Workflow,
     title: "AI SaaS Lead Orchestrator",
-    subtitle: "Multi-Channel Router",
-    problem: "Leads from multiple channels getting lost, no unified tracking, and manual data entry errors.",
-    solution: "Multi-channel routing system that captures, qualifies, and syncs lead data to Google Sheets and CRMs in real-time.",
-    tech: ["Multi-Channel API", "CRM Integration", "Google Sheets", "n8n"],
-    color: 'emerald'
+    description: "Multi-channel routing system syncing data to Google Sheets and CRMs for seamless lead management.",
+    problem: "Leads come from multiple channels—website, social media, ads, referrals—but data ends up siloed. Sales teams lack a unified view and miss follow-ups.",
+    solution: "Built a central orchestration system that captures leads from all channels, enriches data with AI, routes to the right sales rep, updates CRM in real-time, and triggers follow-up sequences.",
+    tools: ["n8n", "HubSpot API", "Google Sheets", "Webhooks", "AI Enrichment"],
+    images: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop"],
+    icon: Database,
   },
   {
     id: 5,
-    icon: Mail,
-    title: "Smart Form Automation",
-    subtitle: "Data Routing Engine",
-    problem: "Form submissions requiring manual processing, delayed follow-ups, and data inconsistencies.",
-    solution: "Advanced data routing and message synchronization that processes forms instantly and triggers appropriate workflows.",
-    tech: ["Webhook", "Data Parsing", "Multi-Platform", "n8n"],
-    color: 'purple'
-  }
+    title: "Smart n8n Form Automation",
+    description: "Advanced data routing and message synchronization for complex multi-step form workflows.",
+    problem: "Form submissions trigger manual data entry across multiple systems. Errors occur, data is duplicated, and the process doesn't scale.",
+    solution: "Designed intelligent form processing that validates, transforms, and routes data to the right destinations. Includes error handling, retry logic, and audit trails for complete visibility.",
+    tools: ["n8n", "Typeform", "Airtable", "Slack", "Custom Webhooks"],
+    images: ["https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop"],
+    icon: Workflow,
+  },
 ];
 
-const ProjectCard = ({ project, onClick }: { project: Project; onClick: () => void }) => {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.02, y: -5 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className={`glass-card p-6 cursor-pointer hover-lift cyber-border group relative overflow-hidden`}
-    >
-      {/* Pulse effect on hover */}
-      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-        project.color === 'purple' 
-          ? 'bg-gradient-to-br from-primary/10 to-transparent' 
-          : 'bg-gradient-to-br from-secondary/10 to-transparent'
-      }`} />
-      
-      <div className="relative z-10">
-        <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center ${
-          project.color === 'purple' 
-            ? 'bg-primary/20' 
-            : 'bg-secondary/20'
-        }`}>
-          <project.icon className={`w-6 h-6 ${
-            project.color === 'purple' ? 'text-primary' : 'text-secondary'
-          }`} />
-        </div>
-        
-        <h3 className="text-xl font-bold mb-1">{project.title}</h3>
-        <p className="text-sm text-muted-foreground mb-4">{project.subtitle}</p>
-        
-        <div className="flex flex-wrap gap-2">
-          {project.tech.slice(0, 3).map((tech) => (
-            <span 
-              key={tech} 
-              className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+const ProjectCard = ({ project, onClick, index, isInView }: { project: typeof projects[0]; onClick: () => void; index: number; isInView: boolean; }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    whileHover={{ scale: 1.02, y: -5 }}
+    onClick={onClick}
+    className="glass-card p-6 cursor-pointer hover-lift cyber-border group"
+  >
+    <div className="relative aspect-video mb-4 rounded-lg overflow-hidden bg-muted">
+      <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+      <div className="absolute bottom-3 left-3 p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
+        <project.icon className="w-5 h-5 text-primary" />
       </div>
-    </motion.div>
-  );
-};
-
-const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
-    >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        onClick={(e) => e.stopPropagation()}
-        className="glass-card max-w-2xl w-full p-8 relative"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-lg hover:bg-muted transition-colors"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        <div className={`w-16 h-16 rounded-xl mb-6 flex items-center justify-center ${
-          project.color === 'purple' ? 'bg-primary/20' : 'bg-secondary/20'
-        }`}>
-          <project.icon className={`w-8 h-8 ${
-            project.color === 'purple' ? 'text-primary' : 'text-secondary'
-          }`} />
-        </div>
-
-        <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-        <p className="text-muted-foreground mb-8">{project.subtitle}</p>
-
-        <div className="space-y-6">
-          <div>
-            <h4 className="text-sm font-semibold text-destructive mb-2 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-destructive" />
-              THE PROBLEM
-            </h4>
-            <p className="text-muted-foreground">{project.problem}</p>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-secondary mb-2 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-secondary" />
-              THE SOLUTION
-            </h4>
-            <p className="text-muted-foreground">{project.solution}</p>
-          </div>
-
-          <div className="flex flex-wrap gap-2 pt-4 border-t border-border">
-            {project.tech.map((tech) => (
-              <span 
-                key={tech} 
-                className={`text-sm px-3 py-1 rounded-full ${
-                  project.color === 'purple' 
-                    ? 'bg-primary/20 text-primary' 
-                    : 'bg-secondary/20 text-secondary'
-                }`}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-};
+    </div>
+    <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
+    <div className="flex flex-wrap gap-2">
+      {project.tools.slice(0, 3).map((tool) => (<span key={tool} className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground">{tool}</span>))}
+    </div>
+  </motion.div>
+);
 
 const ProjectsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const [showAll, setShowAll] = useState(false);
+  const displayedProjects = showAll ? projects : projects.slice(0, 4);
 
   return (
-    <section id="projects" className="py-32 relative" ref={ref}>
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">
-            Featured <span className="gradient-text">Projects</span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Real automation solutions that transformed business operations
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.6, delay: 0.1 * index }}
-            >
-              <ProjectCard
-                project={project}
-                onClick={() => setSelectedProject(project)}
-              />
+    <>
+      <section id="projects" className="py-32 relative" ref={ref}>
+        <div className="container mx-auto px-6">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }} transition={{ duration: 0.6 }} className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">Featured <span className="gradient-text">Projects</span></h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Real-world automation solutions that deliver measurable results</p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {displayedProjects.map((project, index) => (<ProjectCard key={project.id} project={project} index={index} isInView={isInView} onClick={() => setSelectedProject(project)} />))}
+          </div>
+          {!showAll && projects.length > 4 && (
+            <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : { opacity: 0 }} transition={{ delay: 0.5 }} className="text-center">
+              <button onClick={() => setShowAll(true)} className="inline-flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:bg-muted transition-colors font-medium"><ChevronDown className="w-4 h-4" />View All Projects</button>
             </motion.div>
-          ))}
-        </motion.div>
-      </div>
-
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
-    </section>
+          )}
+        </div>
+      </section>
+      <ProjectDetailModal project={selectedProject} isOpen={!!selectedProject} onClose={() => setSelectedProject(null)} />
+    </>
   );
 };
 
