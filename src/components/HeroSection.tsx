@@ -2,6 +2,21 @@ import { motion } from 'framer-motion';
 import { ArrowDown, Sparkles, Zap, Cog } from 'lucide-react';
 
 const HeroSection = () => {
+  const handleAuditClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Scroll to contact section
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+      // Trigger the audit request after scroll
+      setTimeout(() => {
+        if ((window as any).triggerAuditRequest) {
+          (window as any).triggerAuditRequest();
+        }
+      }, 800);
+    }
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
       {/* Gradient Glow */}
@@ -51,13 +66,13 @@ const HeroSection = () => {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <a
-              href="#contact"
+            <button
+              onClick={handleAuditClick}
               className="group px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-90 transition-all animate-pulse-glow flex items-center gap-2"
             >
               <Zap className="w-5 h-5 group-hover:animate-pulse" />
               Get a Free System Audit
-            </a>
+            </button>
             <a
               href="#projects"
               className="px-8 py-4 rounded-xl glass-card text-foreground font-semibold text-lg hover-lift cyber-border flex items-center gap-2"

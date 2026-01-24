@@ -1,6 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ExternalLink, ArrowLeft } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+
+interface ProjectImpact {
+  timeSaved?: string;
+  protection?: string;
+}
 
 interface Project {
   id: number;
@@ -11,6 +16,8 @@ interface Project {
   tools: string[];
   images: string[];
   link?: string;
+  featured?: boolean;
+  impact?: ProjectImpact;
 }
 
 interface ProjectDetailModalProps {
@@ -22,6 +29,7 @@ interface ProjectDetailModalProps {
 const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const nextImage = useCallback(() => {
     if (project && project.images.length > 1) {
@@ -39,32 +47,107 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
 
   // Auto-play carousel
   useEffect(() => {
-    if (!isOpen || !project || project.images.length <= 1 || !isAutoPlaying) return;
+    if (!isOpen || !project || project.images.length <= 1 || !isAutoPlaying || isFullscreen) return;
     
     const interval = setInterval(nextImage, 4000);
     return () => clearInterval(interval);
-  }, [isOpen, project, isAutoPlaying, nextImage]);
+  }, [isOpen, project, isAutoPlaying, nextImage, isFullscreen]);
 
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
       setCurrentImageIndex(0);
       setIsAutoPlaying(true);
+      setIsFullscreen(false);
     }
   }, [isOpen, project]);
 
   // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        if (isFullscreen) {
+          setIsFullscreen(false);
+        } else {
+          onClose();
+        }
+      }
     };
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, [onClose]);
+  }, [onClose, isFullscreen]);
 
   if (!project) return null;
 
   const hasMultipleImages = project.images.length > 1;
+
+  // Fullscreen Canvas View
+  if (isFullscreen) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[60] bg-background flex items-center justify-center"
+          onClick={() => setIsFullscreen(false)}
+        >
+          {/* Return to Canvas Button */}
+          <motion.button
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
+            className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-lg glass-card text-foreground hover:bg-muted transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-medium">Return to Canvas</span>
+          </motion.button>
+
+          <motion.img
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            src={project.images[currentImageIndex]}
+            alt={`${project.title} - Full Canvas View`}
+            className="max-w-[95vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {/* Navigation for fullscreen */}
+          {hasMultipleImages && (
+            <>
+              <button
+                onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 rounded-full glass-card hover:bg-muted transition-colors"
+              >
+                <ChevronLeft className="w-8 h-8" />
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 rounded-full glass-card hover:bg-muted transition-colors"
+              >
+                <ChevronRight className="w-8 h-8" />
+              </button>
+
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {project.images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                    className={`w-3 h-3 rounded-full transition-all ${
+                      idx === currentImageIndex 
+                        ? 'bg-primary w-8' 
+                        : 'bg-foreground/30 hover:bg-foreground/50'
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
   return (
     <AnimatePresence>
@@ -96,6 +179,14 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
             className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto glass-card rounded-2xl"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Featured Badge */}
+            {project.featured && (
+              <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground text-xs font-bold flex items-center gap-1">
+                <Shield className="w-3 h-3" />
+                FEATURED CASE STUDY
+              </div>
+            )}
+
             {/* Close button */}
             <button
               onClick={onClose}
@@ -124,7 +215,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                     <motion.img
                       src={project.images[currentImageIndex]}
                       alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover cursor-pointer"
                       initial={!hasMultipleImages ? { scale: 1 } : {}}
                       animate={!hasMultipleImages ? { scale: 1.05 } : {}}
                       transition={!hasMultipleImages ? { 
@@ -133,10 +224,21 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                         repeatType: "reverse" 
                       } : {}}
                       loading="lazy"
+                      onClick={() => setIsFullscreen(true)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
                   </motion.div>
                 </AnimatePresence>
+
+                {/* View Canvas Button */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  onClick={() => setIsFullscreen(true)}
+                  className="absolute top-4 right-14 z-10 flex items-center gap-2 px-3 py-2 rounded-lg glass-card hover:bg-muted transition-colors"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                  <span className="text-sm font-medium">View Canvas</span>
+                </motion.button>
 
                 {/* Carousel Controls */}
                 {hasMultipleImages && (
@@ -183,6 +285,23 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                   </p>
                 </div>
 
+                {/* Impact Stats for Featured */}
+                {project.featured && project.impact && (
+                  <div className="grid grid-cols-2 gap-4">
+                    {project.impact.timeSaved && (
+                      <div className="p-4 rounded-xl bg-secondary/10 border border-secondary/20 text-center">
+                        <div className="text-2xl font-bold text-secondary">{project.impact.timeSaved}</div>
+                        <div className="text-sm text-muted-foreground">Time Saved Daily</div>
+                      </div>
+                    )}
+                    {project.impact.protection && (
+                      <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-center">
+                        <div className="text-sm font-bold text-primary">{project.impact.protection}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Problem vs Solution */}
                 <div className="grid gap-4">
                   <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20">
@@ -226,16 +345,6 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                   >
                     Build My Workflow
                   </a>
-                  {project.link && (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 rounded-xl glass-card hover:bg-muted transition-colors"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                    </a>
-                  )}
                 </div>
               </div>
             </div>

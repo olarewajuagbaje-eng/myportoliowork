@@ -1,59 +1,96 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Bot, Mail, MessageSquare, Database, Workflow, ChevronDown } from 'lucide-react';
+import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2 } from 'lucide-react';
 import ProjectDetailModal from './ProjectDetailModal';
 
-const projects = [
+// Import real workflow images
+import revenueShield from '@/assets/revenue-shield.jpg';
+import revenueShieldDetail from '@/assets/revenue-shield-detail.jpg';
+import recruitmentPipeline from '@/assets/recruitment-pipeline.jpg';
+import recruitmentPipelineDetail from '@/assets/recruitment-pipeline-detail.jpg';
+import executiveAiShadow from '@/assets/executive-ai-shadow.jpg';
+import executiveAiShadowDetail from '@/assets/executive-ai-shadow-detail.jpg';
+import leadChatbot from '@/assets/lead-chatbot.jpg';
+import saasLeadOrchestrator from '@/assets/saas-lead-orchestrator.jpg';
+import youtubeContentArchitect from '@/assets/youtube-content-architect.jpg';
+import whatsappAiAssistant from '@/assets/whatsapp-ai-assistant.jpg';
+
+export const projects = [
   {
     id: 1,
-    title: "The Executive AI Shadow",
-    description: "A Telegram-powered Digital Chief of Staff using Groq AI and Gmail API to handle executive comms via voice/text.",
-    problem: "Executives spend hours daily managing emails, scheduling, and communications. Critical messages get buried, responses are delayed, and valuable time is lost to administrative overhead.",
-    solution: "Built an AI-powered assistant that monitors Telegram for voice/text commands, processes them with Groq AI, drafts contextual email responses via Gmail API, and manages scheduling—all hands-free.",
-    tools: ["n8n", "Telegram Bot API", "Groq AI", "Gmail API", "Voice Recognition"],
-    images: ["https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop"],
-    icon: Bot,
+    title: "The Autonomous Fulfillment & Revenue Shield",
+    description: "End-to-end order verification system with Number() type-casting for data normalization, Paystack-to-SKU price verification, and Google Sheets as the Single Source of Truth.",
+    problem: "E-commerce businesses face revenue leakage from underpayments, manual order verification delays, and inventory sync errors across platforms.",
+    solution: "Built an autonomous fulfillment system that intercepts Paystack webhooks, validates payment amounts using Number() type-casting, cross-references SKU prices from Google Sheets, and auto-triggers fulfillment only on verified transactions.",
+    tools: ["n8n", "Paystack API", "Google Sheets", "Gmail API", "Webhooks", "Number() Type-casting"],
+    images: [revenueShield, revenueShieldDetail],
+    icon: Shield,
+    featured: true,
+    impact: {
+      timeSaved: "4 hours/day",
+      protection: "100% Protection against underpayments"
+    }
   },
   {
     id: 2,
     title: "Automated Recruitment Pipeline",
-    description: "AI-powered CV screening and interview scheduling that parses data and auto-notifies candidates via Gmail.",
+    description: "AI-powered CV screening and interview scheduling with Groq AI scoring, auto-notifications via Gmail, and Google Calendar integration.",
     problem: "HR teams manually review hundreds of CVs, schedule interviews through endless email chains, and lose qualified candidates due to slow response times.",
-    solution: "Created an end-to-end pipeline that auto-parses incoming CVs, scores candidates using AI, schedules interviews based on availability, and sends personalized notifications—reducing hiring time by 80%.",
-    tools: ["n8n", "OpenAI", "Google Sheets", "Gmail API", "Calendar API"],
-    images: ["https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop"],
-    icon: Mail,
+    solution: "Created an end-to-end pipeline using Groq Chat Model that auto-parses incoming CVs, scores candidates with structured output parsing, schedules interviews via Google Calendar, and sends personalized Gmail notifications—reducing hiring time by 80%.",
+    tools: ["n8n", "Groq AI", "Google Sheets", "Gmail API", "Google Calendar", "PDF Parser"],
+    images: [recruitmentPipeline, recruitmentPipelineDetail],
+    icon: Users,
   },
   {
     id: 3,
-    title: "WhatsApp AI Lead Bot",
-    description: "A RAG-based chatbot for lead collection, booking, and smart answers using retrieval-augmented generation.",
-    problem: "Businesses miss leads outside business hours. Manual responses are slow and inconsistent. Booking appointments requires back-and-forth messaging.",
-    solution: "Deployed a WhatsApp bot with RAG architecture that instantly answers questions from a knowledge base, qualifies leads, and books appointments directly—24/7 without human intervention.",
-    tools: ["n8n", "WhatsApp Business API", "Pinecone", "OpenAI Embeddings", "RAG"],
-    images: ["https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1556155092-490a1ba16284?w=800&h=600&fit=crop"],
-    icon: MessageSquare,
+    title: "The Executive AI Shadow",
+    description: "A Telegram-powered Digital Chief of Staff using AI Agents to handle executive communications and draft contextual email responses.",
+    problem: "Executives spend hours daily managing emails, scheduling, and communications. Critical messages get buried, responses are delayed, and valuable time is lost to administrative overhead.",
+    solution: "Built an AI-powered assistant that monitors Telegram for voice/text commands, processes them with structured AI Agents, drafts contextual email responses via Gmail API, and manages scheduling—all hands-free.",
+    tools: ["n8n", "Telegram Bot API", "AI Agent", "Gmail API", "Structured Output Parser"],
+    images: [executiveAiShadow, executiveAiShadowDetail],
+    icon: Bot,
   },
   {
     id: 4,
-    title: "AI SaaS Lead Orchestrator",
-    description: "Multi-channel routing system syncing data to Google Sheets and CRMs for seamless lead management.",
-    problem: "Leads come from multiple channels—website, social media, ads, referrals—but data ends up siloed. Sales teams lack a unified view and miss follow-ups.",
-    solution: "Built a central orchestration system that captures leads from all channels, enriches data with AI, routes to the right sales rep, updates CRM in real-time, and triggers follow-up sequences.",
-    tools: ["n8n", "HubSpot API", "Google Sheets", "Webhooks", "AI Enrichment"],
-    images: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop"],
-    icon: Database,
+    title: "Lead Generation Chatbot",
+    description: "RAG-based chatbot with Postgres memory, SerpAPI integration, and intelligent lead routing to Google Sheets.",
+    problem: "Businesses miss leads outside business hours. Manual responses are slow and inconsistent. Booking appointments requires back-and-forth messaging.",
+    solution: "Deployed a chatbot with Groq AI, Postgres Chat Memory for context retention, SerpAPI for real-time data, and RAG architecture that instantly answers questions and routes qualified leads to Google Sheets—24/7 without human intervention.",
+    tools: ["n8n", "Groq AI", "Postgres Memory", "SerpAPI", "Google Sheets", "RAG"],
+    images: [leadChatbot],
+    icon: MessageSquare,
   },
   {
     id: 5,
-    title: "Smart n8n Form Automation",
-    description: "Advanced data routing and message synchronization for complex multi-step form workflows.",
-    problem: "Form submissions trigger manual data entry across multiple systems. Errors occur, data is duplicated, and the process doesn't scale.",
-    solution: "Designed intelligent form processing that validates, transforms, and routes data to the right destinations. Includes error handling, retry logic, and audit trails for complete visibility.",
-    tools: ["n8n", "Typeform", "Airtable", "Slack", "Custom Webhooks"],
-    images: ["https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=600&fit=crop"],
-    icon: Workflow,
+    title: "AI SaaS Lead & Support Orchestrator",
+    description: "Multi-channel routing system with dual AI Agents, intelligent email classification, and CRM synchronization.",
+    problem: "Leads and support requests come from multiple channels—but data ends up siloed. Sales and support teams lack a unified view and miss follow-ups.",
+    solution: "Built a central orchestration system with dual AI Agents that classifies incoming Gmail messages, routes support vs. sales via Switch nodes, updates Google Sheets in real-time, and triggers appropriate follow-up emails.",
+    tools: ["n8n", "Groq AI", "Gmail Trigger", "Google Sheets", "Switch Routing", "Multi-Agent"],
+    images: [saasLeadOrchestrator],
+    icon: Mail,
+  },
+  {
+    id: 6,
+    title: "YouTube-to-Social Content Architect",
+    description: "Automated content repurposing pipeline that transforms YouTube videos into LinkedIn posts via AI-powered transcript processing.",
+    problem: "Content creators spend hours manually repurposing YouTube content for other platforms. Consistency is lost, and social channels remain underutilized.",
+    solution: "Created an automated pipeline using YouTube Transcript extraction, Split Out for chunk processing, Aggregate for content consolidation, and a SocialScribe AI Agent that generates platform-optimized LinkedIn posts—delivered via Telegram.",
+    tools: ["n8n", "YouTube Transcript", "Groq AI", "Telegram Bot", "Split/Aggregate", "SocialScribe Agent"],
+    images: [youtubeContentArchitect],
+    icon: Youtube,
+  },
+  {
+    id: 7,
+    title: "WhatsApp AI Personal Assistant",
+    description: "Full-featured WhatsApp assistant with Groq AI, memory persistence, web search, calculator, and Google Calendar integration.",
+    problem: "Personal assistants are expensive. Scheduling, research, and calculations require switching between multiple apps and services.",
+    solution: "Built a WhatsApp-native AI assistant using Groq Chat Model with Simple Memory for context, SerpAPI for web search, built-in Calculator tool, and Google Calendar integration—all accessible through natural conversation.",
+    tools: ["n8n", "WhatsApp Business API", "Groq AI", "Simple Memory", "SerpAPI", "Google Calendar"],
+    images: [whatsappAiAssistant],
+    icon: MessageSquare,
   },
 ];
 
@@ -64,19 +101,74 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: typeof pr
     transition={{ duration: 0.6, delay: index * 0.1 }}
     whileHover={{ scale: 1.02, y: -5 }}
     onClick={onClick}
-    className="glass-card p-6 cursor-pointer hover-lift cyber-border group"
+    className={`glass-card p-6 cursor-pointer hover-lift cyber-border group relative ${
+      project.featured ? 'md:col-span-2 lg:col-span-2' : ''
+    }`}
   >
+    {/* Featured Badge */}
+    {project.featured && (
+      <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground text-xs font-bold flex items-center gap-1">
+        <Shield className="w-3 h-3" />
+        FEATURED
+      </div>
+    )}
+    
     <div className="relative aspect-video mb-4 rounded-lg overflow-hidden bg-muted">
-      <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+      <img 
+        src={project.images[0]} 
+        alt={project.title} 
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+        loading="lazy" 
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+      
+      {/* View Canvas Button */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        whileHover={{ scale: 1.1 }}
+        className="absolute top-3 right-3 p-2 rounded-lg bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+        onClick={(e) => { e.stopPropagation(); onClick(); }}
+      >
+        <Maximize2 className="w-4 h-4 text-primary" />
+      </motion.button>
+      
       <div className="absolute bottom-3 left-3 p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
         <project.icon className="w-5 h-5 text-primary" />
       </div>
     </div>
+    
     <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
     <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
+    
+    {/* Impact Stats for Featured Project */}
+    {project.featured && project.impact && (
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="p-3 rounded-lg bg-secondary/10 border border-secondary/20">
+          <div className="text-lg font-bold text-secondary">{project.impact.timeSaved}</div>
+          <div className="text-xs text-muted-foreground">Time Saved</div>
+        </div>
+        <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+          <div className="text-sm font-bold text-primary">{project.impact.protection}</div>
+        </div>
+      </div>
+    )}
+    
     <div className="flex flex-wrap gap-2">
-      {project.tools.slice(0, 3).map((tool) => (<span key={tool} className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground">{tool}</span>))}
+      {project.tools.slice(0, project.featured ? 6 : 3).map((tool) => (
+        <span key={tool} className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground">{tool}</span>
+      ))}
+      {project.tools.length > (project.featured ? 6 : 3) && (
+        <span className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
+          +{project.tools.length - (project.featured ? 6 : 3)} more
+        </span>
+      )}
+    </div>
+    
+    {/* CTA */}
+    <div className="mt-4 pt-4 border-t border-border">
+      <button className="w-full py-2 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 text-foreground font-medium text-sm hover:from-primary/20 hover:to-secondary/20 transition-colors flex items-center justify-center gap-2">
+        Build My Workflow
+      </button>
     </div>
   </motion.div>
 );
@@ -86,7 +178,7 @@ const ProjectsSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
   const [showAll, setShowAll] = useState(false);
-  const displayedProjects = showAll ? projects : projects.slice(0, 4);
+  const displayedProjects = showAll ? projects : projects.slice(0, 5);
 
   return (
     <>
@@ -96,12 +188,23 @@ const ProjectsSection = () => {
             <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">Featured <span className="gradient-text">Projects</span></h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Real-world automation solutions that deliver measurable results</p>
           </motion.div>
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            {displayedProjects.map((project, index) => (<ProjectCard key={project.id} project={project} index={index} isInView={isInView} onClick={() => setSelectedProject(project)} />))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+            {displayedProjects.map((project, index) => (
+              <ProjectCard 
+                key={project.id} 
+                project={project} 
+                index={index} 
+                isInView={isInView} 
+                onClick={() => setSelectedProject(project)} 
+              />
+            ))}
           </div>
-          {!showAll && projects.length > 4 && (
+          {!showAll && projects.length > 5 && (
             <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : { opacity: 0 }} transition={{ delay: 0.5 }} className="text-center">
-              <button onClick={() => setShowAll(true)} className="inline-flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:bg-muted transition-colors font-medium"><ChevronDown className="w-4 h-4" />View All Projects</button>
+              <button onClick={() => setShowAll(true)} className="inline-flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:bg-muted transition-colors font-medium">
+                <ChevronDown className="w-4 h-4" />
+                View All Projects
+              </button>
             </motion.div>
           )}
         </div>
