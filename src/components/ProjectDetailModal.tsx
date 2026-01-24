@@ -1,24 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield, BookOpen } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
-
-interface ProjectImpact {
-  timeSaved?: string;
-  protection?: string;
-}
-
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  problem: string;
-  solution: string;
-  tools: string[];
-  images: string[];
-  link?: string;
-  featured?: boolean;
-  impact?: ProjectImpact;
-}
+import { Link } from 'react-router-dom';
+import type { Project, ProjectImage } from './ProjectsSection';
 
 interface ProjectDetailModalProps {
   project: Project | null;
@@ -80,6 +64,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
   if (!project) return null;
 
   const hasMultipleImages = project.images.length > 1;
+  const currentImage = project.images[currentImageIndex];
 
   // Fullscreen Canvas View
   if (isFullscreen) {
@@ -89,7 +74,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] bg-background flex items-center justify-center"
+          className="fixed inset-0 z-[60] bg-background flex flex-col items-center justify-center"
           onClick={() => setIsFullscreen(false)}
         >
           {/* Return to Canvas Button */}
@@ -103,13 +88,22 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
             <span className="font-medium">Return to Canvas</span>
           </motion.button>
 
+          {/* Image Label */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-lg glass-card text-foreground font-medium"
+          >
+            {currentImage.label}
+          </motion.div>
+
           <motion.img
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            src={project.images[currentImageIndex]}
-            alt={`${project.title} - Full Canvas View`}
-            className="max-w-[95vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            src={currentImage.src}
+            alt={`${project.title} - ${currentImage.label}`}
+            className="max-w-[95vw] max-h-[85vh] object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
 
@@ -129,17 +123,24 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                 <ChevronRight className="w-8 h-8" />
               </button>
 
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-                {project.images.map((_, idx) => (
+              {/* Thumbnail Strip */}
+              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 rounded-xl glass-card">
+                {project.images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
-                    className={`w-3 h-3 rounded-full transition-all ${
+                    className={`relative w-16 h-12 rounded-lg overflow-hidden transition-all ${
                       idx === currentImageIndex 
-                        ? 'bg-primary w-8' 
-                        : 'bg-foreground/30 hover:bg-foreground/50'
+                        ? 'ring-2 ring-primary' 
+                        : 'opacity-60 hover:opacity-100'
                     }`}
-                  />
+                  >
+                    <img 
+                      src={img.src} 
+                      alt={img.label}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
                 ))}
               </div>
             </>
@@ -213,8 +214,8 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                   >
                     {/* Parallax/Zoom effect for single images */}
                     <motion.img
-                      src={project.images[currentImageIndex]}
-                      alt={`${project.title} - Image ${currentImageIndex + 1}`}
+                      src={currentImage.src}
+                      alt={`${project.title} - ${currentImage.label}`}
                       className="w-full h-full object-cover cursor-pointer"
                       initial={!hasMultipleImages ? { scale: 1 } : {}}
                       animate={!hasMultipleImages ? { scale: 1.05 } : {}}
@@ -229,6 +230,16 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                     <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
                   </motion.div>
                 </AnimatePresence>
+
+                {/* Image Label */}
+                <motion.div
+                  key={`label-${currentImageIndex}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute bottom-16 left-4 z-10 px-3 py-1 rounded-lg glass-card text-sm font-medium"
+                >
+                  {currentImage.label}
+                </motion.div>
 
                 {/* View Canvas Button */}
                 <motion.button
@@ -256,12 +267,13 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                       <ChevronRight className="w-6 h-6" />
                     </button>
 
-                    {/* Dots indicator */}
+                    {/* Dots indicator with labels */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                      {project.images.map((_, idx) => (
+                      {project.images.map((img, idx) => (
                         <button
                           key={idx}
                           onClick={() => setCurrentImageIndex(idx)}
+                          title={img.label}
                           className={`w-2 h-2 rounded-full transition-all ${
                             idx === currentImageIndex 
                               ? 'bg-primary w-6' 
@@ -336,8 +348,18 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                   </div>
                 </div>
 
-                {/* CTA */}
+                {/* CTAs */}
                 <div className="flex gap-3 pt-4">
+                  {project.caseStudy && (
+                    <Link
+                      to={`/case-study/${project.slug}`}
+                      onClick={onClose}
+                      className="flex-1 py-3 px-6 rounded-xl bg-secondary/10 border border-secondary/20 text-secondary font-semibold text-center hover:bg-secondary/20 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      Read Case Study
+                    </Link>
+                  )}
                   <a
                     href="#contact"
                     onClick={onClose}
