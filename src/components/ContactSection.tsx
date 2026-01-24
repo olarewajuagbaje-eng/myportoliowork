@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { Send, Terminal, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import { Send, Terminal, CheckCircle2, Loader2, AlertCircle, Brain } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -13,6 +13,12 @@ interface ExecutionStep {
 interface ContactSectionProps {
   autoFocus?: boolean;
   initialMessage?: string;
+}
+
+interface ApiStep {
+  step: string;
+  status: string;
+  message: string;
 }
 
 const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSectionProps) => {
@@ -55,34 +61,58 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
     }
   }, [autoFocus, initialMessage]);
 
-  const runExecutionAnimation = async (success: boolean) => {
-    const steps = success ? [
-      { message: '> auth_token_verified...', delay: 600 },
-      { message: '> routing_lead_data...', delay: 800 },
-      { message: '> success_notified_agbaje.', delay: 700 },
-    ] : [
-      { message: '> auth_token_verified...', delay: 600 },
-      { message: '> connection_error: retrying...', delay: 500 },
-      { message: '> backup_channel_active.', delay: 600 },
-    ];
+  const runExecutionAnimation = async (apiSteps: ApiStep[] | null, success: boolean) => {
+    // If we have API steps, use those for real-time sync
+    if (apiSteps && apiSteps.length > 0) {
+      for (let i = 0; i < apiSteps.length; i++) {
+        const step = apiSteps[i];
+        const stepMessage = `> ${step.step}... ${step.message}`;
+        
+        setExecutionSteps(prev => [
+          ...prev,
+          { message: stepMessage, status: 'running' }
+        ]);
+        
+        await new Promise(resolve => setTimeout(resolve, 400));
+        
+        setExecutionSteps(prev => 
+          prev.map((s, idx) => 
+            idx === prev.length - 1 
+              ? { ...s, status: step.status === 'success' ? 'success' : 'error' } 
+              : s
+          )
+        );
+      }
+    } else {
+      // Fallback animation for error cases
+      const fallbackSteps = success ? [
+        { message: '> auth_token_verified...', delay: 600 },
+        { message: '> routing_lead_data...', delay: 800 },
+        { message: '> success_notified_agbaje.', delay: 700 },
+      ] : [
+        { message: '> auth_token_verified...', delay: 600 },
+        { message: '> connection_error: retrying...', delay: 500 },
+        { message: '> backup_channel_active.', delay: 600 },
+      ];
 
-    for (let i = 0; i < steps.length; i++) {
-      setExecutionSteps(prev => [
-        ...prev,
-        { message: steps[i].message, status: 'running' }
-      ]);
-      
-      await new Promise(resolve => setTimeout(resolve, steps[i].delay));
-      
-      setExecutionSteps(prev => 
-        prev.map((step, idx) => 
-          idx === i ? { ...step, status: success || i < steps.length - 1 ? 'success' : 'error' } : step
-        )
-      );
+      for (let i = 0; i < fallbackSteps.length; i++) {
+        setExecutionSteps(prev => [
+          ...prev,
+          { message: fallbackSteps[i].message, status: 'running' }
+        ]);
+        
+        await new Promise(resolve => setTimeout(resolve, fallbackSteps[i].delay));
+        
+        setExecutionSteps(prev => 
+          prev.map((step, idx) => 
+            idx === i ? { ...step, status: success || i < fallbackSteps.length - 1 ? 'success' : 'error' } : step
+          )
+        );
+      }
     }
   };
 
-  const sendTelegramNotification = async (name: string, email: string, message: string): Promise<boolean> => {
+  const sendTelegramNotification = async (name: string, email: string, message: string): Promise<{ success: boolean; steps: ApiStep[] | null }> => {
     try {
       const { data, error } = await supabase.functions.invoke('send-lead-notification', {
         body: { name, email, message },
@@ -90,14 +120,17 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
 
       if (error) {
         console.error('Edge function error:', error);
-        return false;
+        return { success: false, steps: null };
       }
 
       console.log('Lead notification response:', data);
-      return data?.success === true;
+      return { 
+        success: data?.success === true,
+        steps: data?.steps || null
+      };
     } catch (error) {
       console.error('Error calling edge function:', error);
-      return false;
+      return { success: false, steps: null };
     }
   };
 
@@ -117,16 +150,21 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
     setExecutionSteps([]);
     setShowSuccess(false);
 
-    const success = await sendTelegramNotification(
+    // Show initial processing step
+    setExecutionSteps([{ message: '> initializing_secure_channel...', status: 'running' }]);
+    await new Promise(resolve => setTimeout(resolve, 300));
+    setExecutionSteps(prev => prev.map(s => ({ ...s, status: 'success' })));
+
+    const result = await sendTelegramNotification(
       formData.name.trim(),
       formData.email.trim(),
       formData.message.trim()
     );
 
-    // Run the terminal animation
-    await runExecutionAnimation(success);
+    // Run the terminal animation synced with API response
+    await runExecutionAnimation(result.steps, result.success);
     
-    if (success) {
+    if (result.success) {
       setShowSuccess(true);
       toast({
         title: "Message sent!",
@@ -284,14 +322,16 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                         <Loader2 className="w-3 h-3 animate-spin" />
                       )}
                       {step.status === 'success' && (
-                        <CheckCircle2 className="w-3 h-3" />
+                        step.message.includes('ai_analysis') || step.message.includes('categorized') 
+                          ? <Brain className="w-3 h-3" />
+                          : <CheckCircle2 className="w-3 h-3" />
                       )}
                       {step.status === 'error' && (
                         <AlertCircle className="w-3 h-3" />
                       )}
                       {step.message}
-                      {step.status === 'success' && !step.message.includes('initialized') && (
-                        <span className="text-secondary ml-1">Done.</span>
+                      {step.status === 'success' && !step.message.includes('initialized') && !step.message.includes('...') && (
+                        <span className="text-secondary ml-1">✓</span>
                       )}
                     </motion.div>
                   ))}
@@ -302,7 +342,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                       animate={{ opacity: 1 }}
                       className="text-secondary mt-4 pt-4 border-t border-border"
                     >
-                      ✓ Lead captured successfully. Expect a response within 24 hours.
+                      ✓ Lead captured & analyzed. Expect a response within 24 hours.
                     </motion.div>
                   )}
                 </motion.div>
