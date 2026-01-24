@@ -2,6 +2,19 @@ import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
 const Header = () => {
+  const handleAuditClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        if ((window as any).triggerAuditRequest) {
+          (window as any).triggerAuditRequest();
+        }
+      }, 800);
+    }
+  };
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
@@ -29,13 +42,13 @@ const Header = () => {
             <span className="status-dot bg-secondary" />
             <span className="text-muted-foreground hidden sm:inline">Systems Operational</span>
           </div>
-          <a
-            href="#contact"
+          <button
+            onClick={handleAuditClick}
             className="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity flex items-center gap-2"
           >
             <Zap className="w-4 h-4" />
             Free Audit
-          </a>
+          </button>
         </div>
       </div>
     </motion.header>

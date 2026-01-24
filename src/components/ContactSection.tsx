@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { Send, Terminal, CheckCircle2, Loader2 } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { Send, Terminal, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -10,26 +10,60 @@ interface ExecutionStep {
   status: 'pending' | 'running' | 'success' | 'error';
 }
 
-const ContactSection = () => {
+interface ContactSectionProps {
+  autoFocus?: boolean;
+  initialMessage?: string;
+}
+
+const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSectionProps) => {
   const ref = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: '',
+    message: initialMessage,
   });
   const [isTyping, setIsTyping] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [executionSteps, setExecutionSteps] = useState<ExecutionStep[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const runExecutionAnimation = async () => {
-    const steps = [
-      { message: '> Initializing Telegram Bot...', delay: 500 },
-      { message: '> Routing Lead to Agbaje...', delay: 800 },
-      { message: '> Automation Standing By.', delay: 600 },
+  // Handle auto-focus and auto-type for audit request
+  useEffect(() => {
+    if (autoFocus && messageInputRef.current) {
+      messageInputRef.current.focus();
+      if (initialMessage) {
+        // Simulate typing effect
+        let index = 0;
+        const typeInterval = setInterval(() => {
+          if (index < initialMessage.length) {
+            setFormData(prev => ({
+              ...prev,
+              message: initialMessage.substring(0, index + 1)
+            }));
+            index++;
+          } else {
+            clearInterval(typeInterval);
+          }
+        }, 50);
+        return () => clearInterval(typeInterval);
+      }
+    }
+  }, [autoFocus, initialMessage]);
+
+  const runExecutionAnimation = async (success: boolean) => {
+    const steps = success ? [
+      { message: '> auth_token_verified...', delay: 600 },
+      { message: '> routing_lead_data...', delay: 800 },
+      { message: '> success_notified_agbaje.', delay: 700 },
+    ] : [
+      { message: '> auth_token_verified...', delay: 600 },
+      { message: '> connection_error: retrying...', delay: 500 },
+      { message: '> backup_channel_active.', delay: 600 },
     ];
 
     for (let i = 0; i < steps.length; i++) {
@@ -42,61 +76,77 @@ const ContactSection = () => {
       
       setExecutionSteps(prev => 
         prev.map((step, idx) => 
-          idx === i ? { ...step, status: 'success' } : step
+          idx === i ? { ...step, status: success || i < steps.length - 1 ? 'success' : 'error' } : step
         )
       );
     }
   };
 
+  const sendTelegramNotification = async (name: string, email: string, message: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.functions.invoke('send-lead-notification', {
+        body: { name, email, message },
+      });
+
+      if (error) {
+        console.error('Edge function error:', error);
+        return false;
+      }
+
+      console.log('Lead notification response:', data);
+      return data?.success === true;
+    } catch (error) {
+      console.error('Error calling edge function:', error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      toast({
+        title: "Missing fields",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setExecutionSteps([]);
     setShowSuccess(false);
 
-    try {
-      const { data, error } = await supabase.functions.invoke('send-lead-notification', {
-        body: formData,
-      });
+    const success = await sendTelegramNotification(
+      formData.name.trim(),
+      formData.email.trim(),
+      formData.message.trim()
+    );
 
-      if (error) throw error;
-
-      // Run the terminal animation
-      await runExecutionAnimation();
-      
+    // Run the terminal animation
+    await runExecutionAnimation(success);
+    
+    if (success) {
       setShowSuccess(true);
       toast({
         title: "Message sent!",
-        description: "I'll get back to you soon.",
+        description: "I'll get back to you within 24 hours.",
       });
-      
-      // Reset form after delay
-      setTimeout(() => {
-        setFormData({ name: '', email: '', message: '' });
-        setExecutionSteps([]);
-        setShowSuccess(false);
-      }, 5000);
-      
-    } catch (error) {
-      console.error('Error sending message:', error);
-      setExecutionSteps([
-        { message: '> Error: Connection failed.', status: 'error' },
-        { message: '> Retrying via backup channel...', status: 'running' }
-      ]);
-      
+    } else {
       toast({
-        title: "Message received!",
-        description: "Your message has been logged. I'll get back to you soon.",
+        title: "Message logged",
+        description: "Your message has been received. I'll respond soon.",
         variant: "default",
       });
-      
-      setTimeout(() => {
-        setFormData({ name: '', email: '', message: '' });
-        setExecutionSteps([]);
-      }, 3000);
-    } finally {
-      setIsSubmitting(false);
     }
+    
+    // Reset form after delay
+    setTimeout(() => {
+      setFormData({ name: '', email: '', message: '' });
+      setExecutionSteps([]);
+      setShowSuccess(false);
+      setIsSubmitting(false);
+    }, 5000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -104,6 +154,22 @@ const ContactSection = () => {
     setIsTyping(true);
     setTimeout(() => setIsTyping(false), 500);
   };
+
+  // Function to trigger audit request from external CTA
+  const triggerAuditRequest = () => {
+    const auditMessage = 'I need a workflow review.';
+    setExecutionSteps([{ message: '> request_audit_initialized: "I need a workflow review."', status: 'success' }]);
+    setFormData(prev => ({ ...prev, message: auditMessage }));
+    messageInputRef.current?.focus();
+  };
+
+  // Expose trigger function globally for CTA buttons
+  useEffect(() => {
+    (window as any).triggerAuditRequest = triggerAuditRequest;
+    return () => {
+      delete (window as any).triggerAuditRequest;
+    };
+  }, []);
 
   return (
     <section id="contact" className="py-32 relative" ref={ref}>
@@ -145,7 +211,7 @@ const ContactSection = () => {
               )}
             </div>
             
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <form ref={formRef} onSubmit={handleSubmit} className="p-6 space-y-6">
               <div>
                 <label className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
                   <span className="text-secondary">$</span> enter_name:
@@ -183,6 +249,7 @@ const ContactSection = () => {
                   <span className="text-secondary">$</span> enter_message:
                 </label>
                 <textarea
+                  ref={messageInputRef}
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
@@ -219,8 +286,11 @@ const ContactSection = () => {
                       {step.status === 'success' && (
                         <CheckCircle2 className="w-3 h-3" />
                       )}
+                      {step.status === 'error' && (
+                        <AlertCircle className="w-3 h-3" />
+                      )}
                       {step.message}
-                      {step.status === 'success' && (
+                      {step.status === 'success' && !step.message.includes('initialized') && (
                         <span className="text-secondary ml-1">Done.</span>
                       )}
                     </motion.div>
