@@ -117,19 +117,63 @@ const ImageMarquee = ({
                 draggable={false}
               />
 
-              {/* Data flow pulse animation overlay */}
+              {/* Data flow pulse animation overlay - Multi-layer effect */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {/* Primary horizontal pulse */}
                 <motion.div
-                  className="absolute w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent"
-                  initial={{ x: '-100%', y: '30%' }}
-                  animate={{ x: '200%' }}
+                  className="absolute w-full h-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent blur-[1px]"
+                  style={{ top: '30%' }}
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "linear",
+                    delay: index * 0.2,
+                  }}
+                />
+                {/* Secondary pulse - offset timing */}
+                <motion.div
+                  className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-secondary/50 to-transparent blur-[0.5px]"
+                  style={{ top: '60%' }}
+                  animate={{ x: ['-100%', '200%'] }}
                   transition={{
                     duration: 3,
                     repeat: Infinity,
                     ease: "linear",
-                    delay: index * 0.3,
+                    delay: index * 0.3 + 0.5,
                   }}
                 />
+                {/* Glowing particle effect */}
+                <motion.div
+                  className="absolute w-3 h-3 rounded-full bg-primary/80 shadow-[0_0_10px_2px_hsl(var(--primary)/0.6)]"
+                  style={{ top: '45%' }}
+                  animate={{ 
+                    x: ['-20px', '300px'],
+                    opacity: [0, 1, 1, 0],
+                    scale: [0.5, 1, 1, 0.5],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.4,
+                  }}
+                />
+                {/* "Syncing" indicator on hover */}
+                {isHovered && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-1 rounded bg-primary/90 backdrop-blur-sm"
+                  >
+                    <motion.div
+                      className="w-1.5 h-1.5 rounded-full bg-primary-foreground"
+                      animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                      transition={{ duration: 0.8, repeat: Infinity }}
+                    />
+                    <span className="text-[10px] font-mono text-primary-foreground">SYNCING...</span>
+                  </motion.div>
+                )}
               </div>
 
               {/* Label & expand hint */}
