@@ -117,12 +117,13 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { name, email, message }: LeadNotificationRequest = await req.json();
 
-    const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN");
-    const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID");
+    // Direct Telegram credentials (hardcoded as fallback)
+    const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "8542679131:AAEzLKLWqyez8BDIEkgNY3XaJkpzJyrq0vw";
+    const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") || "6582194520";
 
-    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-      throw new Error("Telegram credentials not configured");
-    }
+    console.log("Telegram credentials loaded, processing lead...");
+    console.log("Bot token exists:", !!TELEGRAM_BOT_TOKEN);
+    console.log("Chat ID:", TELEGRAM_CHAT_ID);
 
     // Analyze lead with AI
     console.log("Analyzing lead message with AI...");
