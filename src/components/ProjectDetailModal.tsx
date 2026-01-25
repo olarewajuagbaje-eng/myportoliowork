@@ -352,6 +352,34 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                   </div>
                 </div>
 
+                {/* Zoom into Logic Button - for Revenue Shield */}
+                {project.slug === 'revenue-shield' && (
+                  <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-semibold text-primary text-sm">Technical Deep-Dive</h4>
+                        <p className="text-xs text-muted-foreground">See the Number() type-casting logic</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          // Find the Number() Type-Casting image index
+                          const targetIndex = project.images.findIndex(img => 
+                            img.label.toLowerCase().includes('number') || img.label.toLowerCase().includes('type-casting')
+                          );
+                          if (targetIndex >= 0) {
+                            setCurrentImageIndex(targetIndex);
+                            setIsFullscreen(true);
+                          }
+                        }}
+                        className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2"
+                      >
+                        <Maximize2 className="w-4 h-4" />
+                        Zoom into Logic
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {/* CTAs */}
                 <div className="flex gap-3 pt-4">
                   {project.caseStudy && (
