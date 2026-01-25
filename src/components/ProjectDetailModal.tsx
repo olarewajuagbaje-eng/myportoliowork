@@ -3,6 +3,7 @@ import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield, BookOpen } 
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import type { Project, ProjectImage } from './ProjectsSection';
+import ImageMarquee from './ImageMarquee';
 
 interface ProjectDetailModalProps {
   project: Project | null;
@@ -112,36 +113,39 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 rounded-full glass-card hover:bg-muted transition-colors"
+                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 rounded-full glass-card hover:bg-muted transition-colors z-20"
               >
                 <ChevronLeft className="w-8 h-8" />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 rounded-full glass-card hover:bg-muted transition-colors"
+                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 rounded-full glass-card hover:bg-muted transition-colors z-20"
               >
                 <ChevronRight className="w-8 h-8" />
               </button>
 
-              {/* Thumbnail Strip */}
-              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 rounded-xl glass-card">
-                {project.images.map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
-                    className={`relative w-16 h-12 rounded-lg overflow-hidden transition-all ${
-                      idx === currentImageIndex 
-                        ? 'ring-2 ring-primary' 
-                        : 'opacity-60 hover:opacity-100'
-                    }`}
-                  >
-                    <img 
-                      src={img.src} 
-                      alt={img.label}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
+              {/* Scrollable Thumbnail Strip */}
+              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 max-w-[90vw] overflow-x-auto">
+                <div className="flex gap-2 p-2 rounded-xl glass-card">
+                  {project.images.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                      className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden transition-all ${
+                        idx === currentImageIndex 
+                          ? 'ring-2 ring-primary' 
+                          : 'opacity-60 hover:opacity-100'
+                      }`}
+                    >
+                      <img 
+                        src={img.src} 
+                        alt={img.label}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
             </>
           )}

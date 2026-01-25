@@ -12,17 +12,25 @@ import revenueShieldLogic from '@/assets/revenue-shield-logic.jpg';
 import revenueShieldVerification from '@/assets/revenue-shield-verification.jpg';
 import revenueShieldWebhook from '@/assets/revenue-shield-webhook.jpg';
 import revenueShieldFulfillment from '@/assets/revenue-shield-fulfillment.jpg';
+import revenueShieldNumber from '@/assets/revenue-shield-number.jpg';
+import revenueShieldInventory from '@/assets/revenue-shield-inventory.jpg';
+import revenueShieldEmail from '@/assets/revenue-shield-email.jpg';
+import revenueShieldCustomer from '@/assets/revenue-shield-customer.jpg';
 import recruitmentPipeline from '@/assets/recruitment-pipeline.jpg';
 import recruitmentPipelineDetail from '@/assets/recruitment-pipeline-detail.jpg';
 import executiveAiShadow from '@/assets/executive-ai-shadow.jpg';
 import executiveAiShadowDetail from '@/assets/executive-ai-shadow-detail.jpg';
 import executiveAiOverview from '@/assets/executive-ai-overview.jpg';
 import executiveAiAgent from '@/assets/executive-ai-agent.jpg';
+import executiveAiTelegram from '@/assets/executive-ai-telegram.jpg';
 import leadChatbot from '@/assets/lead-chatbot.jpg';
 import leadChatbotHero from '@/assets/lead-chatbot-hero.jpg';
 import leadChatbotInterface from '@/assets/lead-chatbot-interface.jpg';
 import saasLeadOrchestrator from '@/assets/saas-lead-orchestrator.jpg';
 import aiResearchFactory from '@/assets/ai-research-factory.jpg';
+import aiResearchWorkflow from '@/assets/ai-research-workflow.jpg';
+import aiResearchOutput from '@/assets/ai-research-output.jpg';
+import aiResearchSheets from '@/assets/ai-research-sheets.jpg';
 import youtubeContentArchitect from '@/assets/youtube-content-architect.jpg';
 import whatsappAiAssistant from '@/assets/whatsapp-ai-assistant.jpg';
 import whatsappAiOverview from '@/assets/whatsapp-ai-overview.jpg';
@@ -67,11 +75,15 @@ export const projects: Project[] = [
     tools: ["n8n", "Paystack API", "Google Sheets", "Gmail API", "Webhooks", "Number() Type-casting"],
     images: [
       { src: revenueShield, label: "Architecture Overview" },
+      { src: revenueShieldNumber, label: "Number() Type-Casting Logic" },
       { src: revenueShieldWebhook, label: "Paystack Webhook Setup" },
-      { src: revenueShieldVerification, label: "Payment Verification Logic" },
+      { src: revenueShieldVerification, label: "Payment Verification" },
+      { src: revenueShieldInventory, label: "Inventory Lookup" },
       { src: revenueShieldLogic, label: "Stock Deduction Logic" },
-      { src: revenueShieldFulfillment, label: "Automated Fulfillment" },
-      { src: revenueShieldDetail, label: "Live Output" },
+      { src: revenueShieldCustomer, label: "Customer Data Update" },
+      { src: revenueShieldEmail, label: "Automated Email Confirmation" },
+      { src: revenueShieldFulfillment, label: "Fulfillment Output" },
+      { src: revenueShieldDetail, label: "Live Dashboard" },
     ],
     icon: Shield,
     featured: true,
@@ -123,6 +135,7 @@ export const projects: Project[] = [
     tools: ["n8n", "Telegram Bot API", "AI Agent", "Gmail API", "Structured Output Parser"],
     images: [
       { src: executiveAiOverview, label: "Architecture Overview" },
+      { src: executiveAiTelegram, label: "Telegram Trigger Setup" },
       { src: executiveAiAgent, label: "AI Agent Configuration" },
       { src: executiveAiShadow, label: "Workflow Canvas" },
       { src: executiveAiShadowDetail, label: "Live Output" },
@@ -164,24 +177,26 @@ export const projects: Project[] = [
   },
   {
     id: 5,
-    title: "AI SaaS Lead & Support Orchestrator",
-    slug: "saas-orchestrator",
-    description: "Multi-channel routing system with dual AI Agents, intelligent email classification, and CRM synchronization.",
-    problem: "Leads and support requests come from multiple channels—but data ends up siloed. Sales and support teams lack a unified view and miss follow-ups.",
-    solution: "Built a central orchestration system with dual AI Agents that classifies incoming Gmail messages, routes support vs. sales via Switch nodes, updates Google Sheets in real-time, and triggers appropriate follow-up emails.",
-    tools: ["n8n", "Groq AI", "Gmail Trigger", "Google Sheets", "Switch Routing", "Multi-Agent"],
+    title: "AI Research & Content Factory",
+    slug: "ai-research-factory",
+    description: "Automated content generation pipeline with Groq AI, Tavily research integration, and Google Sheets content management.",
+    problem: "Content creation requires hours of research, writing, and publishing. Teams struggle to maintain consistent output across multiple topics and platforms.",
+    solution: "Built an AI Research Factory that pulls topics from Google Sheets, researches via Tavily API, generates content with Groq Chat Model, and updates the sheet with drafted articles—fully automated.",
+    tools: ["n8n", "Groq AI", "Tavily API", "Google Sheets", "HTTP Requests", "AI Agents"],
     images: [
-      { src: saasLeadOrchestrator, label: "Architecture Overview" },
+      { src: aiResearchWorkflow, label: "Architecture Overview" },
       { src: aiResearchFactory, label: "AI Agent Logic" },
+      { src: aiResearchOutput, label: "Content Output Node" },
+      { src: aiResearchSheets, label: "Google Sheets Dashboard" },
     ],
     icon: Mail,
     caseStudy: {
-      heroImage: saasLeadOrchestrator,
-      summary: "Creating a unified lead and support orchestration system that eliminates silos and ensures no follow-up is missed.",
+      heroImage: aiResearchWorkflow,
+      summary: "Creating an automated content factory that researches topics and generates articles without human intervention.",
       metrics: [
-        { label: "Follow-up Rate", value: "100%" },
-        { label: "Classification Accuracy", value: "95%" },
-        { label: "Data Entry Reduced", value: "90%" },
+        { label: "Content/Week", value: "20+ articles" },
+        { label: "Research Time", value: "0 min" },
+        { label: "Quality Score", value: "95%" },
       ]
     }
   },
