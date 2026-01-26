@@ -238,7 +238,7 @@ export const projects: Project[] = [
     id: 8,
     title: "Video Cinematic Engine",
     slug: "video-cinematic-engine",
-    description: "End-to-end AI video production pipeline that transforms YouTube transcripts into cinematic content with Suno-generated music, AI image prompts, and automated YouTube publishing.",
+    description: "End-to-end AI video production pipeline that transforms YouTube transcripts into cinematic content with Suno-generated music, AI image prompts, and automated YouTube publishing. System Architecture: Orchestrates Suno, ElevenLabs, and Creatomate via n8n for fully autonomous 4K rendering.",
     problem: "Content creators struggle to produce high-quality videos at scale. Manual video production is time-consuming, expensive, and requires specialized skills. Music licensing, image creation, and post-production add complexity.",
     solution: "Built an autonomous video production engine using n8n that ingests YouTube transcripts, generates original lyrics with AI, creates custom music via Suno API, produces cinematic image prompts for each scene, renders via Creatomate, and auto-publishes to YouTube—delivering a bundled output of 5 images + 1 audio track per video.",
     tools: ["n8n", "Groq AI", "Suno API", "Creatomate", "YouTube API", "Image Pollinations", "Split/Aggregate"],

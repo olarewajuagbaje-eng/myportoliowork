@@ -59,10 +59,10 @@ const Footer = () => {
               href="https://www.linkedin.com/in/agbaje-olarewaju" 
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 rounded-lg glass-card hover:bg-primary/20 transition-colors"
+              className="p-3 rounded-lg glass-card hover:bg-primary/20 transition-colors glow-pulse"
               aria-label="LinkedIn"
             >
-              <Linkedin className="w-5 h-5 text-primary" />
+              <Linkedin className="w-5 h-5 text-primary drop-shadow-[0_0_8px_hsl(263,70%,66%)]" />
             </a>
             <a 
               href="https://twitter.com/agbaje_olarewaju" 
