@@ -209,8 +209,8 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "Portfolio Leads <onboarding@resend.dev>",
-        to: ["contact@agbaje.dev"],
-        subject: `${priorityEmoji} New Lead: ${analysis.category} - ${name}`,
+        to: ["olarewajuagbaje@gmail.com"],
+        subject: `[PORTFOLIO LEAD] - ${analysis.category} from ${name}`,
         html: emailHtml
       })
     });

@@ -39,10 +39,10 @@ const Header = () => {
             href="https://www.linkedin.com/in/agbaje-olarewaju" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary transition-colors"
+            className="text-primary hover:text-primary/80 transition-colors relative"
             aria-label="LinkedIn"
           >
-            <Linkedin className="w-5 h-5" />
+            <Linkedin className="w-5 h-5 drop-shadow-[0_0_8px_hsl(263,70%,66%)]" />
           </a>
         </nav>
 
