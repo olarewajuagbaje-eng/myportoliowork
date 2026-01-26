@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Zap } from 'lucide-react';
+import { Zap, Linkedin } from 'lucide-react';
 
 const Header = () => {
   const handleAuditClick = (e: React.MouseEvent) => {
@@ -35,6 +35,15 @@ const Header = () => {
           <a href="#projects" className="text-muted-foreground hover:text-foreground transition-colors">Projects</a>
           <a href="#skills" className="text-muted-foreground hover:text-foreground transition-colors">Skills</a>
           <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+          <a 
+            href="https://www.linkedin.com/in/agbaje-olarewaju" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-primary transition-colors"
+            aria-label="LinkedIn"
+          >
+            <Linkedin className="w-5 h-5" />
+          </a>
         </nav>
 
         <div className="flex items-center gap-4">

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen } from 'lucide-react';
+import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen, Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProjectDetailModal from './ProjectDetailModal';
 
@@ -34,6 +34,13 @@ import aiResearchSheets from '@/assets/ai-research-sheets.jpg';
 import youtubeContentArchitect from '@/assets/youtube-content-architect.jpg';
 import whatsappAiAssistant from '@/assets/whatsapp-ai-assistant.jpg';
 import whatsappAiOverview from '@/assets/whatsapp-ai-overview.jpg';
+import videoCinematicImage from '@/assets/video-cinematic-image.jpg';
+import videoCinematicFile from '@/assets/video-cinematic-file.jpg';
+import videoCinematicLyric from '@/assets/video-cinematic-lyric.jpg';
+import videoCinematicPrompt from '@/assets/video-cinematic-prompt.jpg';
+import videoCinematicWorkflow from '@/assets/video-cinematic-workflow.jpg';
+import videoCinematicYoutube from '@/assets/video-cinematic-youtube.jpg';
+import videoCinematicOverview from '@/assets/video-cinematic-overview.jpg';
 
 export interface ProjectImage {
   src: string;
@@ -226,6 +233,40 @@ export const projects: Project[] = [
       { src: whatsappAiAssistant, label: "Workflow Canvas" },
     ],
     icon: MessageSquare,
+  },
+  {
+    id: 8,
+    title: "Video Cinematic Engine",
+    slug: "video-cinematic-engine",
+    description: "End-to-end AI video production pipeline that transforms YouTube transcripts into cinematic content with Suno-generated music, AI image prompts, and automated YouTube publishing.",
+    problem: "Content creators struggle to produce high-quality videos at scale. Manual video production is time-consuming, expensive, and requires specialized skills. Music licensing, image creation, and post-production add complexity.",
+    solution: "Built an autonomous video production engine using n8n that ingests YouTube transcripts, generates original lyrics with AI, creates custom music via Suno API, produces cinematic image prompts for each scene, renders via Creatomate, and auto-publishes to YouTube—delivering a bundled output of 5 images + 1 audio track per video.",
+    tools: ["n8n", "Groq AI", "Suno API", "Creatomate", "YouTube API", "Image Pollinations", "Split/Aggregate"],
+    images: [
+      { src: videoCinematicWorkflow, label: "n8n Workflow Architecture" },
+      { src: videoCinematicOverview, label: "Full Pipeline Overview" },
+      { src: videoCinematicLyric, label: "AI Lyric Writer Node" },
+      { src: videoCinematicPrompt, label: "Image Prompt Generator" },
+      { src: videoCinematicImage, label: "Image Generation Output" },
+      { src: videoCinematicFile, label: "Video File Processor" },
+      { src: videoCinematicYoutube, label: "YouTube Auto-Publish" },
+    ],
+    icon: Video,
+    featured: true,
+    impact: {
+      timeSaved: "10+ hours/video",
+      protection: "Bundled: 5 images + 1 audio"
+    },
+    caseStudy: {
+      heroImage: videoCinematicWorkflow,
+      summary: "How I built an AI-powered video factory that transforms transcripts into fully-produced cinematic content with custom music and automated YouTube publishing.",
+      metrics: [
+        { label: "Production Time", value: "<5 min" },
+        { label: "Manual Editing", value: "0%" },
+        { label: "Assets/Video", value: "6+" },
+        { label: "Cost/Video", value: "-90%" },
+      ]
+    }
   },
 ];
 
