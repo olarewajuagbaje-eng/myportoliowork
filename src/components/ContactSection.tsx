@@ -88,7 +88,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
       const fallbackSteps = success ? [
         { message: '> auth_token_verified...', delay: 600 },
         { message: '> routing_lead_data...', delay: 800 },
-        { message: '> success_notified_agbaje.', delay: 700 },
+        { message: '> secure_mail_dispatched_to_agbaje.', delay: 700 },
       ] : [
         { message: '> auth_token_verified...', delay: 600 },
         { message: '> connection_error: retrying...', delay: 500 },

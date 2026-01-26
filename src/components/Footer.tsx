@@ -47,21 +47,27 @@ const Footer = () => {
           {/* Social Links */}
           <div className="flex items-center justify-end gap-4">
             <a 
-              href="#" 
+              href="https://github.com/agbaje-olarewaju" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="p-3 rounded-lg glass-card hover:bg-muted transition-colors"
               aria-label="GitHub"
             >
               <Github className="w-5 h-5" />
             </a>
             <a 
-              href="#" 
-              className="p-3 rounded-lg glass-card hover:bg-muted transition-colors"
+              href="https://www.linkedin.com/in/agbaje-olarewaju" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 rounded-lg glass-card hover:bg-primary/20 transition-colors"
               aria-label="LinkedIn"
             >
-              <Linkedin className="w-5 h-5" />
+              <Linkedin className="w-5 h-5 text-primary" />
             </a>
             <a 
-              href="#" 
+              href="https://twitter.com/agbaje_olarewaju" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="p-3 rounded-lg glass-card hover:bg-muted transition-colors"
               aria-label="Twitter"
             >

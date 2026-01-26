@@ -46,7 +46,7 @@ async function analyzeLeadWithAI(message: string): Promise<LeadAnalysis> {
             content: `You are a lead analysis assistant for an automation architect. Analyze the incoming lead message and categorize it.
             
 Return a JSON object with:
-- category: One of "E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Custom Integration", "General Inquiry"
+- category: One of "E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Video Production", "Custom Integration", "General Inquiry"
 - intent: A brief description of what the lead is looking for (max 50 words)
 - priority: "high" (ready to buy, specific project), "medium" (interested, exploring), or "low" (just curious, vague request)
 - suggestedResponse: A brief suggested action for follow-up (max 30 words)
@@ -69,7 +69,7 @@ Only respond with valid JSON, no markdown or extra text.`
                 properties: {
                   category: { 
                     type: "string", 
-                    enum: ["E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Custom Integration", "General Inquiry"]
+                    enum: ["E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Video Production", "Custom Integration", "General Inquiry"]
                   },
                   intent: { type: "string" },
                   priority: { type: "string", enum: ["high", "medium", "low"] },
@@ -117,13 +117,14 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { name, email, message }: LeadNotificationRequest = await req.json();
 
-    // Direct Telegram credentials (hardcoded as fallback)
-    const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") || "8542679131:AAEzLKLWqyez8BDIEkgNY3XaJkpzJyrq0vw";
-    const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") || "6582194520";
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
-    console.log("Telegram credentials loaded, processing lead...");
-    console.log("Bot token exists:", !!TELEGRAM_BOT_TOKEN);
-    console.log("Chat ID:", TELEGRAM_CHAT_ID);
+    if (!RESEND_API_KEY) {
+      console.error("RESEND_API_KEY not configured");
+      throw new Error("Email service not configured");
+    }
+
+    console.log("Processing lead notification via email...");
 
     // Analyze lead with AI
     console.log("Analyzing lead message with AI...");
@@ -137,46 +138,91 @@ const handler = async (req: Request): Promise<Response> => {
       low: "🟢"
     }[analysis.priority];
 
-    // Send enhanced Telegram notification with AI analysis
-    const telegramMessage = `🚀 *New Lead Alert* ${priorityEmoji}
+    const priorityColor = {
+      high: "#dc2626",
+      medium: "#f59e0b",
+      low: "#22c55e"
+    }[analysis.priority];
 
-👤 *Name:* ${name}
-📧 *Email:* ${email}
+    // Build email HTML
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a0a; color: #e5e5e5; margin: 0; padding: 20px; }
+          .container { max-width: 600px; margin: 0 auto; background: #171717; border-radius: 12px; overflow: hidden; border: 1px solid #262626; }
+          .header { background: linear-gradient(135deg, #8b5cf6, #10b981); padding: 24px; text-align: center; }
+          .header h1 { margin: 0; color: white; font-size: 24px; }
+          .priority-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; background: ${priorityColor}; color: white; margin-top: 10px; }
+          .content { padding: 24px; }
+          .section { background: #262626; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+          .section-title { color: #8b5cf6; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+          .section-content { color: #e5e5e5; }
+          .label { color: #a3a3a3; font-size: 12px; }
+          .value { color: #e5e5e5; font-size: 16px; font-weight: 500; }
+          .ai-analysis { border-left: 3px solid #10b981; }
+          .footer { padding: 16px 24px; background: #0a0a0a; text-align: center; font-size: 12px; color: #737373; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🚀 New Lead Alert</h1>
+            <div class="priority-badge">${analysis.priority.toUpperCase()} PRIORITY</div>
+          </div>
+          
+          <div class="content">
+            <div class="section">
+              <div class="section-title">📧 Contact Details</div>
+              <p><span class="label">Name:</span> <span class="value">${name}</span></p>
+              <p><span class="label">Email:</span> <span class="value">${email}</span></p>
+            </div>
+            
+            <div class="section">
+              <div class="section-title">💬 Message</div>
+              <p class="section-content">${message}</p>
+            </div>
+            
+            <div class="section ai-analysis">
+              <div class="section-title">🤖 AI Analysis</div>
+              <p><span class="label">Category:</span> <span class="value">${analysis.category}</span></p>
+              <p><span class="label">Intent:</span> <span class="value">${analysis.intent}</span></p>
+              <p><span class="label">Suggested Action:</span> <span class="value">${analysis.suggestedResponse}</span></p>
+            </div>
+          </div>
+          
+          <div class="footer">
+            Captured via Portfolio Command Center • ${new Date().toISOString()}
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
 
-💬 *Message:*
-${message}
+    // Send email via Resend API
+    const emailResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Portfolio Leads <onboarding@resend.dev>",
+        to: ["contact@agbaje.dev"],
+        subject: `${priorityEmoji} New Lead: ${analysis.category} - ${name}`,
+        html: emailHtml
+      })
+    });
 
----
-🤖 *AI Analysis:*
-📂 *Category:* ${analysis.category}
-🎯 *Intent:* ${analysis.intent}
-⚡ *Priority:* ${analysis.priority.toUpperCase()}
-💡 *Suggested Action:* ${analysis.suggestedResponse}
-
----
-_Captured via Portfolio Command Center_
-_${new Date().toISOString()}_`;
-
-    const telegramResponse = await fetch(
-      `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: telegramMessage,
-          parse_mode: "Markdown",
-        }),
-      }
-    );
-
-    if (!telegramResponse.ok) {
-      const errorText = await telegramResponse.text();
-      console.error("Telegram API error:", errorText);
-      throw new Error("Failed to send Telegram notification");
+    if (!emailResponse.ok) {
+      const errorText = await emailResponse.text();
+      console.error("Resend API error:", errorText);
+      throw new Error("Failed to send email notification");
     }
 
-    console.log("Lead notification sent successfully:", { name, email, category: analysis.category, priority: analysis.priority });
+    const emailData = await emailResponse.json();
+    console.log("Email sent successfully:", emailData);
 
     return new Response(
       JSON.stringify({ 
@@ -188,7 +234,7 @@ _${new Date().toISOString()}_`;
         },
         steps: [
           { step: "ai_analysis", status: "success", message: `Lead categorized as ${analysis.category}` },
-          { step: "telegram", status: "success", message: "High-priority alert sent to Agbaje" },
+          { step: "email_dispatch", status: "success", message: "Secure mail dispatched to Agbaje" },
           { step: "routing", status: "success", message: `Priority: ${analysis.priority.toUpperCase()}` },
           { step: "system", status: "ready", message: "Automation standing by" }
         ]
