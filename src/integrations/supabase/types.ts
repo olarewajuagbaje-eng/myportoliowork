@@ -14,7 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          auto_reply_message: string | null
+          auto_reply_sent: boolean
+          auto_reply_sent_at: string | null
+          category: string | null
+          created_at: string
+          email: string
+          id: string
+          intent: string | null
+          message: string
+          name: string
+          notification_sent: boolean
+          priority: string | null
+          suggested_response: string | null
+          updated_at: string
+        }
+        Insert: {
+          auto_reply_message?: string | null
+          auto_reply_sent?: boolean
+          auto_reply_sent_at?: string | null
+          category?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          intent?: string | null
+          message: string
+          name: string
+          notification_sent?: boolean
+          priority?: string | null
+          suggested_response?: string | null
+          updated_at?: string
+        }
+        Update: {
+          auto_reply_message?: string | null
+          auto_reply_sent?: boolean
+          auto_reply_sent_at?: string | null
+          category?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          intent?: string | null
+          message?: string
+          name?: string
+          notification_sent?: boolean
+          priority?: string | null
+          suggested_response?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
