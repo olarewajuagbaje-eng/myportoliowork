@@ -224,6 +224,52 @@ const handler = async (req: Request): Promise<Response> => {
     const emailData = await emailResponse.json();
     console.log("Email sent successfully:", emailData);
 
+    // Save lead to database
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    
+    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data: leadData, error: insertError } = await supabase
+      .from("leads")
+      .insert({
+        name,
+        email,
+        message,
+        category: analysis.category,
+        intent: analysis.intent,
+        priority: analysis.priority,
+        suggested_response: analysis.suggestedResponse,
+        notification_sent: true,
+      })
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error("Failed to save lead:", insertError);
+    } else {
+      console.log("Lead saved to database:", leadData.id);
+
+      // Schedule auto-reply (3 minute delay simulated by immediate call for now)
+      // In production, you'd use a queue or scheduled job
+      const autoReplyUrl = `${supabaseUrl}/functions/v1/send-auto-reply`;
+      
+      console.log("Triggering auto-reply...");
+      fetch(autoReplyUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadId: leadData.id,
+          name,
+          email,
+          message,
+          category: analysis.category,
+          intent: analysis.intent,
+        }),
+      }).catch(err => console.error("Auto-reply trigger error:", err));
+    }
+
     return new Response(
       JSON.stringify({ 
         success: true, 
@@ -236,7 +282,8 @@ const handler = async (req: Request): Promise<Response> => {
           { step: "ai_analysis", status: "success", message: `Lead categorized as ${analysis.category}` },
           { step: "email_dispatch", status: "success", message: "Secure mail dispatched to Agbaje" },
           { step: "routing", status: "success", message: `Priority: ${analysis.priority.toUpperCase()}` },
-          { step: "system", status: "ready", message: "Automation standing by" }
+          { step: "auto_reply", status: "queued", message: "AI response being generated..." },
+          { step: "system", status: "ready", message: "Automation complete" }
         ]
       }),
       {
