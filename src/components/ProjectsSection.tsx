@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen, Video } from 'lucide-react';
+import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen, Video, BookText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProjectDetailModal from './ProjectDetailModal';
 
@@ -41,6 +41,10 @@ import videoCinematicPrompt from '@/assets/video-cinematic-prompt.jpg';
 import videoCinematicWorkflow from '@/assets/video-cinematic-workflow.jpg';
 import videoCinematicYoutube from '@/assets/video-cinematic-youtube.jpg';
 import videoCinematicOverview from '@/assets/video-cinematic-overview.jpg';
+import literaryArchitectWorkflow from '@/assets/literary-architect-workflow.jpg';
+import literaryArchitectCover from '@/assets/literary-architect-cover.jpg';
+import literaryArchitectBook from '@/assets/literary-architect-book.jpg';
+import literaryArchitectAirtable from '@/assets/literary-architect-airtable.jpg';
 
 export interface ProjectImage {
   src: string;
@@ -64,6 +68,7 @@ export interface Project {
   icon: React.ComponentType<{ className?: string }>;
   featured?: boolean;
   impact?: ProjectImpact;
+  loomVideo?: string;
   caseStudy?: {
     heroImage: string;
     summary: string;
@@ -265,6 +270,38 @@ export const projects: Project[] = [
         { label: "Manual Editing", value: "0%" },
         { label: "Assets/Video", value: "6+" },
         { label: "Cost/Video", value: "-90%" },
+      ]
+    }
+  },
+  {
+    id: 9,
+    title: "The Autonomous Literary Architect",
+    slug: "literary-architect",
+    description: "An End-to-End AI Pipeline for Automated Book Enrichment & Cover Design. Orchestration: n8n, Intelligence: Groq, Creative: Stability AI SD3, Database: Airtable.",
+    problem: "Publishing workflows are manual nightmares—metadata tagging, age classification, BISAC coding, and cover design require specialized knowledge and hours per title. Scaling to hundreds of books is virtually impossible without a large team.",
+    solution: "Built an autonomous literary pipeline that ingests raw book titles from Airtable, uses a Groq-powered Cinematic Engine with Structured Output Parser to generate age-appropriate metadata (Age Grade, BISAC codes) and hyper-realistic 3D cover prompts, renders professional covers via Stability AI SD3, uploads to Google Drive, and includes a Human-in-the-loop (HITL) review stage before final approval.",
+    tools: ["n8n", "Groq AI", "Stability AI SD3", "Airtable", "Google Drive", "Structured Output Parser", "HTTP Requests"],
+    images: [
+      { src: literaryArchitectWorkflow, label: "n8n Workflow Architecture" },
+      { src: literaryArchitectCover, label: "AI Cover Generation Output" },
+      { src: literaryArchitectBook, label: "Book Metadata & Cover Detail" },
+      { src: literaryArchitectAirtable, label: "Airtable Book Library CRM" },
+    ],
+    icon: BookText,
+    featured: true,
+    impact: {
+      timeSaved: "8+ hours/batch",
+      protection: "HITL: Human-in-the-loop Review"
+    },
+    loomVideo: "https://www.loom.com/share/0e6441af592247649304ca63dbd128b4",
+    caseStudy: {
+      heroImage: literaryArchitectWorkflow,
+      summary: "How I built an autonomous book enrichment pipeline that transforms raw titles into market-ready assets with AI-generated metadata and professional covers.",
+      metrics: [
+        { label: "Titles/Batch", value: "100+" },
+        { label: "Manual Work", value: "0%" },
+        { label: "Cover Quality", value: "1000x1500px" },
+        { label: "Review Stage", value: "HITL" },
       ]
     }
   },
