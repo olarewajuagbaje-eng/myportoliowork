@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield, BookOpen } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield, BookOpen, Play } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import type { Project, ProjectImage } from './ProjectsSection';
@@ -376,6 +376,27 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                         <Maximize2 className="w-4 h-4" />
                         Zoom into Logic
                       </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Loom Video Button */}
+                {project.loomVideo && (
+                  <div className="p-4 rounded-xl bg-secondary/5 border border-secondary/20">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-semibold text-secondary text-sm">System Execution</h4>
+                        <p className="text-xs text-muted-foreground">Watch the Human-in-the-loop logic in action</p>
+                      </div>
+                      <a
+                        href={project.loomVideo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/90 transition-colors flex items-center gap-2"
+                      >
+                        <Play className="w-4 h-4" />
+                        Watch System Execution
+                      </a>
                     </div>
                   </div>
                 )}
