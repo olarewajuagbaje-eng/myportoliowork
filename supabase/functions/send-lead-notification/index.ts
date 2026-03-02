@@ -46,7 +46,7 @@ async function analyzeLeadWithAI(message: string): Promise<LeadAnalysis> {
             content: `You are a lead analysis assistant for an automation architect. Analyze the incoming lead message and categorize it.
             
 Return a JSON object with:
-- category: One of "E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Video Production", "Literary/Book Automation", "Custom Integration", "General Inquiry"
+- category: One of "E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Video Production", "Literary/Book Automation", "Project Management", "Team Accountability", "Custom Integration", "General Inquiry"
 - intent: A brief description of what the lead is looking for (max 50 words)
 - priority: "high" (ready to buy, specific project), "medium" (interested, exploring), or "low" (just curious, vague request)
 - suggestedResponse: A brief suggested action for follow-up (max 30 words)
@@ -69,7 +69,7 @@ Only respond with valid JSON, no markdown or extra text.`
                 properties: {
                   category: { 
                     type: "string", 
-                    enum: ["E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Video Production", "Literary/Book Automation", "Custom Integration", "General Inquiry"]
+                    enum: ["E-commerce Automation", "CRM Sync", "AI Chatbot", "Email Automation", "Content Repurposing", "Executive Assistant", "Video Production", "Literary/Book Automation", "Project Management", "Team Accountability", "Custom Integration", "General Inquiry"]
                   },
                   intent: { type: "string" },
                   priority: { type: "string", enum: ["high", "medium", "low"] },
