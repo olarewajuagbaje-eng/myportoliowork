@@ -45,6 +45,12 @@ import literaryArchitectWorkflow from '@/assets/literary-architect-workflow.jpg'
 import literaryArchitectCover from '@/assets/literary-architect-cover.jpg';
 import literaryArchitectBook from '@/assets/literary-architect-book.jpg';
 import literaryArchitectAirtable from '@/assets/literary-architect-airtable.jpg';
+import jiraWorkflowOverview from '@/assets/jira-workflow-overview.jpg';
+import discordEscalation from '@/assets/discord-escalation.jpg';
+import jiraSheetsReport from '@/assets/jira-sheets-report.jpg';
+import discordCoachingTip from '@/assets/discord-coaching-tip.jpg';
+import discordWebhookConfig from '@/assets/discord-webhook-config.jpg';
+import jiraGroqAgent from '@/assets/jira-groq-agent.jpg';
 
 export interface ProjectImage {
   src: string;
@@ -302,6 +308,39 @@ export const projects: Project[] = [
         { label: "Manual Work", value: "0%" },
         { label: "Cover Quality", value: "1000x1500px" },
         { label: "Review Stage", value: "HITL" },
+      ]
+    }
+  },
+  {
+    id: 10,
+    title: "The Remote Team Accountability & Recognition Engine",
+    slug: "team-accountability-engine",
+    description: "An automation layer on Jira to improve accountability. Scans overdue tasks, delivers AI coaching tips via Groq (Llama 3), and celebrates completed work via Discord.",
+    problem: "Remote managers spend hours tracking overdue Jira tickets, chasing team members for updates, and have no automated way to recognize completed work—leading to disengagement and missed deadlines.",
+    solution: "Built an AI-powered accountability engine that runs daily status checks on Jira, identifies overdue tasks, generates personalized coaching tips via Groq (Llama 3), sends escalation alerts and celebration messages through Discord webhooks, and logs everything to Google Sheets for executive reporting.",
+    tools: ["n8n", "Jira API", "Groq AI (Llama 3)", "Discord Webhooks", "Google Sheets", "Structured Output Parser"],
+    images: [
+      { src: jiraWorkflowOverview, label: "n8n Workflow Architecture" },
+      { src: jiraGroqAgent, label: "Groq AI Coaching Agent" },
+      { src: discordWebhookConfig, label: "Discord Webhook Configuration" },
+      { src: discordEscalation, label: "Jira Overdue Escalation Alert" },
+      { src: discordCoachingTip, label: "AI Coaching Tip in Discord" },
+      { src: jiraSheetsReport, label: "Google Sheets Executive Report" },
+    ],
+    icon: Users,
+    featured: true,
+    impact: {
+      timeSaved: "5+ hours/week",
+      protection: "100% Automated Follow-ups"
+    },
+    caseStudy: {
+      heroImage: jiraWorkflowOverview,
+      summary: "How I built an AI-powered accountability engine that transforms stale Jira tickets into actionable coaching tips and team celebrations via Discord.",
+      metrics: [
+        { label: "Follow-up Rate", value: "100%" },
+        { label: "Manager Time Saved", value: "5 hrs/wk" },
+        { label: "Recognition Delay", value: "<1 min" },
+        { label: "Reporting", value: "Real-time" },
       ]
     }
   },
