@@ -1,3 +1,4 @@
+# Automated build & deploy pipeline
 name: Deploy Vite site to GitHub Pages
 
 on:
