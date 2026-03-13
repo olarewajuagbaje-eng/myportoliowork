@@ -74,6 +74,7 @@ export interface Project {
   icon: React.ComponentType<{ className?: string }>;
   featured?: boolean;
   impact?: ProjectImpact;
+  roiImpact?: string;
   loomVideo?: string;
   caseStudy?: {
     heroImage: string;
@@ -105,6 +106,7 @@ export const projects: Project[] = [
     ],
     icon: Shield,
     featured: true,
+    roiImpact: "Eliminated 100% of revenue leakage from underpayments",
     impact: {
       timeSaved: "4 hours/day",
       protection: "100% Protection against underpayments"
@@ -133,6 +135,7 @@ export const projects: Project[] = [
       { src: recruitmentPipelineDetail, label: "AI Scoring Logic" },
     ],
     icon: Users,
+    roiImpact: "Reduced hiring cycle time by 80%",
     caseStudy: {
       heroImage: recruitmentPipeline,
       summary: "Building an AI-powered recruitment pipeline that screens CVs, scores candidates, and schedules interviews automatically.",
@@ -159,6 +162,7 @@ export const projects: Project[] = [
       { src: executiveAiShadowDetail, label: "Live Output" },
     ],
     icon: Bot,
+    roiImpact: "Saved executives 15+ hours per week on communications",
     caseStudy: {
       heroImage: executiveAiOverview,
       summary: "Creating a personal AI Chief of Staff that handles executive communications through Telegram with intelligent email drafting.",
@@ -183,6 +187,7 @@ export const projects: Project[] = [
       { src: leadChatbot, label: "Workflow Canvas" },
     ],
     icon: MessageSquare,
+    roiImpact: "Increased lead capture rate by 45%",
     caseStudy: {
       heroImage: leadChatbotHero,
       summary: "Building a 24/7 AI chatbot that captures leads, answers questions intelligently, and routes qualified prospects automatically.",
@@ -208,6 +213,7 @@ export const projects: Project[] = [
       { src: aiResearchSheets, label: "Google Sheets Dashboard" },
     ],
     icon: Mail,
+    roiImpact: "Automated 20+ articles per week with zero research time",
     caseStudy: {
       heroImage: aiResearchWorkflow,
       summary: "Creating an automated content factory that researches topics and generates articles without human intervention.",
@@ -230,6 +236,7 @@ export const projects: Project[] = [
       { src: youtubeContentArchitect, label: "Architecture Overview" },
     ],
     icon: Youtube,
+    roiImpact: "Repurposed content to 3+ platforms automatically",
   },
   {
     id: 7,
@@ -244,6 +251,7 @@ export const projects: Project[] = [
       { src: whatsappAiAssistant, label: "Workflow Canvas" },
     ],
     icon: MessageSquare,
+    roiImpact: "Replaced a personal assistant with 24/7 AI availability",
   },
   {
     id: 8,
@@ -264,6 +272,7 @@ export const projects: Project[] = [
     ],
     icon: Video,
     featured: true,
+    roiImpact: "Cut video production cost by 90% and time by 10+ hours",
     impact: {
       timeSaved: "10+ hours/video",
       protection: "Bundled: 5 images + 1 audio"
@@ -295,6 +304,7 @@ export const projects: Project[] = [
     ],
     icon: BookText,
     featured: true,
+    roiImpact: "Processed 100+ book titles per batch with zero manual work",
     impact: {
       timeSaved: "8+ hours/batch",
       protection: "HITL: Human-in-the-loop Review"
@@ -329,6 +339,7 @@ export const projects: Project[] = [
     ],
     icon: Users,
     featured: true,
+    roiImpact: "Saved managers 5+ hours/week with 100% automated follow-ups",
     impact: {
       timeSaved: "5+ hours/week",
       protection: "100% Automated Follow-ups"
@@ -373,6 +384,16 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
         loading="lazy" 
       />
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+      
+      {/* ROI Impact Overlay on Hover */}
+      {project.roiImpact && (
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="text-center">
+            <span className="text-xs font-mono uppercase tracking-wider text-secondary mb-2 block">ROI Impact</span>
+            <p className="text-sm font-semibold text-foreground leading-relaxed">{project.roiImpact}</p>
+          </div>
+        </div>
+      )}
       
       {/* View Canvas Button */}
       <motion.button
