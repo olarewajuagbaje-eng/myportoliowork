@@ -339,6 +339,7 @@ export const projects: Project[] = [
     ],
     icon: Users,
     featured: true,
+    roiImpact: "Saved managers 5+ hours/week with 100% automated follow-ups",
     impact: {
       timeSaved: "5+ hours/week",
       protection: "100% Automated Follow-ups"
