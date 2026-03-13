@@ -385,6 +385,16 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
       />
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
       
+      {/* ROI Impact Overlay on Hover */}
+      {project.roiImpact && (
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="text-center">
+            <span className="text-xs font-mono uppercase tracking-wider text-secondary mb-2 block">ROI Impact</span>
+            <p className="text-sm font-semibold text-foreground leading-relaxed">{project.roiImpact}</p>
+          </div>
+        </div>
+      )}
+      
       {/* View Canvas Button */}
       <motion.button
         initial={{ opacity: 0 }}
