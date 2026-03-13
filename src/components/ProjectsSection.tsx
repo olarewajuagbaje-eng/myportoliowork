@@ -135,6 +135,7 @@ export const projects: Project[] = [
       { src: recruitmentPipelineDetail, label: "AI Scoring Logic" },
     ],
     icon: Users,
+    roiImpact: "Reduced hiring cycle time by 80%",
     caseStudy: {
       heroImage: recruitmentPipeline,
       summary: "Building an AI-powered recruitment pipeline that screens CVs, scores candidates, and schedules interviews automatically.",
