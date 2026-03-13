@@ -162,6 +162,7 @@ export const projects: Project[] = [
       { src: executiveAiShadowDetail, label: "Live Output" },
     ],
     icon: Bot,
+    roiImpact: "Saved executives 15+ hours per week on communications",
     caseStudy: {
       heroImage: executiveAiOverview,
       summary: "Creating a personal AI Chief of Staff that handles executive communications through Telegram with intelligent email drafting.",
