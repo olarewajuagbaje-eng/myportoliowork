@@ -3,16 +3,27 @@ import { MessageCircle, Sparkles } from 'lucide-react';
 
 const FloatingButtons = () => {
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-center">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-center" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
       {/* AI Assistant Button — opens in new tab */}
       <motion.a
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
+        animate={{
+          boxShadow: [
+            '0 0 0 0 hsla(263, 70%, 66%, 0.4)',
+            '0 0 0 8px hsla(263, 70%, 66%, 0)',
+            '0 0 0 0 hsla(263, 70%, 66%, 0)',
+          ],
+        }}
+        transition={{
+          boxShadow: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
+        }}
         href="https://agbaje-assistance.lovable.app"
         target="_blank"
         rel="noopener noreferrer"
         className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow"
         aria-label="AI Assistant"
+        style={{ minWidth: '44px', minHeight: '44px' }}
       >
         <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
       </motion.a>
@@ -24,10 +35,11 @@ const FloatingButtons = () => {
         href="https://wa.me/2349169043196"
         target="_blank"
         rel="noopener noreferrer"
-        className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[hsl(142,70%,45%)] flex items-center justify-center shadow-lg shadow-[hsl(142,70%,45%)/0.3] hover:shadow-[hsl(142,70%,45%)/0.5] transition-shadow"
+        className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-secondary flex items-center justify-center shadow-lg shadow-secondary/30 hover:shadow-secondary/50 transition-shadow"
         aria-label="Contact on WhatsApp"
+        style={{ minWidth: '44px', minHeight: '44px' }}
       >
-        <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-white" />
+        <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-secondary-foreground" />
       </motion.a>
     </div>
   );

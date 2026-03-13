@@ -4,11 +4,9 @@ import { ArrowDown, Sparkles, Zap, Cog } from 'lucide-react';
 const HeroSection = () => {
   const handleAuditClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Scroll to contact section
     const contactSection = document.getElementById('contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
-      // Trigger the audit request after scroll
       setTimeout(() => {
         if ((window as any).triggerAuditRequest) {
           (window as any).triggerAuditRequest();
@@ -38,7 +36,7 @@ const HeroSection = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8"
           >
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm text-muted-foreground">Digital Solutions & Automation Architect</span>
+            <span className="text-sm text-muted-foreground">AI Automation Architect & Workflow Expert</span>
           </motion.div>
 
           <motion.h1
@@ -47,17 +45,17 @@ const HeroSection = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="text-4xl sm:text-5xl md:text-7xl font-bold font-display leading-tight mb-6"
           >
-            I Build Systems That{' '}
-            <span className="gradient-text">Work While You Sleep</span>
+            Building the Future of{' '}
+            <span className="gradient-text">Autonomous Workflows</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-xl md:text-2xl text-muted-foreground mb-12 font-light"
+            className="text-lg md:text-xl text-muted-foreground mb-12 font-light max-w-3xl mx-auto leading-relaxed"
           >
-            Engineering Efficiency through AI & n8n Mastery
+            I architect intelligent ecosystems using n8n and Claude to automate your business logic — from Asana task management to AI-driven Gmail communication.
           </motion.p>
 
           <motion.div
@@ -71,7 +69,7 @@ const HeroSection = () => {
               className="group px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-90 transition-all animate-pulse-glow flex items-center gap-2"
             >
               <Zap className="w-5 h-5 group-hover:animate-pulse" />
-              Get a Free System Audit
+              Let's Build
             </button>
             <a
               href="#projects"
