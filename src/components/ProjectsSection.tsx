@@ -304,6 +304,7 @@ export const projects: Project[] = [
     ],
     icon: BookText,
     featured: true,
+    roiImpact: "Processed 100+ book titles per batch with zero manual work",
     impact: {
       timeSaved: "8+ hours/batch",
       protection: "HITL: Human-in-the-loop Review"
