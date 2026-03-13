@@ -251,6 +251,7 @@ export const projects: Project[] = [
       { src: whatsappAiAssistant, label: "Workflow Canvas" },
     ],
     icon: MessageSquare,
+    roiImpact: "Replaced a personal assistant with 24/7 AI availability",
   },
   {
     id: 8,
