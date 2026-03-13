@@ -236,6 +236,7 @@ export const projects: Project[] = [
       { src: youtubeContentArchitect, label: "Architecture Overview" },
     ],
     icon: Youtube,
+    roiImpact: "Repurposed content to 3+ platforms automatically",
   },
   {
     id: 7,
