@@ -187,6 +187,7 @@ export const projects: Project[] = [
       { src: leadChatbot, label: "Workflow Canvas" },
     ],
     icon: MessageSquare,
+    roiImpact: "Increased lead capture rate by 45%",
     caseStudy: {
       heroImage: leadChatbotHero,
       summary: "Building a 24/7 AI chatbot that captures leads, answers questions intelligently, and routes qualified prospects automatically.",
