@@ -106,6 +106,7 @@ export const projects: Project[] = [
     ],
     icon: Shield,
     featured: true,
+    roiImpact: "Eliminated 100% of revenue leakage from underpayments",
     impact: {
       timeSaved: "4 hours/day",
       protection: "100% Protection against underpayments"
