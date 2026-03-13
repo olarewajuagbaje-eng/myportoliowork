@@ -74,6 +74,7 @@ export interface Project {
   icon: React.ComponentType<{ className?: string }>;
   featured?: boolean;
   impact?: ProjectImpact;
+  roiImpact?: string;
   loomVideo?: string;
   caseStudy?: {
     heroImage: string;
