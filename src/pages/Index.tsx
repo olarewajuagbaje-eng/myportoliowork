@@ -8,12 +8,14 @@ import SkillsSection from '@/components/SkillsSection';
 import BlogSection from '@/components/BlogSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import FloatingButtons from '@/components/FloatingButtons';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <N8nWorkflowBackground />
       <Header />
+      <FloatingButtons />
       <main className="relative z-10">
         <HeroSection />
         <AboutSection />
