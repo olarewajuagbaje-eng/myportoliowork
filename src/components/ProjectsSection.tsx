@@ -272,6 +272,7 @@ export const projects: Project[] = [
     ],
     icon: Video,
     featured: true,
+    roiImpact: "Cut video production cost by 90% and time by 10+ hours",
     impact: {
       timeSaved: "10+ hours/video",
       protection: "Bundled: 5 images + 1 audio"
