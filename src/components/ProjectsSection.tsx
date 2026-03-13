@@ -213,6 +213,7 @@ export const projects: Project[] = [
       { src: aiResearchSheets, label: "Google Sheets Dashboard" },
     ],
     icon: Mail,
+    roiImpact: "Automated 20+ articles per week with zero research time",
     caseStudy: {
       heroImage: aiResearchWorkflow,
       summary: "Creating an automated content factory that researches topics and generates articles without human intervention.",
