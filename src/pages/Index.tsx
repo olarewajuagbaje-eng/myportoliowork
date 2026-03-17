@@ -1,6 +1,7 @@
 import N8nWorkflowBackground from '@/components/N8nWorkflowBackground';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
+import FeaturedProjectsSection from '@/components/FeaturedProjectsSection';
 import ExpertiseStack from '@/components/ExpertiseStack';
 import AboutSection from '@/components/AboutSection';
 import ProjectsSection from '@/components/ProjectsSection';
@@ -20,6 +21,7 @@ const Index = () => {
       <FloatingButtons />
       <main className="relative z-10">
         <HeroSection />
+        <FeaturedProjectsSection />
         <ExpertiseStack />
         <AboutSection />
         <ProjectsSection />
