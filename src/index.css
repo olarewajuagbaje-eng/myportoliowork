@@ -179,4 +179,52 @@
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
+
+  .featured-project-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .featured-project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--gradient-card);
+    opacity: 0.92;
+    z-index: -2;
+  }
+
+  .featured-project-card::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: calc(1.75rem - 1px);
+    background: linear-gradient(180deg, hsl(var(--background) / 0.18) 0%, hsl(var(--background) / 0.5) 100%);
+    z-index: -1;
+  }
+
+  .featured-project-service {
+    background-image: var(--gradient-service);
+  }
+
+  .featured-project-service .featured-project-badge,
+  .featured-project-service .featured-project-button,
+  .featured-project-service .featured-project-icon {
+    background: linear-gradient(135deg, hsl(var(--service-blue)) 0%, hsl(var(--action-orange)) 100%);
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 14px 36px hsl(var(--service-blue) / 0.2);
+  }
+
+  .featured-project-wellness {
+    background-image: var(--gradient-wellness);
+  }
+
+  .featured-project-wellness .featured-project-badge,
+  .featured-project-wellness .featured-project-button,
+  .featured-project-wellness .featured-project-icon {
+    background: linear-gradient(135deg, hsl(var(--wellness-green)) 0%, hsl(var(--primary)) 100%);
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 14px 36px hsl(var(--wellness-green) / 0.2);
+  }
 }
