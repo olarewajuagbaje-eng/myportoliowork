@@ -1,14 +1,19 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Zap, Cog } from 'lucide-react';
+import { Linkedin, Zap, Cog } from 'lucide-react';
+
+const XIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-12 border-t border-border">
+    <footer className="py-10 border-t border-border">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8 items-center">
-          {/* Logo & Status */}
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-primary-foreground">
               AO
@@ -22,7 +27,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <motion.a
               whileHover={{ scale: 1.05 }}
@@ -44,19 +48,9 @@ const Footer = () => {
             </motion.a>
           </div>
 
-          {/* Social Links */}
           <div className="flex items-center justify-end gap-4">
-            <a 
-              href="https://github.com/agbaje-olarewaju" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-lg glass-card hover:bg-muted transition-colors"
-              aria-label="GitHub"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-            <a 
-              href="https://www.linkedin.com/in/agbaje-olarewaju" 
+            <a
+              href="https://www.linkedin.com/in/agbaje-olarewaju"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 rounded-lg glass-card hover:bg-primary/20 transition-colors glow-pulse"
@@ -64,14 +58,14 @@ const Footer = () => {
             >
               <Linkedin className="w-5 h-5 text-primary drop-shadow-[0_0_8px_hsl(263,70%,66%)]" />
             </a>
-            <a 
-              href="https://twitter.com/agbaje_olarewaju" 
+            <a
+              href="https://x.com/digital_ab98389"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 rounded-lg glass-card hover:bg-muted transition-colors"
-              aria-label="Twitter"
+              aria-label="X (Twitter)"
             >
-              <Twitter className="w-5 h-5" />
+              <XIcon className="w-5 h-5" />
             </a>
           </div>
         </div>

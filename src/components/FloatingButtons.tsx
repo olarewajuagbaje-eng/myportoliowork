@@ -3,8 +3,10 @@ import { MessageCircle, Sparkles } from 'lucide-react';
 
 const FloatingButtons = () => {
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-center" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-      {/* AI Assistant Button — opens in new tab */}
+    <div
+      className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 flex flex-col gap-3 items-center"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+    >
       <motion.a
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -23,12 +25,11 @@ const FloatingButtons = () => {
         rel="noopener noreferrer"
         className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow"
         aria-label="AI Assistant"
-        style={{ minWidth: '44px', minHeight: '44px' }}
+        style={{ minWidth: '48px', minHeight: '48px' }}
       >
         <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
       </motion.a>
 
-      {/* WhatsApp Button */}
       <motion.a
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -37,7 +38,7 @@ const FloatingButtons = () => {
         rel="noopener noreferrer"
         className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-secondary flex items-center justify-center shadow-lg shadow-secondary/30 hover:shadow-secondary/50 transition-shadow"
         aria-label="Contact on WhatsApp"
-        style={{ minWidth: '44px', minHeight: '44px' }}
+        style={{ minWidth: '48px', minHeight: '48px' }}
       >
         <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-secondary-foreground" />
       </motion.a>
