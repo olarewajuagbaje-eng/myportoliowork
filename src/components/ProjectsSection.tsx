@@ -467,7 +467,7 @@ const ProjectsSection = () => {
 
   return (
     <>
-      <section id="projects" className="py-32 relative" ref={ref}>
+      <section id="projects" className="py-16 sm:py-20 relative" ref={ref}>
         <div className="container mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }} transition={{ duration: 0.6 }} className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">Featured <span className="gradient-text">Projects</span></h2>

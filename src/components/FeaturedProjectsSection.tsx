@@ -51,7 +51,7 @@ const featuredProjects: FeaturedProject[] = [
 
 const FeaturedProjectsSection = () => {
   return (
-    <section id="featured-projects" className="relative z-10 py-20 sm:py-24">
+    <section id="featured-projects" className="relative z-10 py-14 sm:py-18">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
