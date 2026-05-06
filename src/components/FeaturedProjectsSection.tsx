@@ -123,7 +123,7 @@ const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
       >
         <a href={project.ctaHref} target="_blank" rel="noreferrer">
           {project.ctaLabel}
-          <ArrowUpRight className="h-5 w-5" />
+          {project.ctaIcon ? <project.ctaIcon className="h-5 w-5" /> : <ArrowUpRight className="h-5 w-5" />}
         </a>
       </Button>
     </div>
