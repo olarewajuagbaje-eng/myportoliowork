@@ -169,7 +169,7 @@ const FeaturedProjectsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="h-full"
+                className={`h-full ${index === featuredProjects.length - 1 && featuredProjects.length % 2 === 1 ? 'lg:col-span-2' : ''}`}
               >
                 <Card
                   className={`featured-project-card ${project.themeClass} group h-full overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.02]`}
