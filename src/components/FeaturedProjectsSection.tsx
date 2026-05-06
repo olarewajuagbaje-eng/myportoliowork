@@ -15,6 +15,7 @@ interface FeaturedProject {
   tags: string[];
   ctaLabel: string;
   ctaHref: string;
+  ctaIcon?: React.ComponentType<{ className?: string }>;
   themeClass: string;
 }
 
