@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,6 +15,7 @@ interface FeaturedProject {
   tags: string[];
   ctaLabel: string;
   ctaHref: string;
+  ctaIcon?: React.ComponentType<{ className?: string }>;
   themeClass: string;
 }
 
@@ -48,6 +49,23 @@ const featuredProjects: FeaturedProject[] = [
     ctaLabel: 'View Live',
     ctaHref: 'https://vita-flow-zen.lovable.app',
     themeClass: 'featured-project-wellness',
+  },
+  {
+    name: 'Sales Engine',
+    eyebrow: 'B2B Conversion OS',
+    headline: 'The Automated B2B Sales Conversion Engine',
+    subheadline: 'A closed-loop sales engine that eliminates the "Leaky Funnel" — capturing, scoring, and routing leads from inquiry to booked discovery call with zero drop-off.',
+    features: [
+      { icon: Workflow, text: 'Instant Pipeline Routing — auto-generates deal cards with monetary values (e.g. €4,500) and pushes them to the executive dashboard.' },
+      { icon: Gauge, text: 'Dynamic Lead Scoring — background math operations grade prospects on engagement (+10 inquiry, +20 booking).' },
+      { icon: Ghost, text: 'The "Ghost Trap" Engine — a 1-hour time-delayed logic gate that deploys a premium HTML nurture sequence to recapture cold leads.' },
+      { icon: LineChart, text: 'Executive Dashboarding — live visibility into pipeline value, conversion rates, and scheduled appointments.' },
+    ],
+    tags: ['GoHighLevel (GHL)', 'Custom HTML', 'Pipeline Automation', 'Dynamic Scoring'],
+    ctaLabel: 'Watch Video Demo',
+    ctaHref: 'https://drive.google.com/file/d/1Ct1PmftfwrdmM8NY1q7uHT76PaJVpTEA/view?usp=drivesdk',
+    themeClass: 'featured-project-sales',
+    ctaIcon: PlayCircle,
   },
 ];
 
@@ -105,7 +123,7 @@ const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
       >
         <a href={project.ctaHref} target="_blank" rel="noreferrer">
           {project.ctaLabel}
-          <ArrowUpRight className="h-5 w-5" />
+          {project.ctaIcon ? <project.ctaIcon className="h-5 w-5" /> : <ArrowUpRight className="h-5 w-5" />}
         </a>
       </Button>
     </div>
@@ -151,7 +169,7 @@ const FeaturedProjectsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="h-full"
+                className={`h-full ${index === featuredProjects.length - 1 && featuredProjects.length % 2 === 1 ? 'lg:col-span-2' : ''}`}
               >
                 <Card
                   className={`featured-project-card ${project.themeClass} group h-full overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.02]`}

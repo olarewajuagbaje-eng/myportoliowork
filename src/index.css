@@ -53,6 +53,7 @@
     --gradient-card: linear-gradient(135deg, hsl(0 0% 10% / 0.8) 0%, hsl(0 0% 5% / 0.8) 100%);
     --gradient-service: linear-gradient(135deg, hsl(var(--service-blue) / 0.24) 0%, hsl(var(--action-orange) / 0.18) 100%);
     --gradient-wellness: linear-gradient(135deg, hsl(var(--wellness-green) / 0.2) 0%, hsl(var(--primary) / 0.16) 100%);
+    --gradient-sales: linear-gradient(135deg, hsl(var(--cyber-amber) / 0.22) 0%, hsl(var(--primary) / 0.18) 100%);
     
     --glass-bg: hsl(0 0% 10% / 0.6);
     --glass-border: hsl(0 0% 100% / 0.1);
@@ -226,5 +227,17 @@
     background: linear-gradient(135deg, hsl(var(--wellness-green)) 0%, hsl(var(--primary)) 100%);
     color: hsl(var(--primary-foreground));
     box-shadow: 0 14px 36px hsl(var(--wellness-green) / 0.2);
+  }
+
+  .featured-project-sales {
+    background-image: var(--gradient-sales);
+  }
+
+  .featured-project-sales .featured-project-badge,
+  .featured-project-sales .featured-project-button,
+  .featured-project-sales .featured-project-icon {
+    background: linear-gradient(135deg, hsl(var(--cyber-amber)) 0%, hsl(var(--primary)) 100%);
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 14px 36px hsl(var(--cyber-amber) / 0.22);
   }
 }
