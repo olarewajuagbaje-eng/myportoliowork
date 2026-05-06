@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow } from 'lucide-react';
+import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -64,6 +64,23 @@ const featuredProjects: FeaturedProject[] = [
     tags: ['GoHighLevel (GHL)', 'Custom HTML', 'Pipeline Automation', 'Dynamic Scoring'],
     ctaLabel: 'Watch Video Demo',
     ctaHref: 'https://drive.google.com/file/d/1Ct1PmftfwrdmM8NY1q7uHT76PaJVpTEA/view?usp=drivesdk',
+    themeClass: 'featured-project-sales',
+    ctaIcon: PlayCircle,
+  },
+  {
+    name: 'ROR AI Engine',
+    eyebrow: 'B2B Conversion OS',
+    headline: 'AI Triage & GHL CRM Engine',
+    subheadline: "A high-performance 'Ghost Sales Team' designed to maximize direct-to-purchase funnel ROI by combining clinical AI diagnostics with autonomous recovery logic.",
+    features: [
+      { icon: Brain, text: 'AI Triage Agent — a custom-prompted advisor that extracts lead data via natural conversation and syncs directly to the CRM.' },
+      { icon: ShoppingCart, text: 'Behavioral Cart Recovery — an n8n-orchestrated loop that identifies abandoned checkouts and triggers AI-generated email sequences.' },
+      { icon: RefreshCw, text: 'GHL CRM Integration — real-time synchronization between chat sessions, order forms, and master databases.' },
+      { icon: Bell, text: 'Enterprise Notifications — branded HTML team alerts providing instant lead summaries and clinical diagnostics.' },
+    ],
+    tags: ['n8n', 'CourseCreator 360 (GHL)', 'Groq (Llama 3.3)', 'Google Sheets'],
+    ctaLabel: 'Watch Demo',
+    ctaHref: 'https://drive.google.com/file/d/1HEoafNeV5KcFHYNwNeuvxjlgXGgaAC_N/view?usp=drivesdk',
     themeClass: 'featured-project-sales',
     ctaIcon: PlayCircle,
   },
@@ -152,7 +169,7 @@ const FeaturedProjectsSection = () => {
             <span className="text-sm text-muted-foreground">Featured Projects</span>
           </div>
           <h2 className="font-display text-2xl font-bold leading-tight sm:text-4xl md:text-5xl">
-            Strategic SaaS solutions built to bridge the gap between complex logic and intuitive user experiences.
+            Strategic SaaS solutions built to bridge the gap between AI Agent Orchestration and GHL CRM Automation.
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-lg">
             Two polished product systems designed for clarity, automation depth, and premium end-user experience.
