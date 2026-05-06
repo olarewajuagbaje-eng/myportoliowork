@@ -67,6 +67,23 @@ const featuredProjects: FeaturedProject[] = [
     themeClass: 'featured-project-sales',
     ctaIcon: PlayCircle,
   },
+  {
+    name: 'ROR AI Engine',
+    eyebrow: 'B2B Conversion OS',
+    headline: 'AI Triage & GHL CRM Engine',
+    subheadline: "A high-performance 'Ghost Sales Team' designed to maximize direct-to-purchase funnel ROI by combining clinical AI diagnostics with autonomous recovery logic.",
+    features: [
+      { icon: Brain, text: 'AI Triage Agent — a custom-prompted advisor that extracts lead data via natural conversation and syncs directly to the CRM.' },
+      { icon: ShoppingCart, text: 'Behavioral Cart Recovery — an n8n-orchestrated loop that identifies abandoned checkouts and triggers AI-generated email sequences.' },
+      { icon: RefreshCw, text: 'GHL CRM Integration — real-time synchronization between chat sessions, order forms, and master databases.' },
+      { icon: Bell, text: 'Enterprise Notifications — branded HTML team alerts providing instant lead summaries and clinical diagnostics.' },
+    ],
+    tags: ['n8n', 'CourseCreator 360 (GHL)', 'Groq (Llama 3.3)', 'Google Sheets'],
+    ctaLabel: 'Watch Demo',
+    ctaHref: 'https://drive.google.com/file/d/1HEoafNeV5KcFHYNwNeuvxjlgXGgaAC_N/view?usp=drivesdk',
+    themeClass: 'featured-project-sales',
+    ctaIcon: PlayCircle,
+  },
 ];
 
 const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
