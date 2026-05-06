@@ -169,7 +169,7 @@ const FeaturedProjectsSection = () => {
             <span className="text-sm text-muted-foreground">Featured Projects</span>
           </div>
           <h2 className="font-display text-2xl font-bold leading-tight sm:text-4xl md:text-5xl">
-            Strategic SaaS solutions built to bridge the gap between complex logic and intuitive user experiences.
+            Strategic SaaS solutions built to bridge the gap between AI Agent Orchestration and GHL CRM Automation.
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-lg">
             Two polished product systems designed for clarity, automation depth, and premium end-user experience.
