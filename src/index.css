@@ -228,4 +228,16 @@
     color: hsl(var(--primary-foreground));
     box-shadow: 0 14px 36px hsl(var(--wellness-green) / 0.2);
   }
+
+  .featured-project-sales {
+    background-image: var(--gradient-sales);
+  }
+
+  .featured-project-sales .featured-project-badge,
+  .featured-project-sales .featured-project-button,
+  .featured-project-sales .featured-project-icon {
+    background: linear-gradient(135deg, hsl(var(--cyber-amber)) 0%, hsl(var(--primary)) 100%);
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 14px 36px hsl(var(--cyber-amber) / 0.22);
+  }
 }
