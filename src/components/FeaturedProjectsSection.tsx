@@ -49,6 +49,23 @@ const featuredProjects: FeaturedProject[] = [
     ctaHref: 'https://vita-flow-zen.lovable.app',
     themeClass: 'featured-project-wellness',
   },
+  {
+    name: 'Sales Engine',
+    eyebrow: 'B2B Conversion OS',
+    headline: 'The Automated B2B Sales Conversion Engine',
+    subheadline: 'A closed-loop sales engine that eliminates the "Leaky Funnel" — capturing, scoring, and routing leads from inquiry to booked discovery call with zero drop-off.',
+    features: [
+      { icon: Workflow, text: 'Instant Pipeline Routing — auto-generates deal cards with monetary values (e.g. €4,500) and pushes them to the executive dashboard.' },
+      { icon: Gauge, text: 'Dynamic Lead Scoring — background math operations grade prospects on engagement (+10 inquiry, +20 booking).' },
+      { icon: Ghost, text: 'The "Ghost Trap" Engine — a 1-hour time-delayed logic gate that deploys a premium HTML nurture sequence to recapture cold leads.' },
+      { icon: LineChart, text: 'Executive Dashboarding — live visibility into pipeline value, conversion rates, and scheduled appointments.' },
+    ],
+    tags: ['GoHighLevel (GHL)', 'Custom HTML', 'Pipeline Automation', 'Dynamic Scoring'],
+    ctaLabel: 'Watch Video Demo',
+    ctaHref: 'https://drive.google.com/file/d/1Ct1PmftfwrdmM8NY1q7uHT76PaJVpTEA/view?usp=drivesdk',
+    themeClass: 'featured-project-sales',
+    ctaIcon: PlayCircle,
+  },
 ];
 
 const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
