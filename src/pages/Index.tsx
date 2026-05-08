@@ -1,4 +1,4 @@
-import N8nWorkflowBackground from '@/components/N8nWorkflowBackground';
+import MeshGradientBackground from '@/components/MeshGradientBackground';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
@@ -12,7 +12,7 @@ import MobileStickyContact from '@/components/MobileStickyContact';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <N8nWorkflowBackground />
+      <MeshGradientBackground />
       <Header />
       <FloatingButtons />
       <MobileStickyContact />
