@@ -155,7 +155,7 @@ const FeaturedProjectsSection = () => {
   const prev = () => setActiveIndex((i) => (i - 1 + featuredProjects.length) % featuredProjects.length);
 
   return (
-    <section id="featured-projects" className="relative z-10 py-14 sm:py-18">
+    <section id="featured-projects" className="relative z-10 py-8 sm:py-10">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
