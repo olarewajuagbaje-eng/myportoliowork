@@ -162,7 +162,7 @@ const FeaturedProjectsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          className="mx-auto mb-10 max-w-3xl text-center"
+          className="mx-auto mb-6 max-w-3xl text-center"
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 px-4 py-2 backdrop-blur-xl">
             <Bot className="h-4 w-4 text-primary" />
