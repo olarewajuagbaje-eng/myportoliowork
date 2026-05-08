@@ -16,7 +16,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+    <section className="min-h-[78vh] flex items-center justify-center relative overflow-hidden pt-24 pb-10">
       {/* Gradient Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
         style={{ background: 'radial-gradient(ellipse at center, hsl(263 70% 66% / 0.3) 0%, transparent 70%)' }}
