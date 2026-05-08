@@ -12,9 +12,9 @@ const FloatingButtons = () => {
         whileTap={{ scale: 0.9 }}
         animate={{
           boxShadow: [
-            '0 0 0 0 hsla(263, 70%, 66%, 0.4)',
-            '0 0 0 8px hsla(263, 70%, 66%, 0)',
-            '0 0 0 0 hsla(263, 70%, 66%, 0)',
+            '0 0 0 0 hsla(244, 90%, 66%, 0.45)',
+            '0 0 0 10px hsla(244, 90%, 66%, 0)',
+            '0 0 0 0 hsla(244, 90%, 66%, 0)',
           ],
         }}
         transition={{
