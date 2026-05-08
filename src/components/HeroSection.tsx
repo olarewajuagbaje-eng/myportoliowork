@@ -66,7 +66,7 @@ const HeroSection = () => {
           >
             <button
               onClick={handleAuditClick}
-              className="group px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-90 transition-all animate-pulse-glow flex items-center gap-2"
+              className="cta-glow group px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-95 transition-all flex items-center gap-2"
             >
               <Zap className="w-5 h-5 group-hover:animate-pulse" />
               Let's Build
