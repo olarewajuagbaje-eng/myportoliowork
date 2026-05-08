@@ -16,7 +16,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+    <section className="min-h-[78vh] flex items-center justify-center relative overflow-hidden pt-24 pb-10">
       {/* Gradient Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
         style={{ background: 'radial-gradient(ellipse at center, hsl(263 70% 66% / 0.3) 0%, transparent 70%)' }}
@@ -33,7 +33,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-5"
           >
             <Sparkles className="w-4 h-4 text-secondary" />
             <span className="text-sm text-muted-foreground">AI Automation Architect & Workflow Expert</span>
@@ -43,7 +43,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold font-display leading-tight mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-bold font-display leading-[1.05] mb-4"
           >
             Building the Future of{' '}
             <span className="gradient-text">Autonomous Workflows</span>
@@ -53,7 +53,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-lg md:text-xl text-muted-foreground mb-12 font-light max-w-3xl mx-auto leading-relaxed"
+            className="text-base md:text-lg text-muted-foreground mb-6 font-light max-w-2xl mx-auto leading-relaxed"
           >
             I architect intelligent ecosystems using n8n and Claude to automate your business logic — from Asana task management to AI-driven Gmail communication.
           </motion.p>
