@@ -87,60 +87,60 @@ const featuredProjects: FeaturedProject[] = [
 ];
 
 const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
-  <CardContent className="flex h-full flex-col p-5 sm:p-8">
-    <div className="mb-6 flex items-start justify-between gap-4">
+  <CardContent className="flex h-full flex-col p-5 sm:p-6">
+    <div className="mb-4 flex items-start justify-between gap-4">
       <div>
-        <p className="font-mono text-xs uppercase tracking-[0.24em] text-muted-foreground">
+        <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
           {project.eyebrow}
         </p>
-        <h3 className="mt-2 max-w-xl font-display text-xl font-bold leading-tight sm:text-3xl">
+        <h3 className="mt-1.5 max-w-xl font-display text-lg font-bold leading-tight sm:text-2xl">
           {project.headline}
         </h3>
       </div>
-      <div className="featured-project-badge shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
+      <div className="featured-project-badge shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em]">
         {project.name}
       </div>
     </div>
 
-    <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-lg">
+    <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
       {project.subheadline}
     </p>
 
-    <div className="mt-6 space-y-3">
+    <div className="mt-4 space-y-2">
       {project.features.map((feature) => {
         const Icon = feature.icon;
         return (
-          <div key={feature.text} className="flex items-start gap-3 rounded-2xl border border-border/60 bg-background/20 px-4 py-3">
-            <span className="featured-project-icon mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/40">
-              <Icon className="h-4 w-4" />
+          <div key={feature.text} className="flex items-start gap-2.5 rounded-xl border border-border/60 bg-background/30 px-3 py-2.5 backdrop-blur-md">
+            <span className="featured-project-icon mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/40">
+              <Icon className="h-3.5 w-3.5" />
             </span>
-            <p className="text-sm leading-relaxed text-foreground/90">{feature.text}</p>
+            <p className="text-xs leading-relaxed text-foreground/90 sm:text-sm">{feature.text}</p>
           </div>
         );
       })}
     </div>
 
-    <div className="mt-6 flex flex-wrap gap-2">
+    <div className="mt-4 flex flex-wrap gap-1.5">
       {project.tags.map((tag) => (
         <Badge
           key={tag}
           variant="secondary"
-          className="rounded-full border border-border/60 bg-background/40 px-3 py-1 text-xs font-medium text-foreground/85"
+          className="rounded-full border border-border/60 bg-background/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground/85"
         >
           {tag}
         </Badge>
       ))}
     </div>
 
-    <div className="mt-auto pt-6">
+    <div className="mt-auto pt-5">
       <Button
         asChild
-        size="lg"
-        className="featured-project-button min-h-11 w-full rounded-2xl px-6 text-base font-semibold sm:w-auto"
+        size="default"
+        className="featured-project-button min-h-10 w-full rounded-xl px-5 text-sm font-semibold sm:w-auto"
       >
         <a href={project.ctaHref} target="_blank" rel="noreferrer">
           {project.ctaLabel}
-          {project.ctaIcon ? <project.ctaIcon className="h-5 w-5" /> : <ArrowUpRight className="h-5 w-5" />}
+          {project.ctaIcon ? <project.ctaIcon className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
         </a>
       </Button>
     </div>
