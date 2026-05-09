@@ -93,6 +93,23 @@ const HeroSection = () => {
               Let's Build
             </button>
             <a
+            I architect intelligent ecosystems using n8n, GHL, and Claude to automate your business logic — from Asana task management to AI-driven Gmail communication.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <button
+              onClick={handleAuditClick}
+              className="cta-glow group px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-95 transition-all flex items-center gap-2"
+            >
+              <Zap className="w-5 h-5 group-hover:animate-pulse" />
+              Let's Build
+            </button>
+            <a
               href="#projects"
               className="px-8 py-4 rounded-xl glass-card text-foreground font-semibold text-lg hover-lift cyber-border flex items-center gap-2"
             >
@@ -100,13 +117,58 @@ const HeroSection = () => {
               View Projects
             </a>
           </motion.div>
+
+          {/* Tech Stack Marquee */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.0, duration: 0.8 }}
+            className="mt-10"
+          >
+            <Marquee
+              speed={28}
+              items={techStack.map((t) => (
+                <span key={t} className="font-mono text-sm sm:text-base font-medium text-foreground/85 tracking-wide">
+                  {t}
+                </span>
+              ))}
+              separator={<span className="text-primary/70">•</span>}
+            />
+          </motion.div>
+
+          {/* Measurable Impact Marquee */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.15, duration: 0.8 }}
+            className="mt-5"
+          >
+            <div className="glass-card rounded-2xl px-4 py-3 flex items-center gap-4">
+              <span className="hidden sm:inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/30 text-[10px] font-mono uppercase tracking-[0.2em] text-secondary">
+                <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                Measurable Impact
+              </span>
+              <div className="flex-1 min-w-0">
+                <Marquee
+                  speed={36}
+                  items={impactResults.map((r) => (
+                    <span key={r} className="text-sm sm:text-base text-foreground/90">
+                      <span className="text-secondary mr-2">▸</span>
+                      {r}
+                    </span>
+                  ))}
+                  separator={<span className="text-muted-foreground/50">·</span>}
+                />
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
+          transition={{ delay: 1.4, duration: 0.8 }}
+          className="absolute bottom-4 left-1/2 -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
