@@ -39,10 +39,11 @@ const HeroSection = () => {
   return (
     <section className="min-h-[78vh] flex items-center justify-center relative overflow-hidden pt-24 pb-10">
       {/* Gradient Glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
+      <div
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
         style={{ background: 'radial-gradient(ellipse at center, hsl(263 70% 66% / 0.3) 0%, transparent 70%)' }}
       />
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -76,23 +77,6 @@ const HeroSection = () => {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-base md:text-lg text-muted-foreground mb-6 font-light max-w-2xl mx-auto leading-relaxed"
           >
-            I architect intelligent ecosystems using n8n and Claude to automate your business logic — from Asana task management to AI-driven Gmail communication.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <button
-              onClick={handleAuditClick}
-              className="cta-glow group px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-95 transition-all flex items-center gap-2"
-            >
-              <Zap className="w-5 h-5 group-hover:animate-pulse" />
-              Let's Build
-            </button>
-            <a
             I architect intelligent ecosystems using n8n, GHL, and Claude to automate your business logic — from Asana task management to AI-driven Gmail communication.
           </motion.p>
 
@@ -143,8 +127,8 @@ const HeroSection = () => {
             transition={{ delay: 1.15, duration: 0.8 }}
             className="mt-5"
           >
-            <div className="glass-card rounded-2xl px-4 py-3 flex items-center gap-4">
-              <span className="hidden sm:inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/30 text-[10px] font-mono uppercase tracking-[0.2em] text-secondary">
+            <div className="glass-card rounded-2xl px-4 py-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+              <span className="inline-flex shrink-0 items-center gap-1.5 self-start sm:self-auto px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/30 text-[10px] font-mono uppercase tracking-[0.2em] text-secondary">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
                 Measurable Impact
               </span>
