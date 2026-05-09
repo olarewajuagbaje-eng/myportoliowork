@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell } from 'lucide-react';
+import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -147,12 +147,35 @@ const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
   </CardContent>
 );
 
+const AUTOPLAY_MS = 5500;
+
 const FeaturedProjectsSection = () => {
   const isMobile = useIsMobile();
+  const cardsPerView = isMobile ? 1 : 2;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const total = featuredProjects.length;
+  const maxIndex = Math.max(0, total - cardsPerView);
 
-  const next = () => setActiveIndex((i) => (i + 1) % featuredProjects.length);
-  const prev = () => setActiveIndex((i) => (i - 1 + featuredProjects.length) % featuredProjects.length);
+  const next = () => setActiveIndex((i) => (i >= maxIndex ? 0 : i + 1));
+  const prev = () => setActiveIndex((i) => (i <= 0 ? maxIndex : i - 1));
+
+  // Reset index when viewport changes
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [cardsPerView]);
+
+  // Autoplay
+  useEffect(() => {
+    if (isPaused) return;
+    const id = setInterval(() => {
+      setActiveIndex((i) => (i >= maxIndex ? 0 : i + 1));
+    }, AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [isPaused, maxIndex]);
+
+  const slideWidthPct = 100 / cardsPerView;
+  const translatePct = activeIndex * slideWidthPct;
 
   return (
     <section id="featured-projects" className="relative z-10 py-8 sm:py-10">
@@ -172,90 +195,81 @@ const FeaturedProjectsSection = () => {
             Strategic SaaS solutions built to bridge the gap between AI Agent Orchestration and GHL CRM Automation.
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-lg">
-            Two polished product systems designed for clarity, automation depth, and premium end-user experience.
+            Auto-rotating showcase of polished product systems — built for clarity, automation depth, and premium UX.
           </p>
         </motion.div>
 
-        {/* Desktop: Side-by-side grid */}
-        {!isMobile && (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={project.name}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`h-full ${index === featuredProjects.length - 1 && featuredProjects.length % 2 === 1 ? 'lg:col-span-2' : ''}`}
-              >
-                <Card
-                  className={`featured-project-card ${project.themeClass} group h-full overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.02]`}
+        {/* Auto-slider carousel */}
+        <div
+          className="relative"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div className="overflow-hidden -mx-3">
+            <motion.div
+              className="flex"
+              animate={{ x: `-${translatePct}%` }}
+              transition={{ type: 'spring', stiffness: 90, damping: 20 }}
+            >
+              {featuredProjects.map((project) => (
+                <div
+                  key={project.name}
+                  className="shrink-0 px-3"
+                  style={{ width: `${slideWidthPct}%` }}
                 >
-                  <ProjectCardContent project={project} />
-                </Card>
-              </motion.div>
-            ))}
+                  <Card
+                    className={`featured-project-card ${project.themeClass} group h-full overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.015]`}
+                  >
+                    <ProjectCardContent project={project} />
+                  </Card>
+                </div>
+              ))}
+            </motion.div>
           </div>
-        )}
 
-        {/* Mobile: Swipeable card stack */}
-        {isMobile && (
-          <div className="relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, x: 60 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -60 }}
-                transition={{ duration: 0.35 }}
-              >
-                <Card
-                  className={`featured-project-card ${featuredProjects[activeIndex].themeClass} overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl`}
-                >
-                  <ProjectCardContent project={featuredProjects[activeIndex]} />
-                </Card>
-              </motion.div>
-            </AnimatePresence>
+          {/* Navigation controls */}
+          <div className="mt-5 flex items-center justify-center gap-3">
+            <button
+              onClick={prev}
+              className="p-2 rounded-full glass-card hover:bg-muted transition-colors"
+              aria-label="Previous project"
+              style={{ minWidth: '40px', minHeight: '40px' }}
+            >
+              <ChevronLeft className="w-5 h-5 mx-auto" />
+            </button>
 
-            {/* Navigation controls */}
-            <div className="mt-4 flex items-center justify-center gap-4">
-              <button
-                onClick={prev}
-                className="p-2 rounded-full glass-card hover:bg-muted transition-colors"
-                aria-label="Previous project"
-                style={{ minWidth: '44px', minHeight: '44px' }}
-              >
-                <ChevronLeft className="w-5 h-5 mx-auto" />
-              </button>
-
-              <div className="flex gap-2">
-                {featuredProjects.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveIndex(i)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? 'w-6 bg-primary' : 'w-2 bg-muted-foreground/40'
-                    }`}
-                    aria-label={`Go to project ${i + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={next}
-                className="p-2 rounded-full glass-card hover:bg-muted transition-colors"
-                aria-label="Next project"
-                style={{ minWidth: '44px', minHeight: '44px' }}
-              >
-                <ChevronRight className="w-5 h-5 mx-auto" />
-              </button>
+            <div className="flex gap-2">
+              {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveIndex(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === activeIndex ? 'w-7 bg-primary' : 'w-2 bg-muted-foreground/40 hover:bg-muted-foreground/60'
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
             </div>
 
-            <p className="mt-2 text-center text-xs text-muted-foreground/60">
-              Swipe or tap arrows to explore
-            </p>
+            <button
+              onClick={next}
+              className="p-2 rounded-full glass-card hover:bg-muted transition-colors"
+              aria-label="Next project"
+              style={{ minWidth: '40px', minHeight: '40px' }}
+            >
+              <ChevronRight className="w-5 h-5 mx-auto" />
+            </button>
+
+            <button
+              onClick={() => setIsPaused((p) => !p)}
+              className="ml-1 p-2 rounded-full glass-card hover:bg-muted transition-colors hidden sm:inline-flex"
+              aria-label={isPaused ? 'Play autoplay' : 'Pause autoplay'}
+              style={{ minWidth: '40px', minHeight: '40px' }}
+            >
+              {isPaused ? <Play className="w-4 h-4 mx-auto" /> : <Pause className="w-4 h-4 mx-auto" />}
+            </button>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

@@ -216,7 +216,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">
             Let's <span className="gradient-text">Connect</span>
@@ -232,9 +232,9 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
           transition={{ duration: 0.6, delay: 0.2 }}
           className="max-w-2xl mx-auto"
         >
-          {/* Terminal Window */}
-          <div className="terminal-window">
-            <div className="terminal-header">
+          {/* Terminal Window — Glass Refined */}
+          <div className="terminal-window rounded-3xl overflow-hidden">
+            <div className="terminal-header rounded-t-3xl px-5 py-3.5">
               <div className="terminal-dot bg-destructive" />
               <div className="terminal-dot" style={{ backgroundColor: 'hsl(45 93% 47%)' }} />
               <div className="terminal-dot bg-secondary" />
@@ -248,10 +248,10 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                 </span>
               )}
             </div>
-            
-            <form ref={formRef} onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div>
-                <label className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
+
+            <form ref={formRef} onSubmit={handleSubmit} className="px-6 sm:px-8 py-7 sm:py-8 space-y-5">
+              <div className="space-y-1.5">
+                <label className="text-xs text-muted-foreground flex items-center gap-2">
                   <span className="text-secondary">$</span> enter_name:
                 </label>
                 <input
@@ -261,13 +261,13 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono disabled:opacity-50"
+                  className="w-full bg-background/40 border border-border/60 rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all font-mono text-sm disabled:opacity-50 backdrop-blur-md"
                   placeholder="Your name"
                 />
               </div>
 
-              <div>
-                <label className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
+              <div className="space-y-1.5">
+                <label className="text-xs text-muted-foreground flex items-center gap-2">
                   <span className="text-secondary">$</span> enter_email:
                 </label>
                 <input
@@ -277,13 +277,13 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono disabled:opacity-50"
+                  className="w-full bg-background/40 border border-border/60 rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all font-mono text-sm disabled:opacity-50 backdrop-blur-md"
                   placeholder="your@email.com"
                 />
               </div>
 
-              <div>
-                <label className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
+              <div className="space-y-1.5">
+                <label className="text-xs text-muted-foreground flex items-center gap-2">
                   <span className="text-secondary">$</span> enter_message:
                 </label>
                 <textarea
@@ -294,7 +294,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                   required
                   disabled={isSubmitting}
                   rows={4}
-                  className="w-full bg-transparent border-b border-border py-2 focus:outline-none focus:border-primary transition-colors font-mono resize-none disabled:opacity-50"
+                  className="w-full bg-background/40 border border-border/60 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all font-mono text-sm resize-none disabled:opacity-50 backdrop-blur-md"
                   placeholder="Tell me about your project..."
                 />
               </div>
@@ -304,7 +304,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="bg-background/50 rounded-lg p-4 font-mono text-sm space-y-2"
+                  className="bg-background/40 border border-border/50 rounded-xl p-4 font-mono text-xs sm:text-sm space-y-2 backdrop-blur-md"
                 >
                   {executionSteps.map((step, index) => (
                     <motion.div
@@ -322,7 +322,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                         <Loader2 className="w-3 h-3 animate-spin" />
                       )}
                       {step.status === 'success' && (
-                        step.message.includes('ai_analysis') || step.message.includes('categorized') 
+                        step.message.includes('ai_analysis') || step.message.includes('categorized')
                           ? <Brain className="w-3 h-3" />
                           : <CheckCircle2 className="w-3 h-3" />
                       )}
@@ -335,12 +335,12 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                       )}
                     </motion.div>
                   ))}
-                  
+
                   {showSuccess && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="text-secondary mt-4 pt-4 border-t border-border"
+                      className="text-secondary mt-3 pt-3 border-t border-border/60"
                     >
                       ✓ Lead captured & analyzed. Expect a response within 24 hours.
                     </motion.div>
@@ -349,11 +349,11 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
               )}
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-95 transition-opacity disabled:opacity-50 cta-glow"
               >
                 {isSubmitting ? (
                   <>
