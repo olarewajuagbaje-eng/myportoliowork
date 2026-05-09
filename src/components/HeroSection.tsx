@@ -1,5 +1,26 @@
 import { motion } from 'framer-motion';
 import { ArrowDown, Sparkles, Zap, Cog } from 'lucide-react';
+import Marquee from './Marquee';
+
+const techStack = [
+  'n8n',
+  'GoHighLevel (GHL)',
+  'LLMs',
+  'OpenAI',
+  'Groq',
+  'Supabase',
+  'Twilio',
+  'Airtable',
+  'Stability AI',
+];
+
+const impactResults = [
+  'Eliminated 100% of revenue leakage.',
+  'Reduced hiring cycle time by 80%.',
+  'Saved executives 15+ hours per week.',
+  'Increased lead capture rate by 45%.',
+  'Automated 20+ research articles weekly.',
+];
 
 const HeroSection = () => {
   const handleAuditClick = (e: React.MouseEvent) => {
