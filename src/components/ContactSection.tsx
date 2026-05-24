@@ -210,7 +210,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
   }, []);
 
   return (
-    <section id="contact" className="py-16 relative" ref={ref}>
+    <section id="contact" className="pt-12 pb-6 sm:pt-16 sm:pb-10 relative" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
