@@ -210,7 +210,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
   }, []);
 
   return (
-    <section id="contact" className="py-16 relative" ref={ref}>
+    <section id="contact" className="pt-12 pb-6 sm:pt-16 sm:pb-10 relative" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -353,7 +353,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                 whileTap={{ scale: 0.99 }}
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-95 transition-opacity disabled:opacity-50 cta-glow"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-95 transition-opacity disabled:opacity-50 cta-glow active:scale-[0.98]"
               >
                 {isSubmitting ? (
                   <>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowDown, Sparkles, Zap, Cog } from 'lucide-react';
+import { Sparkles, Zap, Cog } from 'lucide-react';
 import Marquee from './Marquee';
 
 const techStack = [
@@ -148,19 +148,6 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <ArrowDown className="w-6 h-6 text-muted-foreground" />
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );
