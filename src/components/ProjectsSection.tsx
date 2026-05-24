@@ -370,7 +370,7 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
   >
     {/* Featured Badge */}
     {project.featured && (
-      <div className="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground text-xs font-bold flex items-center gap-1">
+      <div className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
         <Shield className="w-3 h-3" />
         FEATURED
       </div>
@@ -385,9 +385,9 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
       />
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
       
-      {/* ROI Impact Overlay on Hover */}
+      {/* ROI Impact Overlay on Hover — desktop only to avoid mobile tap overlap */}
       {project.roiImpact && (
-        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm hidden md:flex items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="text-center">
             <span className="text-xs font-mono uppercase tracking-wider text-secondary mb-2 block">ROI Impact</span>
             <p className="text-sm font-semibold text-foreground leading-relaxed">{project.roiImpact}</p>
@@ -399,28 +399,30 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
       <motion.button
         initial={{ opacity: 0 }}
         whileHover={{ scale: 1.1 }}
-        className="absolute top-3 right-3 p-2 rounded-lg bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-3 right-3 p-2 rounded-lg bg-background/80 backdrop-blur-sm opacity-0 hidden md:group-hover:opacity-100 md:block md:opacity-0 transition-opacity"
         onClick={(e) => { e.stopPropagation(); onClick(); }}
       >
         <Maximize2 className="w-4 h-4 text-primary" />
       </motion.button>
       
-      {/* Case Study Badge */}
-      {project.caseStudy && (
-        <Link 
-          to={`/case-study/${project.slug}`}
-          onClick={(e) => e.stopPropagation()}
-          className="absolute top-3 left-3 p-2 rounded-lg bg-secondary/90 backdrop-blur-sm flex items-center gap-1 text-xs font-medium text-secondary-foreground hover:bg-secondary transition-colors"
-        >
-          <BookOpen className="w-3 h-3" />
-          Case Study
-        </Link>
-      )}
-      
       <div className="absolute bottom-3 left-3 p-2 rounded-lg bg-primary/20 backdrop-blur-sm">
         <project.icon className="w-5 h-5 text-primary" />
       </div>
     </div>
+
+    {/* Case Study link — moved out of image to avoid mobile overlap */}
+    {project.caseStudy && (
+      <div className="mb-3">
+        <Link
+          to={`/case-study/${project.slug}`}
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/30 text-[11px] font-semibold text-secondary hover:bg-secondary/25 transition-colors"
+        >
+          <BookOpen className="w-3 h-3" />
+          Case Study
+        </Link>
+      </div>
+    )}
     
     <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
     <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
