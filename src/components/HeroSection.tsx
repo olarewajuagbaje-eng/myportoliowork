@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowDown, Sparkles, Zap, Cog } from 'lucide-react';
+import { Sparkles, Zap, Cog } from 'lucide-react';
 import Marquee from './Marquee';
 
 const techStack = [
