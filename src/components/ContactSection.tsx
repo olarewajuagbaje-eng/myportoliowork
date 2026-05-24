@@ -353,7 +353,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                 whileTap={{ scale: 0.99 }}
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-95 transition-opacity disabled:opacity-50 cta-glow"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center gap-2 hover:opacity-95 transition-opacity disabled:opacity-50 cta-glow active:scale-[0.98]"
               >
                 {isSubmitting ? (
                   <>
