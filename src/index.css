@@ -222,6 +222,43 @@
     animation: float 6s ease-in-out infinite;
   }
 
+  /* Animated gradient border for the main header */
+  @keyframes header-border-flow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .header-animated-border {
+    position: relative;
+  }
+  .header-animated-border::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 1.5px;
+    background: linear-gradient(
+      90deg,
+      hsl(190 95% 55% / 0) 0%,
+      hsl(190 95% 55% / 0.85) 20%,
+      hsl(244 90% 66% / 0.95) 50%,
+      hsl(280 85% 65% / 0.85) 80%,
+      hsl(190 95% 55% / 0) 100%
+    );
+    background-size: 300% 100%;
+    animation: header-border-flow 9s linear infinite;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px hsl(244 90% 66% / 0.4));
+  }
+
+  /* Mini terminal typing animation */
+  @keyframes terminal-caret {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  .terminal-caret { animation: terminal-caret 1s steps(1) infinite; }
+
+
   .featured-project-card {
     position: relative;
     isolation: isolate;
