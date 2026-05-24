@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Zap, Target, Cpu, GraduationCap, Workflow, Brain, Rocket } from 'lucide-react';
+import { Zap, Target, Cpu, GraduationCap, Workflow, Brain, Rocket, Network, Database } from 'lucide-react';
 
 const timelineEvents = [
   {
     year: "Foundation",
     icon: GraduationCap,
     title: "Physics Electronics Background",
-    description: "Built a foundation in systems thinking, signal processing, and problem-solving methodologies."
+    description: "Built a foundation in systems thinking, signal processing, and problem solving methodologies."
   },
   {
     year: "Discovery",
@@ -20,12 +20,24 @@ const timelineEvents = [
     year: "Mastery",
     icon: Brain,
     title: "n8n Workflow Expertise",
-    description: "Achieved deep proficiency in n8n, building complex multi-step automation workflows."
+    description: "Achieved deep proficiency in n8n, building complex multi step automation workflows."
+  },
+  {
+    year: "Mastery",
+    icon: Network,
+    title: "GoHighLevel (GHL) Architecture",
+    description: "Designed full GHL ecosystems covering custom fields, AI Voice Agents, pipelines, snapshots, and conversion focused funnels."
+  },
+  {
+    year: "Mastery",
+    icon: Database,
+    title: "Advanced CRM Orchestration",
+    description: "Orchestrate multi platform CRM stacks with real time syncing across Supabase, Airtable, SharePoint, and HighLevel using n8n and Power Automate."
   },
   {
     year: "Current",
     icon: Rocket,
-    title: "AI-Driven Multi-Channel Systems",
+    title: "AI Driven Multi Channel Systems",
     description: "Designing intelligent automation systems that leverage AI across multiple channels."
   }
 ];
@@ -50,13 +62,13 @@ const AboutSection = () => {
   };
 
   return (
-    <section id="about" className="py-16 relative" ref={ref}>
+    <section id="about" className="py-10 sm:py-14 relative" ref={ref}>
       <div className="container mx-auto px-6">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="space-y-20"
+          className="space-y-12"
         >
           {/* Main About Content */}
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -74,12 +86,12 @@ const AboutSection = () => {
                 </p>
                 <div className="glass-card p-6 mt-8 border-l-4 border-primary">
                   <p className="text-foreground italic text-xl">
-                    "I don't just build tools — I design systems that scale."
+                    "I don't just build tools. I design systems that scale."
                   </p>
                 </div>
                 <div className="glass-card p-6 border-l-4 border-secondary">
                   <p className="text-foreground italic">
-                    "I am industry-agnostic. Whether it's Real Estate, FinTech, HR, or E-commerce—if there is a manual process, I can automate it."
+                    "I am industry agnostic. Whether it's Real Estate, FinTech, HR, or E commerce, if there is a manual process, I can automate it."
                   </p>
                 </div>
               </div>

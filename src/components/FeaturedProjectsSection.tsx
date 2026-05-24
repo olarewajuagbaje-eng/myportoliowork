@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play } from 'lucide-react';
+import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -24,11 +24,11 @@ const featuredProjects: FeaturedProject[] = [
     name: 'FlowDesk',
     eyebrow: 'CRM & Automation',
     headline: 'FlowDesk: The Small Business Operations Hub',
-    subheadline: 'A full-suite CRM designed to automate lead capture and service workflows.',
+    subheadline: 'A full suite CRM designed to automate lead capture and service workflows.',
     features: [
-      { icon: MessageCircleMore, text: 'Direct Gmail & Telegram Integration for real-time alerts.' },
+      { icon: MessageCircleMore, text: 'Direct Gmail & Telegram Integration for real time alerts.' },
       { icon: Layers3, text: 'Embeddable Booking & Chatbot widgets for external sites.' },
-      { icon: ShieldCheck, text: 'Multi-user Team Management with Role-Based Access Control.' },
+      { icon: ShieldCheck, text: 'Multi user Team Management with Role Based Access Control.' },
     ],
     tags: ['React', 'Supabase', 'CRM Automation', 'SaaS'],
     ctaLabel: 'Launch App',
@@ -38,11 +38,11 @@ const featuredProjects: FeaturedProject[] = [
   {
     name: 'VitaFlow',
     eyebrow: 'Wellness OS',
-    headline: 'VitaFlow: AI-Powered Wellness Operating System',
-    subheadline: 'An all-in-one health ecosystem replacing fragmented apps with intelligent data.',
+    headline: 'VitaFlow: AI Powered Wellness Operating System',
+    subheadline: 'An all in one health ecosystem replacing fragmented apps with intelligent data.',
     features: [
-      { icon: Stethoscope, text: '11 Integrated Modules (Telehealth, Med-Tracking, Nutrition).' },
-      { icon: Sparkles, text: 'AI-Generated Recipes and Reflective Journaling insights.' },
+      { icon: Stethoscope, text: '11 Integrated Modules (Telehealth, Med Tracking, Nutrition).' },
+      { icon: Sparkles, text: 'AI Generated Recipes and Reflective Journaling insights.' },
       { icon: Pill, text: 'Automated Medication reminders via Telegram bot.' },
     ],
     tags: ['AI/ML', 'HealthTech', 'Tailwind CSS', 'Edge Functions'],
@@ -54,12 +54,12 @@ const featuredProjects: FeaturedProject[] = [
     name: 'Sales Engine',
     eyebrow: 'B2B Conversion OS',
     headline: 'The Automated B2B Sales Conversion Engine',
-    subheadline: 'A closed-loop sales engine that eliminates the "Leaky Funnel" — capturing, scoring, and routing leads from inquiry to booked discovery call with zero drop-off.',
+    subheadline: 'A closed loop sales engine that eliminates the "Leaky Funnel", capturing, scoring, and routing leads from inquiry to booked discovery call with zero drop off.',
     features: [
-      { icon: Workflow, text: 'Instant Pipeline Routing — auto-generates deal cards with monetary values (e.g. €4,500) and pushes them to the executive dashboard.' },
-      { icon: Gauge, text: 'Dynamic Lead Scoring — background math operations grade prospects on engagement (+10 inquiry, +20 booking).' },
-      { icon: Ghost, text: 'The "Ghost Trap" Engine — a 1-hour time-delayed logic gate that deploys a premium HTML nurture sequence to recapture cold leads.' },
-      { icon: LineChart, text: 'Executive Dashboarding — live visibility into pipeline value, conversion rates, and scheduled appointments.' },
+      { icon: Workflow, text: 'Instant Pipeline Routing. Auto generates deal cards with monetary values (e.g. €4,500) and pushes them to the executive dashboard.' },
+      { icon: Gauge, text: 'Dynamic Lead Scoring. Background math operations grade prospects on engagement (+10 inquiry, +20 booking).' },
+      { icon: Ghost, text: 'The "Ghost Trap" Engine. A 1 hour time delayed logic gate that deploys a premium HTML nurture sequence to recapture cold leads.' },
+      { icon: LineChart, text: 'Executive Dashboarding. Live visibility into pipeline value, conversion rates, and scheduled appointments.' },
     ],
     tags: ['GoHighLevel (GHL)', 'Custom HTML', 'Pipeline Automation', 'Dynamic Scoring'],
     ctaLabel: 'Watch Video Demo',
@@ -71,17 +71,34 @@ const featuredProjects: FeaturedProject[] = [
     name: 'ROR AI Engine',
     eyebrow: 'B2B Conversion OS',
     headline: 'AI Triage & GHL CRM Engine',
-    subheadline: "A high-performance 'Ghost Sales Team' designed to maximize direct-to-purchase funnel ROI by combining clinical AI diagnostics with autonomous recovery logic.",
+    subheadline: "A high performance 'Ghost Sales Team' designed to maximize direct to purchase funnel ROI by combining clinical AI diagnostics with autonomous recovery logic.",
     features: [
-      { icon: Brain, text: 'AI Triage Agent — a custom-prompted advisor that extracts lead data via natural conversation and syncs directly to the CRM.' },
-      { icon: ShoppingCart, text: 'Behavioral Cart Recovery — an n8n-orchestrated loop that identifies abandoned checkouts and triggers AI-generated email sequences.' },
-      { icon: RefreshCw, text: 'GHL CRM Integration — real-time synchronization between chat sessions, order forms, and master databases.' },
-      { icon: Bell, text: 'Enterprise Notifications — branded HTML team alerts providing instant lead summaries and clinical diagnostics.' },
+      { icon: Brain, text: 'AI Triage Agent. A custom prompted advisor that extracts lead data via natural conversation and syncs directly to the CRM.' },
+      { icon: ShoppingCart, text: 'Behavioral Cart Recovery. An n8n orchestrated loop that identifies abandoned checkouts and triggers AI generated email sequences.' },
+      { icon: RefreshCw, text: 'GHL CRM Integration. Real time synchronization between chat sessions, order forms, and master databases.' },
+      { icon: Bell, text: 'Enterprise Notifications. Branded HTML team alerts providing instant lead summaries and clinical diagnostics.' },
     ],
     tags: ['n8n', 'CourseCreator 360 (GHL)', 'Groq (Llama 3.3)', 'Google Sheets'],
     ctaLabel: 'Watch Demo',
     ctaHref: 'https://drive.google.com/file/d/1HEoafNeV5KcFHYNwNeuvxjlgXGgaAC_N/view?usp=drivesdk',
     themeClass: 'featured-project-sales',
+    ctaIcon: PlayCircle,
+  },
+  {
+    name: 'Voice AI',
+    eyebrow: 'Enterprise Voice OS',
+    headline: 'Enterprise Voice AI Overflow System',
+    subheadline: 'Engineered an autonomous voice agent ("Violet") to handle after hours healthcare calls with empathy, accuracy, and enterprise grade logging.',
+    features: [
+      { icon: PhoneCall, text: 'Uptiq Voice Capture. Violet greets callers, gathers patient inquiries, and captures structured intake data inside the GHL ecosystem.' },
+      { icon: Webhook, text: 'Secure n8n Routing. Structured JSON payloads flow through an authenticated n8n webhook for orchestration and enrichment.' },
+      { icon: FileStack, text: 'SharePoint Logging. Power Automate writes call summaries, custom fields, and escalation statuses into a SharePoint database of record.' },
+      { icon: Users2, text: 'Teams Escalation. Critical calls instantly notify the response team in Microsoft Teams with rich, branded alert cards.' },
+    ],
+    tags: ['Uptiq (GHL)', 'n8n', 'Power Automate', 'SharePoint'],
+    ctaLabel: 'Watch Demo',
+    ctaHref: '#contact',
+    themeClass: 'featured-project-wellness',
     ctaIcon: PlayCircle,
   },
 ];
