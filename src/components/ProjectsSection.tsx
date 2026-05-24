@@ -399,7 +399,7 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
       <motion.button
         initial={{ opacity: 0 }}
         whileHover={{ scale: 1.1 }}
-        className="absolute top-3 right-3 p-2 rounded-lg bg-background/80 backdrop-blur-sm opacity-0 hidden md:group-hover:opacity-100 md:block md:opacity-0 transition-opacity"
+        className="absolute top-3 right-3 p-2 rounded-lg bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hidden md:block"
         onClick={(e) => { e.stopPropagation(); onClick(); }}
       >
         <Maximize2 className="w-4 h-4 text-primary" />
@@ -469,11 +469,11 @@ const ProjectsSection = () => {
 
   return (
     <>
-      <section id="projects" className="py-10 sm:py-12 relative" ref={ref}>
+      <section id="projects" className="py-8 sm:py-10 relative" ref={ref}>
         <div className="container mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }} transition={{ duration: 0.6 }} className="text-center mb-10">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }} transition={{ duration: 0.6 }} className="text-center mb-8">
             <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">Featured <span className="gradient-text">Projects</span></h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Real-world automation solutions that deliver measurable results</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Real world automation solutions that deliver measurable results</p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
             {displayedProjects.map((project, index) => (
