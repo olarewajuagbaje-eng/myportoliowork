@@ -134,7 +134,7 @@ const HeroSection = () => {
               </span>
               <div className="flex-1 min-w-0">
                 <Marquee
-                  speed={36}
+                  speed={70}
                   items={impactResults.map((r) => (
                     <span key={r} className="text-sm sm:text-base text-foreground/90">
                       <span className="text-secondary mr-2">▸</span>
