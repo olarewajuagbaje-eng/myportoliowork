@@ -110,7 +110,7 @@ const HeroSection = () => {
             className="mt-10"
           >
             <Marquee
-              speed={28}
+              speed={55}
               items={techStack.map((t) => (
                 <span key={t} className="font-mono text-sm sm:text-base font-medium text-foreground/85 tracking-wide">
                   {t}
