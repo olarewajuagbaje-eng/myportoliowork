@@ -111,7 +111,7 @@ const ClientReviewsSection = () => {
         <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 z-10 bg-gradient-to-l from-background to-transparent" />
 
         <Marquee
-          speed={28}
+          speed={60}
           items={reviews.map((r, i) => <ReviewCard key={i} review={r} />)}
         />
       </div>
