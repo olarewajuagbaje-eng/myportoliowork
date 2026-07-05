@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2 } from 'lucide-react';
+import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2, ShieldAlert, MapPin, CalendarRange, UserCheck, Send, Rss, Cpu, Image as ImageIcon, CloudUpload, RotateCcw, Car, Database, Radio, Truck, Route, Lock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -100,6 +100,72 @@ const featuredProjects: FeaturedProject[] = [
     ctaHref: '#contact',
     themeClass: 'featured-project-wellness',
     ctaIcon: PlayCircle,
+  },
+  {
+    name: 'Content Engine',
+    eyebrow: 'Autonomous Publishing OS',
+    headline: 'Autonomous Content Production Engine',
+    subheadline: 'A decoupled, state machine architecture that transforms raw social links into a fully formatted, human verified WordPress publishing pipeline with zero junk data.',
+    features: [
+      { icon: ShieldAlert, text: 'Gatekeeper Trigger. Airtable Active/Pending status eliminates runaway API costs and junk scraping.' },
+      { icon: MapPin, text: 'Dynamic City Routing. Event Resource tags route payloads to correct WordPress categories with no hardcoding.' },
+      { icon: CalendarRange, text: '8 Week Multiplier. Detects recurring events and auto calculates the next 8 weeks of unique dates.' },
+      { icon: UserCheck, text: 'HITL Staging. AI text is wrapped in HTML inside Airtable Rich Text for human approval before publishing.' },
+      { icon: Send, text: 'Decoupled Publisher. A segregated 5 minute polling workflow pushes only approved content to live WordPress.' },
+    ],
+    tags: ['n8n', 'Airtable', 'WordPress REST API', 'OpenAI / Claude'],
+    ctaLabel: 'View Architecture',
+    ctaHref: '#contact',
+    themeClass: 'featured-project-service',
+  },
+  {
+    name: 'Render Engine',
+    eyebrow: 'Content & Render Pipeline',
+    headline: 'Autonomous AI Content & Render Engine',
+    subheadline: 'A 100% autonomous bi daily pipeline that researches trends, drafts framework driven copy, and renders branded PNGs via a custom Puppeteer microservice.',
+    features: [
+      { icon: Rss, text: 'Intelligent Research. Scrapes Hacker News, TechCrunch, and OpenAI RSS to aggregate trending data.' },
+      { icon: Cpu, text: 'AI Content Brain. Dynamically selects one of 8 frameworks (Tutorial, Workflow, Checklist, Case Study, more).' },
+      { icon: ImageIcon, text: 'Custom Render Microservice. Node.js/Puppeteer injects JSON payloads into HTML/SVG templates for hi res PNGs.' },
+      { icon: CloudUpload, text: 'Storage & Distribution. Uploads to Supabase storage and distributes via Buffer API.' },
+      { icon: RotateCcw, text: 'Idempotent Retries. 3 strike loops with 5s delays absorb cold starts for maximum uptime.' },
+    ],
+    tags: ['n8n', 'Node.js / Puppeteer', 'Supabase', 'Groq / OpenAI', 'Buffer API'],
+    ctaLabel: 'View Case Study',
+    ctaHref: '#contact',
+    themeClass: 'featured-project-sales',
+  },
+  {
+    name: 'AutoMatch',
+    eyebrow: 'AI Car Brokerage',
+    headline: 'AutoMatch: Zero Touch AI Car Brokerage',
+    subheadline: 'A production grade platform that automates the full lead to deal workflow with a multi model AI consensus engine, removing manual dealer coordination.',
+    features: [
+      { icon: Brain, text: 'AI Consensus Engine. Cross validates Groq, Gemini, and OpenAI outputs to lock in high confidence matches.' },
+      { icon: Workflow, text: 'Zero Touch Pipeline. n8n orchestrates intake, scoring, dealer routing, and buyer notifications end to end.' },
+      { icon: Database, text: 'Supabase Backbone. Postgres, Realtime, and RLS power a secure, auditable transaction ledger.' },
+      { icon: Car, text: 'Lead to Deal Automation. Converts raw buyer intent into a closed loop brokerage workflow with zero manual ops.' },
+    ],
+    tags: ['n8n', 'Supabase', 'Groq', 'Gemini', 'OpenAI'],
+    ctaLabel: 'Launch App',
+    ctaHref: 'https://driveway-dealer.lovable.app',
+    themeClass: 'featured-project-wellness',
+  },
+  {
+    name: 'JNK Logistics',
+    eyebrow: 'RevOps Command Center',
+    headline: 'JNK Logistics Flow: Real Time Dispatch & CRM Command Center',
+    subheadline: 'A high density dispatch and client portal built on Supabase Realtime, with AI assisted internal comms and airtight identity integrity for high volume bookings.',
+    features: [
+      { icon: ShieldCheck, text: 'Identity & Data Integrity. Email based upsert logic eliminates database leakage and duplicate CRM records.' },
+      { icon: Route, text: 'Live Client Portal. Dynamic state machine with SVG routing animations and conditional POD document gating.' },
+      { icon: Truck, text: 'RevOps Command Center. Enterprise dispatch UI with Supabase Realtime fleet and revenue sync, no page reloads.' },
+      { icon: Lock, text: 'Secure Enterprise Messaging. RLS governed comms hub with an integrated Groq AI summarization assistant.' },
+    ],
+    tags: ['Lovable (React)', 'Supabase (Postgres, Realtime, RLS)', 'n8n', 'Groq (Llama 3)'],
+    ctaLabel: 'View Live Demo',
+    ctaHref: 'https://jnk-logistics-flow.lovable.app',
+    themeClass: 'featured-project-service',
   },
 ];
 
