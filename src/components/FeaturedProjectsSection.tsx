@@ -230,7 +230,7 @@ const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
   </CardContent>
 );
 
-const AUTOPLAY_MS = 5500;
+const AUTOPLAY_MS = 8000;
 
 const FeaturedProjectsSection = () => {
   const isMobile = useIsMobile();
