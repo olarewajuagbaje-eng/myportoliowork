@@ -37,7 +37,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="min-h-[78vh] flex items-center justify-center relative overflow-hidden pt-24 pb-10">
+    <section className="relative overflow-hidden pt-24 pb-8 sm:pt-28 sm:pb-12">
       {/* Gradient Glow */}
       <div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
