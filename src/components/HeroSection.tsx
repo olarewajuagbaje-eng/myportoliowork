@@ -37,7 +37,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="min-h-[78vh] flex items-center justify-center relative overflow-hidden pt-24 pb-10">
+    <section className="relative overflow-hidden pt-24 pb-8 sm:pt-28 sm:pb-12">
       {/* Gradient Glow */}
       <div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
@@ -110,7 +110,7 @@ const HeroSection = () => {
             className="mt-10"
           >
             <Marquee
-              speed={28}
+              speed={55}
               items={techStack.map((t) => (
                 <span key={t} className="font-mono text-sm sm:text-base font-medium text-foreground/85 tracking-wide">
                   {t}
@@ -134,7 +134,7 @@ const HeroSection = () => {
               </span>
               <div className="flex-1 min-w-0">
                 <Marquee
-                  speed={36}
+                  speed={70}
                   items={impactResults.map((r) => (
                     <span key={r} className="text-sm sm:text-base text-foreground/90">
                       <span className="text-secondary mr-2">▸</span>

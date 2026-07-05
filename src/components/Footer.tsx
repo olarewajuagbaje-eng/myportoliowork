@@ -31,7 +31,7 @@ const Footer = () => {
         {/* Infinite Skills Ticker — placed above social icons */}
         <div className="mb-4">
           <Marquee
-            speed={32}
+            speed={65}
             items={skillsTicker.map((s) => (
               <span
                 key={s}
