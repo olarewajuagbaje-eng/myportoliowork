@@ -79,10 +79,10 @@ const AboutSection = () => {
               
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  Hi! I'm <span className="text-foreground font-semibold">Agbaje Olarewaju</span>, a Digital Solutions & Creative Entrepreneur with a background in Physics Electronics.
+                  Hi! I'm <span className="text-foreground font-semibold">Agbaje Olarewaju</span>, an AI Automation Architect with a Physics Electronics background and a specialty in production-grade RevOps infrastructure.
                 </p>
                 <p>
-                  I specialize in building autonomous engines that save time and scale business processes. From integrating AI to streamline recruitment to designing SaaS solutions with no-code, I turn complex chaos into results-driven workflows.
+                  I engineer autonomous systems on <span className="text-foreground font-medium">n8n</span>, <span className="text-foreground font-medium">Supabase</span>, and <span className="text-foreground font-medium">GoHighLevel</span>, wiring AI agents, relational databases, and multi-channel revenue pipelines into one closed-loop engine that scales without operator drag.
                 </p>
                 <div className="glass-card p-6 mt-8 border-l-4 border-primary">
                   <p className="text-foreground italic text-xl">

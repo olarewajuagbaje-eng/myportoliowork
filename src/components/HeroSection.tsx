@@ -58,17 +58,17 @@ const HeroSection = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-5"
           >
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm text-muted-foreground">AI Automation Architect & Workflow Expert</span>
+            <span className="text-sm text-muted-foreground">AI Automation Architect · n8n · Supabase · RevOps</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold font-display leading-[1.05] mb-4"
+            className="text-4xl sm:text-5xl md:text-7xl font-bold font-display leading-[1.02] mb-4 tracking-[-0.03em]"
           >
-            Building the Future of{' '}
-            <span className="gradient-text">Autonomous Workflows</span>
+            Engineering the Future of{' '}
+            <span className="gradient-text">Autonomous Revenue Systems</span>
           </motion.h1>
 
           <motion.p
@@ -77,7 +77,7 @@ const HeroSection = () => {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-base md:text-lg text-muted-foreground mb-6 font-light max-w-2xl mx-auto leading-relaxed"
           >
-            I architect intelligent ecosystems using n8n, GHL, and Claude to automate your business logic — from Asana task management to AI-driven Gmail communication.
+            I architect production-grade automation ecosystems with n8n, Supabase, and GoHighLevel, connecting AI agents, relational databases, and multi-channel revenue operations into one autonomous engine.
           </motion.p>
 
           <motion.div
