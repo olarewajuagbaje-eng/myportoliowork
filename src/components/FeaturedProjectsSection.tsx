@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2, ShieldAlert, MapPin, CalendarRange, UserCheck, Send, Rss, Cpu, Image as ImageIcon, CloudUpload, RotateCcw, Car, Database, Radio, Truck, Route, Lock } from 'lucide-react';
+import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2, ShieldAlert, MapPin, CalendarRange, UserCheck, Send, Rss, Cpu, Image as ImageIcon, CloudUpload, RotateCcw, Car, Database, Radio, Truck, Route, Lock, LayoutTemplate, Code2, CreditCard } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -166,6 +166,22 @@ const featuredProjects: FeaturedProject[] = [
     ctaLabel: 'View Live Demo',
     ctaHref: 'https://jnk-logistics-flow.lovable.app',
     themeClass: 'featured-project-service',
+  },
+  {
+    name: 'Masterclass',
+    eyebrow: 'High-Ticket Funnel',
+    headline: 'Architecture Masterclass Funnel & Infrastructure',
+    subheadline: 'Built a high-ticket conversion funnel and automated customer acquisition infrastructure with custom-coded dark-mode UI, interactive module previews, secure checkout styling, and automated backend routing.',
+    features: [
+      { icon: Code2, text: 'Custom-coded dark-mode UI engineered for premium brand trust and conversion.' },
+      { icon: LayoutTemplate, text: 'Interactive module previews that let prospects experience the curriculum before buying.' },
+      { icon: CreditCard, text: 'Secure checkout styling and trust signals for high-ticket course transactions.' },
+      { icon: Workflow, text: 'Automated backend routing between GoHighLevel, n8n, and Supabase.' },
+    ],
+    tags: ['GoHighLevel', 'Custom HTML/CSS', 'n8n', 'Supabase'],
+    ctaLabel: 'View Live Preview',
+    ctaHref: 'https://sites.leadconnectorhq.com/preview/WH0tMAV06vMVunjvnmgz?notrack=true',
+    themeClass: 'featured-project-masterclass',
   },
 ];
 

@@ -57,6 +57,7 @@
     --gradient-service: linear-gradient(135deg, hsl(var(--service-blue) / 0.22) 0%, hsl(var(--action-orange) / 0.16) 100%);
     --gradient-wellness: linear-gradient(135deg, hsl(var(--wellness-green) / 0.2) 0%, hsl(var(--primary) / 0.16) 100%);
     --gradient-sales: linear-gradient(135deg, hsl(var(--cyber-amber) / 0.22) 0%, hsl(var(--primary) / 0.18) 100%);
+    --gradient-masterclass: linear-gradient(135deg, hsl(280 85% 65% / 0.22) 0%, hsl(38 95% 56% / 0.18) 100%);
 
     /* Refined glassmorphism */
     --glass-bg: hsl(240 10% 9% / 0.55);
@@ -317,5 +318,17 @@
     background: linear-gradient(135deg, hsl(var(--cyber-amber)) 0%, hsl(var(--primary)) 100%);
     color: hsl(var(--primary-foreground));
     box-shadow: 0 14px 36px hsl(var(--cyber-amber) / 0.22);
+  }
+
+  .featured-project-masterclass {
+    background-image: var(--gradient-masterclass);
+  }
+
+  .featured-project-masterclass .featured-project-badge,
+  .featured-project-masterclass .featured-project-button,
+  .featured-project-masterclass .featured-project-icon {
+    background: linear-gradient(135deg, hsl(280 85% 65%) 0%, hsl(38 95% 56%) 100%);
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 14px 36px hsl(280 85% 65% / 0.22);
   }
 }
