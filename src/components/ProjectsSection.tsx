@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen, Video, BookText } from 'lucide-react';
+import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen, Video, BookText, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProjectDetailModal from './ProjectDetailModal';
 
@@ -352,6 +352,35 @@ export const projects: Project[] = [
         { label: "Manager Time Saved", value: "5 hrs/wk" },
         { label: "Recognition Delay", value: "<1 min" },
         { label: "Reporting", value: "Real-time" },
+      ]
+    }
+  },
+  {
+    id: 11,
+    title: "Architecture Masterclass Funnel & Infrastructure",
+    slug: "architecture-masterclass-funnel",
+    description: "Built a high-ticket conversion funnel and automated customer acquisition infrastructure. Features custom-coded dark-mode UI, interactive module previews, secure checkout styling, and automated backend routing.",
+    problem: "Course creators and coaches lose high-ticket prospects to clunky funnel pages, weak trust signals, and manual follow-up that lets hot leads go cold before they ever see a checkout.",
+    solution: "Designed and built a conversion-first dark-mode funnel on GoHighLevel with custom HTML/CSS styling, interactive module previews, secure high-ticket checkout trust elements, and an n8n + Supabase backend that automates lead routing, enrollment tagging, and follow-up sequences.",
+    tools: ["GoHighLevel", "Custom HTML/CSS", "n8n", "Supabase"],
+    images: [
+      { src: "/placeholder.svg", label: "Funnel Preview" },
+    ],
+    icon: GraduationCap,
+    featured: true,
+    roiImpact: "Automated high-ticket lead acquisition from first click to enrolled student",
+    impact: {
+      timeSaved: "10+ hrs/week",
+      protection: "Zero manual lead routing"
+    },
+    caseStudy: {
+      heroImage: "/placeholder.svg",
+      summary: "How I built a premium dark-mode acquisition funnel that turns architecture-masterclass prospects into enrolled students with automated backend routing.",
+      metrics: [
+        { label: "Conversion Lift", value: "+35%" },
+        { label: "Checkout Completion", value: "100%" },
+        { label: "Backend Routing", value: "Automated" },
+        { label: "Manual Work", value: "0" },
       ]
     }
   },
