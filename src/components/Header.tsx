@@ -31,10 +31,11 @@ const Header = () => {
         </div>
 
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
-          <a href="#projects" className="text-muted-foreground hover:text-foreground transition-colors">Projects</a>
-          <a href="#skills" className="text-muted-foreground hover:text-foreground transition-colors">Skills</a>
-          <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+          <a href="/#about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
+          <a href="/#projects" className="text-muted-foreground hover:text-foreground transition-colors">Projects</a>
+          <a href="/#skills" className="text-muted-foreground hover:text-foreground transition-colors">Skills</a>
+          <a href="/blog" className="text-muted-foreground hover:text-foreground transition-colors">Blog</a>
+          <a href="/#contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
           <a 
             href="https://www.linkedin.com/in/agbaje-olarewaju" 
             target="_blank" 
