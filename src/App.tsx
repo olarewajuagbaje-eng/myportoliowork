@@ -17,6 +17,7 @@ import BlogPost from "./pages/BlogPost";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminPosts from "./pages/admin/AdminPosts";
 import PostEditor from "./pages/admin/PostEditor";
+import SetupAdmin from "./pages/SetupAdmin";
 
 const queryClient = new QueryClient();
 
