@@ -3,23 +3,23 @@ import { Sparkles, Zap, Cog } from 'lucide-react';
 import Marquee from './Marquee';
 
 const techStack = [
-  'n8n',
-  'GoHighLevel (GHL)',
-  'LLMs',
-  'OpenAI',
-  'Groq',
-  'Supabase',
-  'Twilio',
-  'Airtable',
-  'Stability AI',
+  'Lead Capture',
+  'Sales Automation',
+  'CRM Orchestration',
+  'AI Customer Support',
+  'Ops Efficiency',
+  'Revenue Recovery',
+  'Reporting & Insights',
+  'Client Onboarding',
+  'Multi-Channel Workflows',
 ];
 
 const impactResults = [
-  'Eliminated 100% of revenue leakage.',
-  'Reduced hiring cycle time by 80%.',
-  'Saved executives 15+ hours per week.',
-  'Increased lead capture rate by 45%.',
-  'Automated 20+ research articles weekly.',
+  'Recovered 100% of lost revenue from missed transactions.',
+  'Cut hiring cycle time by 80% for a growing team.',
+  'Freed executives from 15+ hours of weekly admin work.',
+  'Grew qualified lead capture by 45% with 24/7 response.',
+  'Delivered 20+ market-ready articles per week without a writing team.',
 ];
 
 const HeroSection = () => {
