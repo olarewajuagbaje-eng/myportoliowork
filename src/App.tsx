@@ -17,6 +17,7 @@ import BlogPost from "./pages/BlogPost";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminPosts from "./pages/admin/AdminPosts";
 import PostEditor from "./pages/admin/PostEditor";
+import SetupAdmin from "./pages/SetupAdmin";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/setup-admin" element={<SetupAdmin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminPosts />} />
               <Route path="posts/new" element={<PostEditor />} />

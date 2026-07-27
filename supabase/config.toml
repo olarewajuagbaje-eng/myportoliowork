@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.send-auto-reply]
 verify_jwt = false
+
+[functions.setup-admin]
+verify_jwt = false
