@@ -30,7 +30,7 @@ const MobileStickyContact = () => {
           style={{ minHeight: '48px' }}
         >
           <Zap className="w-4 h-4" />
-          Get in Touch
+          Book a Strategy Call
         </button>
       </div>
     </motion.div>
