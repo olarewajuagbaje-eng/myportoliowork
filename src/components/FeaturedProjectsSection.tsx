@@ -288,13 +288,13 @@ const FeaturedProjectsSection = () => {
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 px-4 py-2 backdrop-blur-xl">
             <Bot className="h-4 w-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Featured Projects</span>
+            <span className="text-sm text-muted-foreground">Client Work & Case Studies</span>
           </div>
           <h2 className="font-display text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">
-            Strategic SaaS solutions bridging <span className="gradient-text">AI Agent Orchestration</span> and GHL CRM Automation.
+            Real systems, real revenue, <span className="gradient-text">real business outcomes.</span>
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Auto-rotating showcase of polished product systems — built for clarity, automation depth, and premium UX.
+            A rotating look at platforms and automations I have built to help clients capture more leads, close more deals, and run leaner operations.
           </p>
         </motion.div>
 
