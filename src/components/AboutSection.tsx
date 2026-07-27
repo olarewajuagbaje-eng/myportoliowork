@@ -143,7 +143,7 @@ const AboutSection = () => {
           {/* Technical Journey Timeline */}
           <motion.div variants={itemVariants} className="space-y-8">
             <h3 className="text-2xl md:text-3xl font-bold font-display text-center">
-              Technical <span className="gradient-text">Journey</span>
+              How I Got <span className="gradient-text">Here</span>
             </h3>
             
             <div className="relative">
