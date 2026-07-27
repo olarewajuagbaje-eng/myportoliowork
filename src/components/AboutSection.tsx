@@ -79,19 +79,22 @@ const AboutSection = () => {
               
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  Hi! I'm <span className="text-foreground font-semibold">Agbaje Olarewaju</span>, an AI Automation Architect with a Physics Electronics background and a specialty in production-grade RevOps infrastructure.
+                  Hi, I'm <span className="text-foreground font-semibold">Agbaje Olarewaju</span>. I help business owners, founders and executives fix the operational bottlenecks that quietly drain revenue, burn out their teams, and cap their growth.
                 </p>
                 <p>
-                  I engineer autonomous systems on <span className="text-foreground font-medium">n8n</span>, <span className="text-foreground font-medium">Supabase</span>, and <span className="text-foreground font-medium">GoHighLevel</span>, wiring AI agents, relational databases, and multi-channel revenue pipelines into one closed-loop engine that scales without operator drag.
+                  My work sits where <span className="text-foreground font-medium">strategy, operations and technology</span> meet. I design AI-powered systems that capture leads, follow up with customers, keep data clean across tools, and give leadership a clear view of what is actually happening in the business.
+                </p>
+                <p>
+                  I am not just a technical implementer. I partner with clients long-term, understand their business goals first, and then build systems that support real growth, not just automation for automation's sake.
                 </p>
                 <div className="glass-card p-6 mt-8 border-l-4 border-primary">
                   <p className="text-foreground italic text-xl">
-                    "I don't just build tools. I design systems that scale."
+                    "I don't just build tools. I design systems that help businesses grow."
                   </p>
                 </div>
                 <div className="glass-card p-6 border-l-4 border-secondary">
                   <p className="text-foreground italic">
-                    "I am industry agnostic. Whether it's Real Estate, FinTech, HR, or E commerce, if there is a manual process, I can automate it."
+                    "Whether you run a real estate agency, a fintech startup, an HR firm, or an e-commerce brand, if there is a manual process holding you back, I can help you remove it."
                   </p>
                 </div>
               </div>
@@ -104,18 +107,18 @@ const AboutSection = () => {
               {[
                 {
                   icon: Zap,
-                  title: "Automation First",
-                  description: "Every solution starts with identifying what can be automated to maximize efficiency."
+                  title: "Business Outcomes First",
+                  description: "Every project starts with the result you need, more revenue, less admin, faster response times, and works backwards from there."
                 },
                 {
                   icon: Target,
-                  title: "Results Driven",
-                  description: "Focused on measurable outcomes that directly impact your bottom line."
+                  title: "Reliable & Measurable",
+                  description: "I build systems that are stable, well-documented, and tied to numbers you actually track: leads, conversions, hours saved."
                 },
                 {
                   icon: Cpu,
-                  title: "AI-Powered",
-                  description: "Leveraging cutting-edge AI to create intelligent, adaptive systems."
+                  title: "Long-Term Partner",
+                  description: "I stay involved after launch, refining and expanding your systems as your business grows and priorities shift."
                 }
               ].map((item) => (
                 <motion.div
