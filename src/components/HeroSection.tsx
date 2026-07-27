@@ -130,7 +130,7 @@ const HeroSection = () => {
             <div className="glass-card rounded-2xl px-4 py-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <span className="inline-flex shrink-0 items-center gap-1.5 self-start sm:self-auto px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/30 text-[10px] font-mono uppercase tracking-[0.2em] text-secondary">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                Measurable Impact
+                Real Business Outcomes
               </span>
               <div className="flex-1 min-w-0">
                 <Marquee
