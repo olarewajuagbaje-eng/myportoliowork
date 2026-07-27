@@ -3,23 +3,23 @@ import { Sparkles, Zap, Cog } from 'lucide-react';
 import Marquee from './Marquee';
 
 const techStack = [
-  'n8n',
-  'GoHighLevel (GHL)',
-  'LLMs',
-  'OpenAI',
-  'Groq',
-  'Supabase',
-  'Twilio',
-  'Airtable',
-  'Stability AI',
+  'Lead Capture',
+  'Sales Automation',
+  'CRM Orchestration',
+  'AI Customer Support',
+  'Ops Efficiency',
+  'Revenue Recovery',
+  'Reporting & Insights',
+  'Client Onboarding',
+  'Multi-Channel Workflows',
 ];
 
 const impactResults = [
-  'Eliminated 100% of revenue leakage.',
-  'Reduced hiring cycle time by 80%.',
-  'Saved executives 15+ hours per week.',
-  'Increased lead capture rate by 45%.',
-  'Automated 20+ research articles weekly.',
+  'Recovered 100% of lost revenue from missed transactions.',
+  'Cut hiring cycle time by 80% for a growing team.',
+  'Freed executives from 15+ hours of weekly admin work.',
+  'Grew qualified lead capture by 45% with 24/7 response.',
+  'Delivered 20+ market-ready articles per week without a writing team.',
 ];
 
 const HeroSection = () => {
@@ -58,7 +58,7 @@ const HeroSection = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-5"
           >
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm text-muted-foreground">AI Automation Architect · n8n · Supabase · RevOps</span>
+            <span className="text-sm text-muted-foreground">Automation for founders, executives & growth teams</span>
           </motion.div>
 
           <motion.h1
@@ -67,8 +67,8 @@ const HeroSection = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="text-4xl sm:text-5xl md:text-7xl font-bold font-display leading-[1.02] mb-4 tracking-[-0.03em]"
           >
-            Engineering the Future of{' '}
-            <span className="gradient-text">Autonomous Revenue Systems</span>
+            Turn Manual Work Into{' '}
+            <span className="gradient-text">Predictable Revenue</span>
           </motion.h1>
 
           <motion.p
@@ -77,7 +77,7 @@ const HeroSection = () => {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-base md:text-lg text-muted-foreground mb-6 font-light max-w-2xl mx-auto leading-relaxed"
           >
-            I architect production-grade automation ecosystems with n8n, Supabase, and GoHighLevel, connecting AI agents, relational databases, and multi-channel revenue operations into one autonomous engine.
+            I help business owners, founders and executives remove the manual work slowing their teams down. From lead capture to customer follow-up, I design AI-powered systems that run quietly in the background, protect revenue, and give you back your time.
           </motion.p>
 
           <motion.div
@@ -91,14 +91,14 @@ const HeroSection = () => {
               className="cta-glow group px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-95 transition-all flex items-center gap-2"
             >
               <Zap className="w-5 h-5 group-hover:animate-pulse" />
-              Let's Build
+              Book a Strategy Call
             </button>
             <a
               href="#projects"
               className="px-8 py-4 rounded-xl glass-card text-foreground font-semibold text-lg hover-lift cyber-border flex items-center gap-2"
             >
               <Cog className="w-5 h-5" />
-              View Projects
+              See Client Results
             </a>
           </motion.div>
 
@@ -130,7 +130,7 @@ const HeroSection = () => {
             <div className="glass-card rounded-2xl px-4 py-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <span className="inline-flex shrink-0 items-center gap-1.5 self-start sm:self-auto px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/30 text-[10px] font-mono uppercase tracking-[0.2em] text-secondary">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-                Measurable Impact
+                Real Business Outcomes
               </span>
               <div className="flex-1 min-w-0">
                 <Marquee

@@ -7,38 +7,38 @@ const timelineEvents = [
   {
     year: "Foundation",
     icon: GraduationCap,
-    title: "Physics Electronics Background",
-    description: "Built a foundation in systems thinking, signal processing, and problem solving methodologies."
+    title: "Engineering Mindset",
+    description: "A Physics Electronics background trained me to look at every business as a system, find the bottlenecks, and design something better."
   },
   {
     year: "Discovery",
     icon: Workflow,
-    title: "Entry into Automation & APIs",
-    description: "Discovered the power of connecting systems and automating repetitive tasks."
+    title: "First Business Wins",
+    description: "Started helping small teams replace repetitive manual tasks with reliable automation, and saw first-hand how much time and revenue was being lost."
   },
   {
-    year: "Mastery",
+    year: "Growth",
     icon: Brain,
-    title: "n8n Workflow Expertise",
-    description: "Achieved deep proficiency in n8n, building complex multi step automation workflows."
+    title: "Advanced Workflow Design",
+    description: "Built deep expertise in designing multi-step workflows that connect the tools businesses already use, without disrupting their operations."
   },
   {
-    year: "Mastery",
+    year: "Growth",
     icon: Network,
-    title: "GoHighLevel (GHL) Architecture",
-    description: "Designed full GHL ecosystems covering custom fields, AI Voice Agents, pipelines, snapshots, and conversion focused funnels."
+    title: "Sales & CRM Systems",
+    description: "Started architecting full sales and CRM ecosystems, including AI voice agents, pipelines, and conversion-focused funnels for service businesses."
   },
   {
-    year: "Mastery",
+    year: "Scale",
     icon: Database,
-    title: "Advanced CRM Orchestration",
-    description: "Orchestrate multi platform CRM stacks with real time syncing across Supabase, Airtable, SharePoint, and HighLevel using n8n and Power Automate."
+    title: "Multi-System Orchestration",
+    description: "Now orchestrate revenue, operations and customer data across multiple platforms so leadership has one clean, real-time view of the business."
   },
   {
-    year: "Current",
+    year: "Today",
     icon: Rocket,
-    title: "AI Driven Multi Channel Systems",
-    description: "Designing intelligent automation systems that leverage AI across multiple channels."
+    title: "AI-Driven Growth Partner",
+    description: "Partnering with founders and executives to design AI-powered systems that scale their business without scaling their headcount."
   }
 ];
 
@@ -79,19 +79,22 @@ const AboutSection = () => {
               
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  Hi! I'm <span className="text-foreground font-semibold">Agbaje Olarewaju</span>, an AI Automation Architect with a Physics Electronics background and a specialty in production-grade RevOps infrastructure.
+                  Hi, I'm <span className="text-foreground font-semibold">Agbaje Olarewaju</span>. I help business owners, founders and executives fix the operational bottlenecks that quietly drain revenue, burn out their teams, and cap their growth.
                 </p>
                 <p>
-                  I engineer autonomous systems on <span className="text-foreground font-medium">n8n</span>, <span className="text-foreground font-medium">Supabase</span>, and <span className="text-foreground font-medium">GoHighLevel</span>, wiring AI agents, relational databases, and multi-channel revenue pipelines into one closed-loop engine that scales without operator drag.
+                  My work sits where <span className="text-foreground font-medium">strategy, operations and technology</span> meet. I design AI-powered systems that capture leads, follow up with customers, keep data clean across tools, and give leadership a clear view of what is actually happening in the business.
+                </p>
+                <p>
+                  I am not just a technical implementer. I partner with clients long-term, understand their business goals first, and then build systems that support real growth, not just automation for automation's sake.
                 </p>
                 <div className="glass-card p-6 mt-8 border-l-4 border-primary">
                   <p className="text-foreground italic text-xl">
-                    "I don't just build tools. I design systems that scale."
+                    "I don't just build tools. I design systems that help businesses grow."
                   </p>
                 </div>
                 <div className="glass-card p-6 border-l-4 border-secondary">
                   <p className="text-foreground italic">
-                    "I am industry agnostic. Whether it's Real Estate, FinTech, HR, or E commerce, if there is a manual process, I can automate it."
+                    "Whether you run a real estate agency, a fintech startup, an HR firm, or an e-commerce brand, if there is a manual process holding you back, I can help you remove it."
                   </p>
                 </div>
               </div>
@@ -104,18 +107,18 @@ const AboutSection = () => {
               {[
                 {
                   icon: Zap,
-                  title: "Automation First",
-                  description: "Every solution starts with identifying what can be automated to maximize efficiency."
+                  title: "Business Outcomes First",
+                  description: "Every project starts with the result you need, more revenue, less admin, faster response times, and works backwards from there."
                 },
                 {
                   icon: Target,
-                  title: "Results Driven",
-                  description: "Focused on measurable outcomes that directly impact your bottom line."
+                  title: "Reliable & Measurable",
+                  description: "I build systems that are stable, well-documented, and tied to numbers you actually track: leads, conversions, hours saved."
                 },
                 {
                   icon: Cpu,
-                  title: "AI-Powered",
-                  description: "Leveraging cutting-edge AI to create intelligent, adaptive systems."
+                  title: "Long-Term Partner",
+                  description: "I stay involved after launch, refining and expanding your systems as your business grows and priorities shift."
                 }
               ].map((item) => (
                 <motion.div
@@ -140,7 +143,7 @@ const AboutSection = () => {
           {/* Technical Journey Timeline */}
           <motion.div variants={itemVariants} className="space-y-8">
             <h3 className="text-2xl md:text-3xl font-bold font-display text-center">
-              Technical <span className="gradient-text">Journey</span>
+              How I Got <span className="gradient-text">Here</span>
             </h3>
             
             <div className="relative">

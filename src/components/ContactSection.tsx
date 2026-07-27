@@ -219,10 +219,10 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
           className="text-center mb-10"
         >
           <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">
-            Let's <span className="gradient-text">Connect</span>
+            Let's Talk About <span className="gradient-text">Your Business</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Ready to automate your business? Let's discuss your project.
+            Tell me a little about where your team is losing time or revenue. I will reply within 24 hours with honest thoughts and next steps, no pressure and no sales script.
           </p>
         </motion.div>
 
@@ -295,7 +295,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                   disabled={isSubmitting}
                   rows={4}
                   className="w-full bg-background/40 border border-border/60 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all font-mono text-sm resize-none disabled:opacity-50 backdrop-blur-md"
-                  placeholder="Tell me about your project..."
+                  placeholder="What is slowing your team down right now?"
                 />
               </div>
 
@@ -363,7 +363,7 @@ const ContactSection = ({ autoFocus = false, initialMessage = '' }: ContactSecti
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    send_message()
+                    Book My Strategy Call
                   </>
                 )}
               </motion.button>

@@ -24,7 +24,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'FlowDesk',
     eyebrow: 'CRM & Automation',
     headline: 'FlowDesk: The Small Business Operations Hub',
-    subheadline: 'A full suite CRM designed to automate lead capture and service workflows.',
+    subheadline: 'Give small businesses one place to manage leads, bookings and team communication, so nothing slips through the cracks. Built on modern web tools for speed and reliability.',
     features: [
       { icon: MessageCircleMore, text: 'Direct Gmail & Telegram Integration for real time alerts.' },
       { icon: Layers3, text: 'Embeddable Booking & Chatbot widgets for external sites.' },
@@ -39,7 +39,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'VitaFlow',
     eyebrow: 'Wellness OS',
     headline: 'VitaFlow: AI Powered Wellness Operating System',
-    subheadline: 'An all in one health ecosystem replacing fragmented apps with intelligent data.',
+    subheadline: 'Replace a stack of disconnected health apps with a single wellness platform, so users stay engaged and providers keep a clear picture of every client.',
     features: [
       { icon: Stethoscope, text: '11 Integrated Modules (Telehealth, Med Tracking, Nutrition).' },
       { icon: Sparkles, text: 'AI Generated Recipes and Reflective Journaling insights.' },
@@ -54,7 +54,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'Sales Engine',
     eyebrow: 'B2B Conversion OS',
     headline: 'The Automated B2B Sales Conversion Engine',
-    subheadline: 'A closed loop sales engine that eliminates the "Leaky Funnel", capturing, scoring, and routing leads from inquiry to booked discovery call with zero drop off.',
+    subheadline: 'Stops high-ticket B2B leads from going cold. Every inquiry is captured, scored, and moved toward a booked call automatically, so sales teams close more deals with less chasing.',
     features: [
       { icon: Workflow, text: 'Instant Pipeline Routing. Auto generates deal cards with monetary values (e.g. €4,500) and pushes them to the executive dashboard.' },
       { icon: Gauge, text: 'Dynamic Lead Scoring. Background math operations grade prospects on engagement (+10 inquiry, +20 booking).' },
@@ -71,7 +71,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'ROR AI Engine',
     eyebrow: 'B2B Conversion OS',
     headline: 'AI Triage & GHL CRM Engine',
-    subheadline: "A high performance 'Ghost Sales Team' designed to maximize direct to purchase funnel ROI by combining clinical AI diagnostics with autonomous recovery logic.",
+    subheadline: 'Acts as an always-on sales assistant that qualifies buyers, recovers abandoned checkouts, and keeps the CRM perfectly in sync, protecting revenue on every visit.',
     features: [
       { icon: Brain, text: 'AI Triage Agent. A custom prompted advisor that extracts lead data via natural conversation and syncs directly to the CRM.' },
       { icon: ShoppingCart, text: 'Behavioral Cart Recovery. An n8n orchestrated loop that identifies abandoned checkouts and triggers AI generated email sequences.' },
@@ -88,7 +88,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'Voice AI',
     eyebrow: 'Enterprise Voice OS',
     headline: 'Enterprise Voice AI Overflow System',
-    subheadline: 'Engineered an autonomous voice agent ("Violet") to handle after hours healthcare calls with empathy, accuracy, and enterprise grade logging.',
+    subheadline: 'Handles overflow and after-hours calls for a healthcare business with a professional AI voice agent, so no patient is left waiting and every call is logged and escalated properly.',
     features: [
       { icon: PhoneCall, text: 'Uptiq Voice Capture. Violet greets callers, gathers patient inquiries, and captures structured intake data inside the GHL ecosystem.' },
       { icon: Webhook, text: 'Secure n8n Routing. Structured JSON payloads flow through an authenticated n8n webhook for orchestration and enrichment.' },
@@ -105,7 +105,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'Content Engine',
     eyebrow: 'Autonomous Publishing OS',
     headline: 'Autonomous Content Production Engine',
-    subheadline: 'A decoupled, state machine architecture that transforms raw social links into a fully formatted, human verified WordPress publishing pipeline with zero junk data.',
+    subheadline: 'Publishes fresh, on-brand content on autopilot with a human approval step, giving marketing teams consistent output without adding writers or losing editorial control.',
     features: [
       { icon: ShieldAlert, text: 'Gatekeeper Trigger. Airtable Active/Pending status eliminates runaway API costs and junk scraping.' },
       { icon: MapPin, text: 'Dynamic City Routing. Event Resource tags route payloads to correct WordPress categories with no hardcoding.' },
@@ -122,7 +122,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'Render Engine',
     eyebrow: 'Content & Render Pipeline',
     headline: 'Autonomous AI Content & Render Engine',
-    subheadline: 'A 100% autonomous bi daily pipeline that researches trends, drafts framework driven copy, and renders branded PNGs via a custom Puppeteer microservice.',
+    subheadline: 'Keeps brands visible without a full content team. The system researches trending topics, drafts posts, and produces branded graphics twice a day, fully hands-off.',
     features: [
       { icon: Rss, text: 'Intelligent Research. Scrapes Hacker News, TechCrunch, and OpenAI RSS to aggregate trending data.' },
       { icon: Cpu, text: 'AI Content Brain. Dynamically selects one of 8 frameworks (Tutorial, Workflow, Checklist, Case Study, more).' },
@@ -139,7 +139,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'AutoMatch',
     eyebrow: 'AI Car Brokerage',
     headline: 'AutoMatch: Zero Touch AI Car Brokerage',
-    subheadline: 'A production grade platform that automates the full lead to deal workflow with a multi model AI consensus engine, removing manual dealer coordination.',
+    subheadline: 'Removes manual coordination from car brokerage. Buyers get matched, dealers get notified, and transactions move forward automatically, so the team can focus on closing more deals.',
     features: [
       { icon: Brain, text: 'AI Consensus Engine. Cross validates Groq, Gemini, and OpenAI outputs to lock in high confidence matches.' },
       { icon: Workflow, text: 'Zero Touch Pipeline. n8n orchestrates intake, scoring, dealer routing, and buyer notifications end to end.' },
@@ -155,7 +155,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'JNK Logistics',
     eyebrow: 'RevOps Command Center',
     headline: 'JNK Logistics Flow: Real Time Dispatch & CRM Command Center',
-    subheadline: 'A high density dispatch and client portal built on Supabase Realtime, with AI assisted internal comms and airtight identity integrity for high volume bookings.',
+    subheadline: 'A live command center for a logistics business. Dispatchers see fleet activity and revenue in real time, clients track their shipments, and the whole operation stays clean and auditable.',
     features: [
       { icon: ShieldCheck, text: 'Identity & Data Integrity. Email based upsert logic eliminates database leakage and duplicate CRM records.' },
       { icon: Route, text: 'Live Client Portal. Dynamic state machine with SVG routing animations and conditional POD document gating.' },
@@ -171,7 +171,7 @@ const featuredProjects: FeaturedProject[] = [
     name: 'Masterclass',
     eyebrow: 'High-Ticket Funnel',
     headline: 'Architecture Masterclass Funnel & Infrastructure',
-    subheadline: 'Built a high-ticket conversion funnel and automated customer acquisition infrastructure with custom-coded dark-mode UI, interactive module previews, secure checkout styling, and automated backend routing.',
+    subheadline: 'A premium, high-converting sales funnel for a high-ticket masterclass, with a checkout experience and backend routing designed to protect margins and build buyer trust.',
     features: [
       { icon: Code2, text: 'Custom-coded dark-mode UI engineered for premium brand trust and conversion.' },
       { icon: LayoutTemplate, text: 'Interactive module previews that let prospects experience the curriculum before buying.' },
@@ -288,13 +288,13 @@ const FeaturedProjectsSection = () => {
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 px-4 py-2 backdrop-blur-xl">
             <Bot className="h-4 w-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Featured Projects</span>
+            <span className="text-sm text-muted-foreground">Client Work & Case Studies</span>
           </div>
           <h2 className="font-display text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">
-            Strategic SaaS solutions bridging <span className="gradient-text">AI Agent Orchestration</span> and GHL CRM Automation.
+            Real systems, real revenue, <span className="gradient-text">real business outcomes.</span>
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Auto-rotating showcase of polished product systems — built for clarity, automation depth, and premium UX.
+            A rotating look at platforms and automations I have built to help clients capture more leads, close more deals, and run leaner operations.
           </p>
         </motion.div>
 
