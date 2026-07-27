@@ -7,38 +7,38 @@ const timelineEvents = [
   {
     year: "Foundation",
     icon: GraduationCap,
-    title: "Physics Electronics Background",
-    description: "Built a foundation in systems thinking, signal processing, and problem solving methodologies."
+    title: "Engineering Mindset",
+    description: "A Physics Electronics background trained me to look at every business as a system, find the bottlenecks, and design something better."
   },
   {
     year: "Discovery",
     icon: Workflow,
-    title: "Entry into Automation & APIs",
-    description: "Discovered the power of connecting systems and automating repetitive tasks."
+    title: "First Business Wins",
+    description: "Started helping small teams replace repetitive manual tasks with reliable automation, and saw first-hand how much time and revenue was being lost."
   },
   {
-    year: "Mastery",
+    year: "Growth",
     icon: Brain,
-    title: "n8n Workflow Expertise",
-    description: "Achieved deep proficiency in n8n, building complex multi step automation workflows."
+    title: "Advanced Workflow Design",
+    description: "Built deep expertise in designing multi-step workflows that connect the tools businesses already use, without disrupting their operations."
   },
   {
-    year: "Mastery",
+    year: "Growth",
     icon: Network,
-    title: "GoHighLevel (GHL) Architecture",
-    description: "Designed full GHL ecosystems covering custom fields, AI Voice Agents, pipelines, snapshots, and conversion focused funnels."
+    title: "Sales & CRM Systems",
+    description: "Started architecting full sales and CRM ecosystems, including AI voice agents, pipelines, and conversion-focused funnels for service businesses."
   },
   {
-    year: "Mastery",
+    year: "Scale",
     icon: Database,
-    title: "Advanced CRM Orchestration",
-    description: "Orchestrate multi platform CRM stacks with real time syncing across Supabase, Airtable, SharePoint, and HighLevel using n8n and Power Automate."
+    title: "Multi-System Orchestration",
+    description: "Now orchestrate revenue, operations and customer data across multiple platforms so leadership has one clean, real-time view of the business."
   },
   {
-    year: "Current",
+    year: "Today",
     icon: Rocket,
-    title: "AI Driven Multi Channel Systems",
-    description: "Designing intelligent automation systems that leverage AI across multiple channels."
+    title: "AI-Driven Growth Partner",
+    description: "Partnering with founders and executives to design AI-powered systems that scale their business without scaling their headcount."
   }
 ];
 
