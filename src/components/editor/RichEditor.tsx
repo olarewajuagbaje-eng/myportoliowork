@@ -5,9 +5,9 @@ import Image from "@tiptap/extension-image";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import { Color } from "@tiptap/extension-color";
-import TextStyle from "@tiptap/extension-text-style";
+import { TextStyle } from "@tiptap/extension-text-style";
 import Placeholder from "@tiptap/extension-placeholder";
-import Table from "@tiptap/extension-table";
+import { Table } from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
@@ -155,7 +155,7 @@ export default function RichEditor({ value, onChange, onUploadImage, placeholder
   useEffect(() => {
     if (!editor) return;
     const current = editor.getHTML();
-    if (value && value !== current) editor.commands.setContent(value, false);
+    if (value && value !== current) editor.commands.setContent(value, { emitUpdate: false });
   }, [value, editor]);
 
   if (!editor) return <div className="p-6 text-sm text-muted-foreground">Loading editor…</div>;
