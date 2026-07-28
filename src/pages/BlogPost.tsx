@@ -118,9 +118,16 @@ export default function BlogPost() {
             className="w-full aspect-[16/9] object-cover rounded-2xl mb-10"
           />
         )}
-        <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-a:text-primary prose-code:text-secondary prose-code:before:hidden prose-code:after:hidden">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
-        </div>
+        {/^\s*</.test(post.body) ? (
+          <div
+            className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-a:text-primary prose-code:text-secondary prose-code:before:hidden prose-code:after:hidden"
+            dangerouslySetInnerHTML={{ __html: post.body }}
+          />
+        ) : (
+          <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-a:text-primary prose-code:text-secondary prose-code:before:hidden prose-code:after:hidden">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
+          </div>
+        )}
         {media.length > 0 && (
           <div className="mt-12 space-y-6">
             {media.map((m, i) =>

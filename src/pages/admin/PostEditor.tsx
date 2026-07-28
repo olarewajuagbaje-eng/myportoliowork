@@ -1,24 +1,29 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAuth } from "@/lib/auth";
+import { Loader2, ArrowLeft, Upload, X, Eye, EyeOff } from "lucide-react";
+import RichEditor from "@/components/editor/RichEditor";
+import SEOSidebar, { SEOData } from "@/components/editor/SEOSidebar";
+import AIAssistant from "@/components/editor/AIAssistant";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useAuth } from "@/lib/auth";
-import { Loader2, Upload, Image as ImageIcon, Video, X, ArrowLeft, Trash2 } from "lucide-react";
 
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
 
-const SIGNED_EXPIRY = 60 * 60 * 24 * 365; // 1 year
+const SIGNED_EXPIRY = 60 * 60 * 24 * 365;
 
-interface MediaRow {
-  id?: string;
-  url: string;
-  kind: "image" | "video";
-  caption: string | null;
-  alt: string | null;
-  sort_order: number;
+const looksLikeHtml = (s: string) => /^\s*</.test(s);
+
+const mdToHtmlPlaceholder = (md: string) => md; // Tiptap handles HTML; keep legacy MD as-is until user re-saves.
+
+function stripHtml(html: string) {
+  if (typeof document === "undefined") return html.replace(/<[^>]+>/g, " ");
+  const d = document.createElement("div");
+  d.innerHTML = html;
+  return d.textContent || "";
 }
 
 export default function PostEditor() {
@@ -33,75 +38,93 @@ export default function PostEditor() {
   const [slug, setSlug] = useState("");
   const [summary, setSummary] = useState("");
   const [body, setBody] = useState("");
+  const [legacyMarkdown, setLegacyMarkdown] = useState<string | null>(null);
   const [cover, setCover] = useState("");
   const [status, setStatus] = useState<"draft" | "published">("draft");
-  const [seoTitle, setSeoTitle] = useState("");
-  const [metaDesc, setMetaDesc] = useState("");
-  const [media, setMedia] = useState<MediaRow[]>([]);
   const [uploading, setUploading] = useState(false);
-  const [tab, setTab] = useState<"write" | "preview">("write");
+  const [showPreview, setShowPreview] = useState(false);
+  const [autoSavedAt, setAutoSavedAt] = useState<Date | null>(null);
+  const bodyRef = useRef(body);
+  bodyRef.current = body;
+
+  const [seo, setSeo] = useState<SEOData>({
+    seoTitle: "", metaDesc: "", slug: "", focusKeyword: "", canonicalUrl: "",
+    ogImage: "", ogTitle: "", twitterCard: "summary_large_image",
+    robots: "index,follow", schemaType: "Article",
+  });
+  const updateSeo = (patch: Partial<SEOData>) => setSeo((s) => ({ ...s, ...patch }));
+
+  useEffect(() => { updateSeo({ slug }); }, [slug]);
+  useEffect(() => { if (cover && !seo.ogImage) updateSeo({ ogImage: cover }); }, [cover]);
 
   useEffect(() => {
     if (isNew) return;
-    supabase
-      .from("posts")
-      .select("*")
-      .eq("id", id!)
-      .maybeSingle()
-      .then(async ({ data, error }) => {
+    supabase.from("posts").select("*").eq("id", id!).maybeSingle()
+      .then(({ data, error }) => {
         if (error || !data) { toast.error("Post not found"); nav("/admin"); return; }
         setTitle(data.title);
         setSlug(data.slug);
         setSummary(data.summary ?? "");
-        setBody(data.body ?? "");
+        const b = data.body ?? "";
+        if (b && !looksLikeHtml(b)) {
+          setLegacyMarkdown(b);
+          setBody("");
+        } else {
+          setBody(b);
+        }
         setCover(data.cover_image_url ?? "");
         setStatus(data.status);
-        setSeoTitle(data.seo_title ?? "");
-        setMetaDesc(data.meta_description ?? "");
-        const { data: m } = await supabase
-          .from("post_media")
-          .select("*")
-          .eq("post_id", id!)
-          .order("sort_order");
-        setMedia((m ?? []) as MediaRow[]);
+        setSeo((s) => ({
+          ...s,
+          seoTitle: data.seo_title ?? "",
+          metaDesc: data.meta_description ?? "",
+          slug: data.slug,
+        }));
         setLoading(false);
       });
   }, [id, isNew, nav]);
 
-  const uploadFile = async (file: File, kind: "image" | "video"): Promise<string | null> => {
+  const uploadFile = useCallback(async (file: File, kind: "image" | "video" = "image"): Promise<string | null> => {
+    if (!user) return null;
     const bucket = kind === "image" ? "post-images" : "post-videos";
-    const path = `${user!.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+    const path = `${user.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
     const { error } = await supabase.storage.from(bucket).upload(path, file, { cacheControl: "31536000" });
     if (error) { toast.error(error.message); return null; }
     const { data, error: se } = await supabase.storage.from(bucket).createSignedUrl(path, SIGNED_EXPIRY);
     if (se || !data?.signedUrl) { toast.error(se?.message ?? "Sign URL failed"); return null; }
     return data.signedUrl;
-  };
+  }, [user]);
 
   const onCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]; if (!f) return;
     setUploading(true);
-    const url = await uploadFile(f, "image");
+    const url = await uploadFile(f);
     setUploading(false);
     if (url) setCover(url);
   };
 
-  const onMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>, kind: "image" | "video") => {
-    const f = e.target.files?.[0]; if (!f) return;
-    setUploading(true);
-    const url = await uploadFile(f, kind);
-    setUploading(false);
-    if (url) setMedia((m) => [...m, { url, kind, caption: "", alt: "", sort_order: m.length }]);
-    e.target.value = "";
+  const migrateLegacy = () => {
+    if (!legacyMarkdown) return;
+    // Convert markdown into HTML by rendering off-screen via a temporary container
+    // (react-markdown output). For simplicity, we wrap in a <div> and let Tiptap parse.
+    // A basic pass: preserve paragraphs; user can re-format in the editor.
+    const html = legacyMarkdown
+      .split(/\n{2,}/)
+      .map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`)
+      .join("");
+    setBody(html);
+    setLegacyMarkdown(null);
+    toast.success("Legacy content loaded — formatting preserved as paragraphs");
   };
 
-  const save = async (newStatus?: "draft" | "published") => {
-    if (!title.trim()) return toast.error("Title required");
+  const save = async (newStatus?: "draft" | "published", silent = false) => {
+    if (!title.trim()) { if (!silent) toast.error("Title required"); return; }
     const finalSlug = slug.trim() || slugify(title);
     const finalStatus = newStatus ?? status;
-    const readingTime = Math.max(1, Math.round(body.split(/\s+/).length / 200));
+    const plain = stripHtml(body);
+    const readingTime = Math.max(1, Math.round(plain.split(/\s+/).filter(Boolean).length / 200));
 
-    setSaving(true);
+    if (!silent) setSaving(true);
     const payload = {
       title: title.trim(),
       slug: finalSlug,
@@ -109,8 +132,8 @@ export default function PostEditor() {
       body,
       cover_image_url: cover || null,
       status: finalStatus,
-      seo_title: seoTitle.trim() || null,
-      meta_description: metaDesc.trim() || null,
+      seo_title: seo.seoTitle.trim() || null,
+      meta_description: seo.metaDesc.trim() || null,
       reading_time_minutes: readingTime,
       author_id: user!.id,
       published_at: finalStatus === "published" ? new Date().toISOString() : null,
@@ -119,43 +142,69 @@ export default function PostEditor() {
     let postId = id;
     if (isNew) {
       const { data, error } = await supabase.from("posts").insert(payload).select("id").single();
-      if (error) { setSaving(false); return toast.error(error.message); }
+      if (error) { if (!silent) { setSaving(false); toast.error(error.message); } return; }
       postId = data.id;
     } else {
       const { error } = await supabase.from("posts").update(payload).eq("id", id!);
-      if (error) { setSaving(false); return toast.error(error.message); }
-    }
-
-    // Replace media
-    await supabase.from("post_media").delete().eq("post_id", postId!);
-    if (media.length) {
-      await supabase.from("post_media").insert(
-        media.map((m, i) => ({
-          post_id: postId!,
-          url: m.url,
-          kind: m.kind,
-          caption: m.caption,
-          alt: m.alt,
-          sort_order: i,
-        }))
-      );
+      if (error) { if (!silent) { setSaving(false); toast.error(error.message); } return; }
     }
 
     setStatus(finalStatus);
-    setSaving(false);
-    toast.success(finalStatus === "published" ? "Published" : "Saved as draft");
-    if (isNew) nav(`/admin/posts/${postId}`);
+    if (!silent) {
+      setSaving(false);
+      toast.success(finalStatus === "published" ? "Published" : "Saved");
+    }
+    setAutoSavedAt(new Date());
+    if (isNew && postId) nav(`/admin/posts/${postId}`);
+  };
+
+  // Auto-save every 30s when editing existing posts
+  useEffect(() => {
+    if (isNew || !title) return;
+    const t = setInterval(() => { save(status, true); }, 30000);
+    return () => clearInterval(t);
+  }, [isNew, title, status, body, summary, cover, seo]);
+
+  const getContext = () => {
+    const sel = typeof window !== "undefined" ? window.getSelection()?.toString() ?? "" : "";
+    return { selection: sel, body: stripHtml(bodyRef.current), title };
+  };
+
+  const onReplaceSelection = (text: string) => {
+    // Basic strategy: append when nothing is selected; otherwise wrap in paragraph
+    const sel = typeof window !== "undefined" ? window.getSelection()?.toString() ?? "" : "";
+    if (!sel) {
+      setBody((b) => b + `<p>${text.replace(/\n{2,}/g, "</p><p>").replace(/\n/g, "<br/>")}</p>`);
+    } else {
+      // Let user paste manually — we surface the AI text below the editor
+      setBody((b) => b + `<blockquote><p>${text}</p></blockquote>`);
+    }
+  };
+
+  const onAppend = (text: string) => {
+    setBody((b) => b + text.split(/\n{2,}/).map((p) => `<p>${p.replace(/\n/g, "<br/>")}</p>`).join(""));
+  };
+
+  const onSetField = (field: "seo_title" | "meta_description", value: string) => {
+    if (field === "seo_title") updateSeo({ seoTitle: value });
+    else updateSeo({ metaDesc: value });
+    toast.success("Applied to SEO");
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><Loader2 className="animate-spin text-muted-foreground" /></div>;
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-[1400px] mx-auto">
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <Link to="/admin" className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
           <ArrowLeft className="w-4 h-4" /> Posts
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {autoSavedAt && <span className="text-xs text-muted-foreground hidden sm:inline">Auto-saved {autoSavedAt.toLocaleTimeString()}</span>}
+          <button onClick={() => setShowPreview((p) => !p)} className="px-3 py-2 rounded-lg border border-white/10 text-sm hover:bg-white/5 flex items-center gap-1.5">
+            {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            <span className="hidden sm:inline">{showPreview ? "Edit" : "Preview"}</span>
+          </button>
           <button onClick={() => save("draft")} disabled={saving} className="px-4 py-2 rounded-lg border border-white/10 text-sm hover:bg-white/5">
             Save draft
           </button>
@@ -165,146 +214,94 @@ export default function PostEditor() {
         </div>
       </div>
 
-      <div className="space-y-4">
-        <input
-          value={title}
-          onChange={(e) => { setTitle(e.target.value); if (isNew || !slug) setSlug(slugify(e.target.value)); }}
-          placeholder="Post title"
-          className="w-full bg-transparent text-3xl md:text-4xl font-display font-bold focus:outline-none placeholder:text-muted-foreground/40"
-        />
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>/blog/</span>
+      <div className="grid lg:grid-cols-[1fr_320px] gap-6">
+        <div className="space-y-4 min-w-0">
           <input
-            value={slug}
-            onChange={(e) => setSlug(slugify(e.target.value))}
-            className="bg-black/30 border border-white/10 rounded px-2 py-1 flex-1 max-w-sm focus:outline-none focus:border-primary/60"
+            value={title}
+            onChange={(e) => { setTitle(e.target.value); if (isNew || !slug) setSlug(slugify(e.target.value)); }}
+            placeholder="Post title"
+            className="w-full bg-transparent text-3xl md:text-4xl font-display font-bold focus:outline-none placeholder:text-muted-foreground/40"
           />
-          <span className={`ml-auto px-2 py-0.5 rounded text-xs ${status === "published" ? "bg-secondary/20 text-secondary" : "bg-white/10"}`}>{status}</span>
-        </div>
-
-        <textarea
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
-          placeholder="Short summary (shown on blog list and social previews)"
-          rows={2}
-          className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-primary/60"
-        />
-
-        {/* Cover */}
-        <div className="glass-card rounded-2xl p-4">
-          <label className="text-xs uppercase tracking-wider text-muted-foreground">Cover image</label>
-          {cover ? (
-            <div className="relative mt-2">
-              <img src={cover} alt="cover" className="w-full aspect-[16/9] object-cover rounded-lg" />
-              <button onClick={() => setCover("")} className="absolute top-2 right-2 p-1.5 rounded-full bg-black/70 hover:bg-black">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <label className="mt-2 flex items-center justify-center gap-2 border border-dashed border-white/10 rounded-lg p-8 cursor-pointer hover:border-primary/40 text-sm text-muted-foreground">
-              <Upload className="w-4 h-4" /> Upload cover image
-              <input type="file" accept="image/*" className="hidden" onChange={onCoverUpload} />
-            </label>
-          )}
-        </div>
-
-        {/* Body */}
-        <div className="glass-card rounded-2xl overflow-hidden">
-          <div className="flex border-b border-white/5">
-            {(["write", "preview"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`px-4 py-2 text-sm capitalize ${tab === t ? "text-primary border-b-2 border-primary" : "text-muted-foreground"}`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-          {tab === "write" ? (
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Write in Markdown… (# heading, **bold**, [link](url), ```code```, lists, tables all supported)"
-              rows={20}
-              className="w-full bg-transparent px-5 py-4 font-mono text-sm focus:outline-none resize-y"
-            />
-          ) : (
-            <div className="prose prose-invert max-w-none p-6">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{body || "*Nothing to preview yet.*"}</ReactMarkdown>
-            </div>
-          )}
-        </div>
-
-        {/* Extra media */}
-        <div className="glass-card rounded-2xl p-4">
-          <div className="flex items-center justify-between mb-3">
-            <label className="text-xs uppercase tracking-wider text-muted-foreground">Additional media (appended after body)</label>
-            <div className="flex items-center gap-2">
-              <label className="px-3 py-1.5 rounded-lg border border-white/10 text-xs cursor-pointer hover:bg-white/5 flex items-center gap-1">
-                <ImageIcon className="w-3.5 h-3.5" /> Image
-                <input type="file" accept="image/*" className="hidden" onChange={(e) => onMediaUpload(e, "image")} />
-              </label>
-              <label className="px-3 py-1.5 rounded-lg border border-white/10 text-xs cursor-pointer hover:bg-white/5 flex items-center gap-1">
-                <Video className="w-3.5 h-3.5" /> Video
-                <input type="file" accept="video/*" className="hidden" onChange={(e) => onMediaUpload(e, "video")} />
-              </label>
-            </div>
-          </div>
-          {uploading && <p className="text-xs text-muted-foreground mb-2">Uploading…</p>}
-          {media.length === 0 ? (
-            <p className="text-xs text-muted-foreground">No extra media.</p>
-          ) : (
-            <div className="space-y-3">
-              {media.map((m, i) => (
-                <div key={i} className="flex gap-3 border border-white/5 rounded-lg p-3">
-                  {m.kind === "image" ? (
-                    <img src={m.url} alt="" className="w-24 h-24 object-cover rounded" />
-                  ) : (
-                    <video src={m.url} className="w-24 h-24 object-cover rounded" />
-                  )}
-                  <div className="flex-1 space-y-2">
-                    <input
-                      value={m.caption ?? ""}
-                      onChange={(e) => setMedia((arr) => arr.map((x, idx) => idx === i ? { ...x, caption: e.target.value } : x))}
-                      placeholder="Caption"
-                      className="w-full text-sm bg-black/30 border border-white/10 rounded px-2 py-1 focus:outline-none"
-                    />
-                    <input
-                      value={m.alt ?? ""}
-                      onChange={(e) => setMedia((arr) => arr.map((x, idx) => idx === i ? { ...x, alt: e.target.value } : x))}
-                      placeholder="Alt text"
-                      className="w-full text-sm bg-black/30 border border-white/10 rounded px-2 py-1 focus:outline-none"
-                    />
-                  </div>
-                  <button onClick={() => setMedia((arr) => arr.filter((_, idx) => idx !== i))} className="text-muted-foreground hover:text-destructive">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* SEO */}
-        <details className="glass-card rounded-2xl p-4">
-          <summary className="cursor-pointer text-sm font-medium">SEO settings</summary>
-          <div className="mt-4 space-y-3">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+            <span>/blog/</span>
             <input
-              value={seoTitle}
-              onChange={(e) => setSeoTitle(e.target.value)}
-              placeholder="SEO title (defaults to post title)"
-              className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary/60"
+              value={slug}
+              onChange={(e) => setSlug(slugify(e.target.value))}
+              className="bg-black/30 border border-white/10 rounded px-2 py-1 flex-1 max-w-sm focus:outline-none focus:border-primary/60"
             />
-            <textarea
-              value={metaDesc}
-              onChange={(e) => setMetaDesc(e.target.value)}
-              placeholder="Meta description (defaults to summary)"
-              rows={2}
-              className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary/60"
-            />
+            <span className={`ml-auto px-2 py-0.5 rounded text-xs ${status === "published" ? "bg-secondary/20 text-secondary" : "bg-white/10"}`}>{status}</span>
           </div>
-        </details>
+
+          <textarea
+            value={summary}
+            onChange={(e) => setSummary(e.target.value)}
+            placeholder="Short summary (shown on blog list and social previews)"
+            rows={2}
+            className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-primary/60"
+          />
+
+          {/* Cover */}
+          <div className="glass-card rounded-2xl p-4">
+            <label className="text-xs uppercase tracking-wider text-muted-foreground">Cover image</label>
+            {cover ? (
+              <div className="relative mt-2">
+                <img src={cover} alt="cover" className="w-full aspect-[16/9] object-cover rounded-lg" />
+                <button onClick={() => setCover("")} className="absolute top-2 right-2 p-1.5 rounded-full bg-black/70 hover:bg-black">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <label className="mt-2 flex items-center justify-center gap-2 border border-dashed border-white/10 rounded-lg p-8 cursor-pointer hover:border-primary/40 text-sm text-muted-foreground">
+                <Upload className="w-4 h-4" /> {uploading ? "Uploading…" : "Upload cover image"}
+                <input type="file" accept="image/*" className="hidden" onChange={onCoverUpload} />
+              </label>
+            )}
+          </div>
+
+          {legacyMarkdown !== null && (
+            <div className="glass-card rounded-2xl p-4 border-yellow-500/30">
+              <p className="text-sm text-yellow-500 mb-2">This post uses the legacy Markdown editor.</p>
+              <p className="text-xs text-muted-foreground mb-3">Import it into the new rich editor to keep formatting editable. The blog will keep rendering the current Markdown until you save with the new editor.</p>
+              <div className="flex gap-2">
+                <button onClick={migrateLegacy} className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-medium">Import to rich editor</button>
+              </div>
+            </div>
+          )}
+
+          {/* Editor / Preview */}
+          {showPreview ? (
+            <article className="glass-card rounded-2xl p-6">
+              <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">{title || "Untitled"}</h1>
+              {cover && <img src={cover} alt="" className="w-full aspect-[16/9] object-cover rounded-xl mb-6" />}
+              {body ? (
+                <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display" dangerouslySetInnerHTML={{ __html: body }} />
+              ) : legacyMarkdown ? (
+                <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{legacyMarkdown}</ReactMarkdown>
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm">Nothing to preview yet.</p>
+              )}
+            </article>
+          ) : (
+            <RichEditor
+              value={body}
+              onChange={setBody}
+              onUploadImage={uploadFile}
+              placeholder="Start writing your story…"
+            />
+          )}
+        </div>
+
+        <div className="space-y-4">
+          <AIAssistant
+            getContext={getContext}
+            onReplaceSelection={onReplaceSelection}
+            onSetField={onSetField}
+            onAppend={onAppend}
+          />
+          <SEOSidebar data={seo} onChange={updateSeo} bodyText={body} title={title} />
+        </div>
       </div>
     </div>
   );
