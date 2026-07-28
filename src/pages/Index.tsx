@@ -2,10 +2,15 @@ import MeshGradientBackground from '@/components/MeshGradientBackground';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
+import BusinessImpactSection from '@/components/BusinessImpactSection';
 import FeaturedProjectsSection from '@/components/FeaturedProjectsSection';
 import ProjectsSection from '@/components/ProjectsSection';
+import WhoIWorkWithSection from '@/components/WhoIWorkWithSection';
+import WhyDelaySection from '@/components/WhyDelaySection';
+import AfterContactSection from '@/components/AfterContactSection';
 import ClientReviewsSection from '@/components/ClientReviewsSection';
 import TrustSection from '@/components/TrustSection';
+import FAQBeforeHiringSection from '@/components/FAQBeforeHiringSection';
 import ContactSection from '@/components/ContactSection';
 import PreFooterTerminal from '@/components/PreFooterTerminal';
 import Footer from '@/components/Footer';
@@ -22,10 +27,15 @@ const Index = () => {
       <main className="relative z-10">
         <HeroSection />
         <AboutSection />
+        <BusinessImpactSection />
         <FeaturedProjectsSection />
+        <WhoIWorkWithSection />
         <ProjectsSection />
+        <WhyDelaySection />
         <ClientReviewsSection />
+        <AfterContactSection />
         <TrustSection />
+        <FAQBeforeHiringSection />
         <ContactSection />
         <PreFooterTerminal />
       </main>
@@ -35,3 +45,4 @@ const Index = () => {
 };
 
 export default Index;
+
