@@ -20,6 +20,7 @@ export type Database = {
           description: string | null
           id: string
           name: string
+          parent_id: string | null
           slug: string
           updated_at: string
         }
@@ -28,6 +29,7 @@ export type Database = {
           description?: string | null
           id?: string
           name: string
+          parent_id?: string | null
           slug: string
           updated_at?: string
         }
@@ -36,10 +38,114 @@ export type Database = {
           description?: string | null
           id?: string
           name?: string
+          parent_id?: string | null
           slug?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          visitor_hash: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          visitor_hash: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          visitor_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comments: {
+        Row: {
+          author_email: string | null
+          author_name: string
+          author_user_id: string | null
+          body: string
+          created_at: string
+          edit_secret_hash: string | null
+          edited_at: string | null
+          id: string
+          like_count: number
+          parent_id: string | null
+          pinned: boolean
+          post_id: string
+          status: Database["public"]["Enums"]["comment_status"]
+          visitor_hash: string | null
+        }
+        Insert: {
+          author_email?: string | null
+          author_name: string
+          author_user_id?: string | null
+          body: string
+          created_at?: string
+          edit_secret_hash?: string | null
+          edited_at?: string | null
+          id?: string
+          like_count?: number
+          parent_id?: string | null
+          pinned?: boolean
+          post_id: string
+          status?: Database["public"]["Enums"]["comment_status"]
+          visitor_hash?: string | null
+        }
+        Update: {
+          author_email?: string | null
+          author_name?: string
+          author_user_id?: string | null
+          body?: string
+          created_at?: string
+          edit_secret_hash?: string | null
+          edited_at?: string | null
+          id?: string
+          like_count?: number
+          parent_id?: string | null
+          pinned?: boolean
+          post_id?: string
+          status?: Database["public"]["Enums"]["comment_status"]
+          visitor_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       leads: {
         Row: {
@@ -91,6 +197,94 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
+          confirm_token: string | null
+          confirmed_at: string | null
+          created_at: string
+          email: string
+          id: string
+          source: string | null
+          status: Database["public"]["Enums"]["subscriber_status"]
+        }
+        Insert: {
+          confirm_token?: string | null
+          confirmed_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          source?: string | null
+          status?: Database["public"]["Enums"]["subscriber_status"]
+        }
+        Update: {
+          confirm_token?: string | null
+          confirmed_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          source?: string | null
+          status?: Database["public"]["Enums"]["subscriber_status"]
+        }
+        Relationships: []
+      }
+      post_bookmarks: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_bookmarks_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          visitor_hash: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          visitor_hash: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          visitor_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       post_media: {
         Row: {
@@ -312,6 +506,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      bump_comment_like_count: {
+        Args: { _comment_id: string; _delta: number }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -322,8 +520,10 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "editor"
+      comment_status: "pending" | "approved" | "hidden"
       media_kind: "image" | "video"
       post_status: "draft" | "published"
+      subscriber_status: "pending" | "confirmed" | "unsubscribed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -452,8 +652,10 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor"],
+      comment_status: ["pending", "approved", "hidden"],
       media_kind: ["image", "video"],
       post_status: ["draft", "published"],
+      subscriber_status: ["pending", "confirmed", "unsubscribed"],
     },
   },
 } as const
