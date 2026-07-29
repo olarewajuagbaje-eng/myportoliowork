@@ -14,14 +14,19 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
+import CategoryArchive from "./pages/CategoryArchive";
+import TagArchive from "./pages/TagArchive";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminPosts from "./pages/admin/AdminPosts";
 import PostEditor from "./pages/admin/PostEditor";
+import AdminCategories from "./pages/admin/AdminCategories";
+import AdminTags from "./pages/admin/AdminTags";
+import AdminComments from "./pages/admin/AdminComments";
+import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import SetupAdmin from "./pages/SetupAdmin";
 
 const queryClient = new QueryClient();
 
-// GitHub Pages SPA redirect handler: consumes the path stored by 404.html
 const SpaRedirectHandler = () => {
   const nav = useNavigate();
   useEffect(() => {
@@ -50,6 +55,8 @@ const App = () => (
             <Route path="/portal" element={<ClientPortal />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/blog/category/:slug" element={<CategoryArchive />} />
+            <Route path="/blog/tag/:slug" element={<TagArchive />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -58,6 +65,10 @@ const App = () => (
               <Route index element={<AdminPosts />} />
               <Route path="posts/new" element={<PostEditor />} />
               <Route path="posts/:id" element={<PostEditor />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="tags" element={<AdminTags />} />
+              <Route path="comments" element={<AdminComments />} />
+              <Route path="newsletter" element={<AdminNewsletter />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
