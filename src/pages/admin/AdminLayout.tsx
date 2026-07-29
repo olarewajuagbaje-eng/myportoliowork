@@ -1,6 +1,6 @@
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
-import { Loader2, LogOut, FileText, PlusCircle, ExternalLink } from "lucide-react";
+import { Loader2, LogOut, FileText, PlusCircle, ExternalLink, Folder, Tag, MessageSquare, Mail } from "lucide-react";
 
 export default function AdminLayout() {
   const { loading, session, isAdmin, signOut } = useAuth();
@@ -35,6 +35,18 @@ export default function AdminLayout() {
           </Link>
           <Link to="/admin/posts/new" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5">
             <PlusCircle className="w-4 h-4" /> New post
+          </Link>
+          <Link to="/admin/categories" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5">
+            <Folder className="w-4 h-4" /> Categories
+          </Link>
+          <Link to="/admin/tags" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5">
+            <Tag className="w-4 h-4" /> Tags
+          </Link>
+          <Link to="/admin/comments" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5">
+            <MessageSquare className="w-4 h-4" /> Comments
+          </Link>
+          <Link to="/admin/newsletter" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5">
+            <Mail className="w-4 h-4" /> Newsletter
           </Link>
           <Link to="/blog" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5">
             <ExternalLink className="w-4 h-4" /> View blog

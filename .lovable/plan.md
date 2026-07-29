@@ -1,65 +1,63 @@
-## Done in this turn
-- Added `<meta name="google-site-verification" ...>` to `index.html`. Live after your next deploy to `agbajeautomation.me`.
+# Phase 2 – Reader Engagement & Content Discovery
 
-## Blockers I need you to resolve before I build the rest
+Shipping in one coordinated phase. Existing design tokens (glass-card, hover-lift, primary gradient), URLs (/blog, /blog/:slug), auth, SEO, and Markdown backward compatibility are preserved.
 
-**1. Which verification token is correct?**
-You pasted two variants. I used the first:
-- Used: `qnVFLLMXjZaloQGRx-MHwKJsLEkxR9tja4MfVSqGbbE`
-- Also pasted: `gnVFLLMXjZaIoOGRx-MHwkJsLEkxR9tja4MfVSqGbbE`
-Copy the exact string from Google Search Console and confirm.
+## 1. Database (single migration)
 
-**2. Hosting conflict — this is the big one.**
-Your site currently deploys via GitHub Actions to **GitHub Pages** (`.github/workflows/deploy.yml` → `agbajeautomation.me`). A blog + admin + auth backed by Lovable Cloud will work from a static host for reads/writes (the Cloud SDK talks directly to the backend from the browser), **but**:
-- Auth email flows (password reset, verification) need Lovable's managed email, which requires the site to be published through **Lovable hosting**, not GitHub Pages.
-- Custom domain `agbajeautomation.me` can only point at one host at a time.
+New tables in `public` (all with grants + RLS):
 
-Pick one:
-- **A. Migrate hosting to Lovable** (recommended). I remove the GitHub Actions workflow, publish through Lovable, then you re-point DNS for `agbajeautomation.me` to Lovable. Full auth + email + admin works.
-- **B. Stay on GitHub Pages**. Blog + admin still work, but password reset emails won't. You'd log in with email/password only, and I'd bootstrap your admin account manually.
+- `post_likes` (post_id, ip_hash, created_at) — anon-likeable, 1 per hashed IP+post
+- `post_bookmarks` (post_id, user_id) — auth only
+- `comments` (id, post_id, parent_id, author_name, author_email, author_user_id, body, status: pending|approved|hidden, pinned, like_count, edited_at, created_at) — public read of `approved`, insert open, admin moderates
+- `comment_likes` (comment_id, ip_hash)
+- `newsletter_subscribers` (id, email unique, status: pending|confirmed|unsubscribed, confirm_token, confirmed_at, created_at) — insert open, admin read
+- Extend `categories` with `parent_id uuid` self-ref
+- Add view/RPC `increment_post_like(post_id, ip_hash)` (SECURITY DEFINER) returning new count
 
-## Phased plan (after blockers resolved)
+Grants: anon SELECT on approved comments + counts; authenticated for bookmarks; service_role for admin.
 
-### Phase 1 — Backend + Auth (Lovable Cloud)
-- Enable Lovable Cloud.
-- Tables: `profiles`, `user_roles` (enum `app_role`: admin/editor), `categories`, `tags`, `posts`, `post_tags`, `post_media`. RLS: public reads only for `status='published'`; writes gated by `has_role(auth.uid(),'admin')`.
-- Storage buckets: `post-images` (public), `post-videos` (public).
-- Auth: email/password + Google. `/login`, `/forgot-password`, `/reset-password` routes.
-- First-admin bootstrap: I'll add a one-time trigger that promotes the first signup whose email matches a value you give me to `admin`. Tell me the email to whitelist.
+## 2. Backend / Edge Functions
 
-### Phase 2 — Public blog
-- Routes: `/blog` (list + search + category/tag filters), `/blog/:slug` (article).
-- Reading time, related posts (same category), author card, publish date.
-- Rich content rendering: markdown → HTML with syntax-highlighted code blocks (`shiki`), image gallery, YouTube + uploaded video embeds.
-- Per-route `<title>`, meta description, canonical, OG/Twitter tags, `Article` JSON-LD via `react-helmet-async`.
+- `newsletter-subscribe` — creates pending row, sends double opt-in email via Resend (already configured), returns generic success
+- `newsletter-confirm` — token flip to `confirmed`
+- Update `ai-writer` — add resilient fallback chain: `google/gemini-3.6-flash` → `google/gemini-2.5-flash` → `openai/gpt-5-mini`. Retry on 429/5xx/timeout with 8s AbortController. Log fallback reason server-side; return generic message to client. No raw API errors to UI.
 
-### Phase 3 — Admin dashboard (`/admin/*`, admin-only)
-- Post list with draft/published filter, search.
-- Post editor: title, auto-slug, summary, cover image, body (rich text — TipTap), category, tags, SEO title, meta description, featured/draft toggle, media uploader (images + video).
-- Category + tag managers.
-- All routes wrapped in an `AdminGuard` that checks `has_role`.
+## 3. Admin CMS additions
 
-### Phase 4 — New pages
-`/`, `/about`, `/services/ai-automation`, `/services/n8n`, `/services/ai-agents`, `/case-studies`, `/blog`, `/resources`, `/contact`. Home stays as-is. New pages reuse existing sections + design tokens — no redesign.
+- `/admin/categories` — CRUD, slug auto, parent selector, description
+- `/admin/tags` — CRUD, slug auto, search
+- `/admin/comments` — moderation queue: approve / hide / delete / pin, filter by status/post
+- `/admin/newsletter` — subscriber list, status filter, CSV export button
 
-### Phase 5 — SEO + performance
-- Dynamic `sitemap.xml` generator that pulls published posts at build time (`scripts/generate-sitemap.ts`, wired to `predev`/`prebuild`).
-- `robots.txt` already fine — add `Sitemap:` line.
-- Per-route Helmet metadata on every new page.
-- Image lazy-loading, `loading="lazy"` on non-LCP images, route-level code splitting for `/admin/*` and `/blog/*`.
+Post editor: category select + tag autocomplete multi-select (writes to `post_tags`).
 
-### Phase 6 — Deploy + verify
-- Publish, verify Google Search Console picks up the meta tag, submit sitemap.
+## 4. Public blog UX
+
+**BlogList**: category & tag filter chips, search already present.
+
+**BlogPost** upgrades (new components):
+- `ReadingProgressBar` — top fixed 2px bar
+- `TableOfContents` — sticky right rail on desktop, drawer on mobile, generated from H2/H3
+- `ArticleMeta` — category chip, tag chips, last updated, author bio card
+- `EngagementBar` — sticky floating (desktop left) + inline (mobile): like, bookmark, copy link, share menu (LinkedIn/X/Facebook/WhatsApp/Telegram/Email)
+- `CommentsSection` — threaded, guest name+email, nested replies, like, edit within 15min, delete own (client token in localStorage tying comment_id → edit key stored server-side via hashed secret), spam honeypot + simple rate limit via ip_hash
+- `NewsletterInline` — below article, double-opt-in messaging
+- `PrevNextArticles` + `RelatedArticles` — by shared category/tags
+- `BackToBlog` button
+
+**Archive pages**: `/blog/category/:slug`, `/blog/tag/:slug` — reuse BlogList grid.
+
+## 5. Reliability & QA
+
+- All AI calls: try/catch with fallback loop; user-facing message = "Retrying with a backup model…" then final generic error on total failure
+- Mobile: TOC becomes bottom sheet; engagement bar becomes inline; comment threads indent capped at 3 levels then flatten
+- Accessibility: all buttons labelled, focus rings, keyboard-nav for share menu, aria-live on like counts
+- Preserve Markdown rendering path in BlogPost
+- SEO: archive pages get canonical + meta; comment JSON-LD added to article schema
 
 ## Technical notes
-- Stack additions: `@tanstack/react-query` (already in), `react-helmet-async`, `@tiptap/react` + starter kit, `shiki` or `rehype-pretty-code`, `react-markdown` + `remark-gfm`, `date-fns`.
-- Cloud SDK reads env vars already in `.env`.
-- Rich text is stored as markdown (portable, diff-friendly) plus a rendered HTML cache column for fast reads.
-- All new tables get standard timestamps + `updated_at` triggers, GRANTs, and RLS.
 
-## Reply with
-1. Correct verification token.
-2. Hosting choice A or B.
-3. Email address to whitelist as first admin.
-
-Once I have those, I'll start Phase 1.
+- Anon "like/comment" identity via SHA-256(ip + UA + daily-salt) computed server-side in an edge function `engagement` (single function multiplexes like/unlike/comment CRUD) to keep RLS strict
+- Share URLs built client-side, no tracking params
+- CSV export = client-side blob from admin query
+- No new routes above the 4 admin + 2 archive pages listed; App.tsx additions only
