@@ -224,13 +224,13 @@ const handler = async (req: Request): Promise<Response> => {
           <div class="content">
             <div class="section">
               <div class="section-title">📧 Contact Details</div>
-              <p><span class="label">Name:</span> <span class="value">${name}</span></p>
-              <p><span class="label">Email:</span> <span class="value">${email}</span></p>
+              <p><span class="label">Name:</span> <span class="value">${escapeHtml(name)}</span></p>
+              <p><span class="label">Email:</span> <span class="value">${escapeHtml(email)}</span></p>
             </div>
             
             <div class="section">
               <div class="section-title">💬 Message</div>
-              <p class="section-content">${message}</p>
+              <p class="section-content">${escapeHtml(message)}</p>
             </div>
             
             <div class="section ai-analysis">
@@ -259,7 +259,7 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "Portfolio Leads <onboarding@resend.dev>",
         to: ["olarewajuagbaje@gmail.com"],
-        subject: `[PORTFOLIO LEAD] - ${analysis.category} from ${name}`,
+        subject: `[PORTFOLIO LEAD] - ${analysis.category} from ${name.slice(0, 60)}`,
         html: emailHtml
       })
     });
@@ -342,7 +342,7 @@ const handler = async (req: Request): Promise<Response> => {
     );
   } catch (error: unknown) {
     console.error("Error in send-lead-notification:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorMessage = "We couldn't send your message right now. Please try again shortly.";
     return new Response(
       JSON.stringify({ 
         error: errorMessage,
