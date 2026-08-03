@@ -129,7 +129,7 @@ export default function BlogPost() {
               {isHtml ? (
                 <div
                   className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-a:text-primary prose-code:text-secondary prose-code:before:hidden prose-code:after:hidden"
-                  dangerouslySetInnerHTML={{ __html: post.body }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
                 />
               ) : (
                 <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-a:text-primary prose-code:text-secondary prose-code:before:hidden prose-code:after:hidden">
