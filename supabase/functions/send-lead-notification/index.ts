@@ -109,13 +109,62 @@ Only respond with valid JSON, no markdown or extra text.`
   }
 }
 
+// Basic per-isolate rate limiting for this public endpoint
+const hits = new Map<string, number[]>();
+function rateLimited(key: string, limit: number, windowMs: number) {
+  const now = Date.now();
+  const arr = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
+  arr.push(now);
+  hits.set(key, arr);
+  if (hits.size > 5000) hits.clear();
+  return arr.length > limit;
+}
+
+const clean = (v: unknown, max: number) =>
+  String(v ?? "").replace(/<[^>]*>/g, "").replace(/[\u0000-\u001F]/g, " ").trim().slice(0, max);
+
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed", success: false }), {
+      status: 405, headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
+  }
 
   try {
-    const { name, email, message }: LeadNotificationRequest = await req.json();
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "0.0.0.0";
+    if (rateLimited(ip, 3, 60_000)) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please try again in a minute.", success: false }),
+        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const payload = await req.json().catch(() => null) as Partial<LeadNotificationRequest> | null;
+    const name = clean(payload?.name, 100);
+    const email = clean(payload?.email, 320).toLowerCase();
+    const message = clean(payload?.message, 4000);
+
+    if (!name || !message || message.length < 5 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(
+        JSON.stringify({ error: "Please enter your name, a valid email and a short message.", success: false }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+
+    if (!RESEND_API_KEY) {
+      console.error("RESEND_API_KEY not configured");
+      throw new Error("Email service not configured");
+    }
+
+    console.log("Processing lead notification via email...");
 
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
