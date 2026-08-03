@@ -23,8 +23,29 @@ async function adminExists(): Promise<boolean> {
   return (count ?? 0) > 0;
 }
 
+const hits = new Map<string, number[]>();
+function rateLimited(key: string, limit: number, windowMs: number) {
+  const now = Date.now();
+  const arr = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
+  arr.push(now);
+  hits.set(key, arr);
+  if (hits.size > 2000) hits.clear();
+  return arr.length > limit;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "0.0.0.0";
+  if (rateLimited(ip, 10, 60_000)) {
+    return new Response(JSON.stringify({ error: "Too many requests. Please try again shortly." }), {
+      status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
 
   try {
     const body = await req.json().catch(() => ({}));
@@ -82,7 +103,7 @@ Deno.serve(async (req) => {
           user_metadata: { display_name: displayName },
         });
         if (createErr || !created.user) {
-          return new Response(JSON.stringify({ error: createErr?.message ?? "Failed to create user" }), {
+          return new Response(JSON.stringify({ error: "Could not create the administrator account." }), {
             status: 400,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
@@ -101,7 +122,7 @@ Deno.serve(async (req) => {
         .from("user_roles")
         .insert({ user_id: userId!, role: "admin" });
       if (roleErr && !String(roleErr.message).includes("duplicate")) {
-        return new Response(JSON.stringify({ error: roleErr.message }), {
+        return new Response(JSON.stringify({ error: "Could not complete setup. Please try again." }), {
           status: 500,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
@@ -117,7 +138,8 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ error: (e as Error).message }), {
+    console.error("[setup-admin] unexpected", e);
+    return new Response(JSON.stringify({ error: "Setup is unavailable right now. Please try again." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

@@ -27,7 +27,10 @@ export default function CommentsSection({ postId }: { postId: string }) {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("comments").select("*").eq("post_id", postId).eq("status", "approved").order("pinned", { ascending: false }).order("created_at");
+    const { data } = await supabase
+      .from("comments")
+      .select("id, post_id, parent_id, author_name, body, like_count, pinned, created_at, edited_at, status")
+      .eq("post_id", postId).eq("status", "approved").order("pinned", { ascending: false }).order("created_at");
     setComments((data ?? []) as Comment[]);
     setLoading(false);
   };

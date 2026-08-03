@@ -1,3 +1,4 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -274,7 +275,7 @@ export default function PostEditor() {
               <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">{title || "Untitled"}</h1>
               {cover && <img src={cover} alt="" className="w-full aspect-[16/9] object-cover rounded-xl mb-6" />}
               {body ? (
-                <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display" dangerouslySetInnerHTML={{ __html: body }} />
+                <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display" dangerouslySetInnerHTML={{ __html: sanitizeHtml(body) }} />
               ) : legacyMarkdown ? (
                 <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>{legacyMarkdown}</ReactMarkdown>

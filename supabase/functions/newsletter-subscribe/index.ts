@@ -9,22 +9,43 @@ const SITE = "https://agbajeautomation.me";
 const j = (b: unknown, s = 200) =>
   new Response(JSON.stringify(b), { status: s, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
+const hits = new Map<string, number[]>();
+function rateLimited(key: string, limit: number, windowMs: number) {
+  const now = Date.now();
+  const arr = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
+  arr.push(now);
+  hits.set(key, arr);
+  if (hits.size > 5000) hits.clear();
+  return arr.length > limit;
+}
+
+const clean = (v: unknown, max: number) =>
+  String(v ?? "").replace(/<[^>]*>/g, "").replace(/[\u0000-\u001F]/g, "").trim().slice(0, max);
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method !== "POST") return j({ error: "Method not allowed" }, 405);
   try {
-    const { email, source } = await req.json();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return j({ error: "Valid email required" }, 400);
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "0.0.0.0";
+    if (rateLimited(ip, 5, 60_000)) return j({ error: "Too many requests. Please try again shortly." }, 429);
+
+    const payload = await req.json().catch(() => null);
+    if (!payload || typeof payload !== "object") return j({ error: "Invalid request." }, 400);
+
+    const email = clean((payload as any).email, 320).toLowerCase();
+    const source = clean((payload as any).source, 60) || null;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return j({ error: "Please enter a valid email address." }, 400);
+
     const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
     const token = crypto.randomUUID();
 
-    // upsert pending
-    const { data: existing } = await sb.from("newsletter_subscribers").select("*").eq("email", email).maybeSingle();
+    const { data: existing } = await sb.from("newsletter_subscribers").select("id, status, source").eq("email", email).maybeSingle();
     if (existing?.status === "confirmed") return j({ ok: true, already: true });
 
     if (existing) {
       await sb.from("newsletter_subscribers").update({ status: "pending", confirm_token: token, source: source ?? existing.source }).eq("id", existing.id);
     } else {
-      await sb.from("newsletter_subscribers").insert({ email, status: "pending", confirm_token: token, source: source ?? null });
+      await sb.from("newsletter_subscribers").insert({ email, status: "pending", confirm_token: token, source });
     }
 
     const confirmUrl = `${SUPABASE_URL}/functions/v1/newsletter-confirm?token=${token}`;
@@ -47,11 +68,12 @@ Deno.serve(async (req) => {
           }),
         });
       } catch (err) {
-        console.error("resend failed", err);
+        console.error("[newsletter-subscribe] resend failed", err);
       }
     }
     return j({ ok: true });
   } catch (e) {
-    return j({ error: (e as Error).message }, 500);
+    console.error("[newsletter-subscribe] unexpected", e);
+    return j({ error: "Something went wrong. Please try again." }, 500);
   }
 });

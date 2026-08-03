@@ -18,7 +18,10 @@ export default function AdminComments() {
 
   const load = async () => {
     setLoading(true);
-    let q = supabase.from("comments").select("*, posts(title, slug)").order("pinned", { ascending: false }).order("created_at", { ascending: false }).limit(200);
+    let q = supabase
+      .from("comments")
+      .select("id, post_id, author_name, author_email, body, status, pinned, like_count, created_at, posts(title, slug)")
+      .order("pinned", { ascending: false }).order("created_at", { ascending: false }).limit(200);
     if (status !== "all") q = q.eq("status", status);
     const { data } = await q;
     setRows((data ?? []) as any); setLoading(false);

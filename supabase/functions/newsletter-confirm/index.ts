@@ -9,7 +9,8 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   const url = new URL(req.url);
   const token = url.searchParams.get("token");
-  if (!token) return new Response("Missing token", { status: 400 });
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (!token || !UUID_RE.test(token)) return new Response("Invalid or expired link", { status: 400 });
   const sb = createClient(SUPABASE_URL, SERVICE_ROLE);
   const { data } = await sb.from("newsletter_subscribers").select("id").eq("confirm_token", token).maybeSingle();
   if (!data) return new Response("Invalid or expired token", { status: 404 });
