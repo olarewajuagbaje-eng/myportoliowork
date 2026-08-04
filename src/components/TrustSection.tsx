@@ -271,21 +271,27 @@ const TrustSection = () => {
             </p>
           </motion.div>
 
-          <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {industries.map((ind, i) => (
               <motion.div
                 key={ind.name}
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.97 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="glass-card p-4 flex flex-col items-center text-center gap-2"
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.4, delay: (i % 4) * 0.05 }}
+                className="glass-card hover-lift p-4 sm:p-5 rounded-2xl"
               >
-                <ind.icon className="w-5 h-5 text-primary" />
-                <span className="text-xs sm:text-sm text-foreground/90 font-medium">{ind.name}</span>
+                <div className="flex items-center gap-2.5 mb-2">
+                  <span className="inline-flex rounded-lg bg-primary/10 p-1.5 text-primary">
+                    <ind.icon className="w-4 h-4" />
+                  </span>
+                  <span className="text-sm font-semibold text-foreground">{ind.name}</span>
+                </div>
+                <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">{ind.desc}</p>
               </motion.div>
             ))}
           </div>
+
         </div>
 
         {/* FAQ */}
