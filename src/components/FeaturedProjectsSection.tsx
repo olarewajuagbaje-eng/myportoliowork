@@ -10,8 +10,9 @@ interface FeaturedProject {
   name: string;
   eyebrow: string;
   headline: string;
-  subheadline: string;
-  features: { icon: React.ComponentType<{ className?: string }>; text: string }[];
+  problem: string;
+  solution: string;
+  results: string[];
   tags: string[];
   ctaLabel: string;
   ctaHref: string;
@@ -22,177 +23,137 @@ interface FeaturedProject {
 const featuredProjects: FeaturedProject[] = [
   {
     name: 'FlowDesk',
-    eyebrow: 'CRM & Automation',
-    headline: 'FlowDesk: The Small Business Operations Hub',
-    subheadline: 'Give small businesses one place to manage leads, bookings and team communication, so nothing slips through the cracks. Built on modern web tools for speed and reliability.',
-    features: [
-      { icon: MessageCircleMore, text: 'Direct Gmail & Telegram Integration for real time alerts.' },
-      { icon: Layers3, text: 'Embeddable Booking & Chatbot widgets for external sites.' },
-      { icon: ShieldCheck, text: 'Multi user Team Management with Role Based Access Control.' },
-    ],
+    eyebrow: 'Small Business Operations',
+    headline: 'FlowDesk: One Place To Run The Whole Business',
+    problem: 'Leads, bookings and team messages were scattered across email, WhatsApp and spreadsheets, so enquiries were missed and nobody knew who was following up.',
+    solution: 'We brought every enquiry, booking and conversation into one simple hub, alerted the right person instantly, and gave each team member their own access level.',
+    results: ['Nothing slips through the cracks', 'Instant alerts on every new enquiry', 'One shared view for the whole team'],
     tags: ['React', 'Supabase', 'CRM Automation', 'SaaS'],
-    ctaLabel: 'Launch App',
+    ctaLabel: 'Explore Solution',
     ctaHref: 'https://getflowdesk.lovable.app',
     themeClass: 'featured-project-service',
   },
   {
     name: 'VitaFlow',
-    eyebrow: 'Wellness OS',
-    headline: 'VitaFlow: AI Powered Wellness Operating System',
-    subheadline: 'Replace a stack of disconnected health apps with a single wellness platform, so users stay engaged and providers keep a clear picture of every client.',
-    features: [
-      { icon: Stethoscope, text: '11 Integrated Modules (Telehealth, Med Tracking, Nutrition).' },
-      { icon: Sparkles, text: 'AI Generated Recipes and Reflective Journaling insights.' },
-      { icon: Pill, text: 'Automated Medication reminders via Telegram bot.' },
-    ],
+    eyebrow: 'Wellness Operations',
+    headline: 'VitaFlow: A Single Platform For Client Wellness',
+    problem: 'Clients were juggling several health apps and providers had no clear picture of progress, so engagement dropped and follow-up was inconsistent.',
+    solution: 'We replaced the app stack with one platform that guides the client day to day, sends reminders automatically, and gives providers a single dashboard.',
+    results: ['Higher client engagement', 'Automatic reminders replace manual follow-up', 'Full visibility for providers'],
     tags: ['AI/ML', 'HealthTech', 'Tailwind CSS', 'Edge Functions'],
-    ctaLabel: 'View Live',
+    ctaLabel: 'Explore Solution',
     ctaHref: 'https://vita-flow-zen.lovable.app',
     themeClass: 'featured-project-wellness',
   },
   {
     name: 'Sales Engine',
-    eyebrow: 'B2B Conversion OS',
+    eyebrow: 'B2B Sales Conversion',
     headline: 'The Automated B2B Sales Conversion Engine',
-    subheadline: 'Stops high-ticket B2B leads from going cold. Every inquiry is captured, scored, and moved toward a booked call automatically, so sales teams close more deals with less chasing.',
-    features: [
-      { icon: Workflow, text: 'Instant Pipeline Routing. Auto generates deal cards with monetary values (e.g. €4,500) and pushes them to the executive dashboard.' },
-      { icon: Gauge, text: 'Dynamic Lead Scoring. Background math operations grade prospects on engagement (+10 inquiry, +20 booking).' },
-      { icon: Ghost, text: 'The "Ghost Trap" Engine. A 1 hour time delayed logic gate that deploys a premium HTML nurture sequence to recapture cold leads.' },
-      { icon: LineChart, text: 'Executive Dashboarding. Live visibility into pipeline value, conversion rates, and scheduled appointments.' },
-    ],
+    problem: 'High value enquiries went cold because the sales team followed up manually, hours or days later, with no clear view of which leads were worth chasing.',
+    solution: 'We connected every enquiry into one automated pipeline that scores each buyer, alerts the sales team instantly, and re-engages quiet leads with a polished follow-up sequence.',
+    results: ['Leads contacted in under 60 seconds', 'Cold leads recovered automatically', 'Live view of pipeline value and booked calls'],
     tags: ['GoHighLevel (GHL)', 'Custom HTML', 'Pipeline Automation', 'Dynamic Scoring'],
-    ctaLabel: 'Watch Video Demo',
+    ctaLabel: 'Watch The Walkthrough',
     ctaHref: 'https://drive.google.com/file/d/1Ct1PmftfwrdmM8NY1q7uHT76PaJVpTEA/view?usp=drivesdk',
     themeClass: 'featured-project-sales',
     ctaIcon: PlayCircle,
   },
   {
     name: 'ROR AI Engine',
-    eyebrow: 'B2B Conversion OS',
-    headline: 'AI Triage & GHL CRM Engine',
-    subheadline: 'Acts as an always-on sales assistant that qualifies buyers, recovers abandoned checkouts, and keeps the CRM perfectly in sync, protecting revenue on every visit.',
-    features: [
-      { icon: Brain, text: 'AI Triage Agent. A custom prompted advisor that extracts lead data via natural conversation and syncs directly to the CRM.' },
-      { icon: ShoppingCart, text: 'Behavioral Cart Recovery. An n8n orchestrated loop that identifies abandoned checkouts and triggers AI generated email sequences.' },
-      { icon: RefreshCw, text: 'GHL CRM Integration. Real time synchronization between chat sessions, order forms, and master databases.' },
-      { icon: Bell, text: 'Enterprise Notifications. Branded HTML team alerts providing instant lead summaries and clinical diagnostics.' },
-    ],
+    eyebrow: 'Revenue Protection',
+    headline: 'AI Triage & CRM Engine',
+    problem: 'Website visitors asked the same questions all day, buyers abandoned checkout without anyone noticing, and customer records had to be typed in by hand.',
+    solution: 'We added an always-on assistant that answers and qualifies buyers, spots abandoned purchases and follows up automatically, while every detail writes itself into the CRM.',
+    results: ['Abandoned sales recovered without staff effort', 'Zero duplicate data entry', 'Every enquiry qualified and summarised for the team'],
     tags: ['n8n', 'CourseCreator 360 (GHL)', 'Groq (Llama 3.3)', 'Google Sheets'],
-    ctaLabel: 'Watch Demo',
+    ctaLabel: 'Watch The Walkthrough',
     ctaHref: 'https://drive.google.com/file/d/1HEoafNeV5KcFHYNwNeuvxjlgXGgaAC_N/view?usp=drivesdk',
     themeClass: 'featured-project-sales',
     ctaIcon: PlayCircle,
   },
   {
     name: 'Voice AI',
-    eyebrow: 'Enterprise Voice OS',
-    headline: 'Enterprise Voice AI Overflow System',
-    subheadline: 'Handles overflow and after-hours calls for a healthcare business with a professional AI voice agent, so no patient is left waiting and every call is logged and escalated properly.',
-    features: [
-      { icon: PhoneCall, text: 'Uptiq Voice Capture. Violet greets callers, gathers patient inquiries, and captures structured intake data inside the GHL ecosystem.' },
-      { icon: Webhook, text: 'Secure n8n Routing. Structured JSON payloads flow through an authenticated n8n webhook for orchestration and enrichment.' },
-      { icon: FileStack, text: 'SharePoint Logging. Power Automate writes call summaries, custom fields, and escalation statuses into a SharePoint database of record.' },
-      { icon: Users2, text: 'Teams Escalation. Critical calls instantly notify the response team in Microsoft Teams with rich, branded alert cards.' },
-    ],
+    eyebrow: 'Customer Communication',
+    headline: 'Enterprise Voice Assistant For Overflow Calls',
+    problem: 'Busy periods and after-hours calls went unanswered at a healthcare business, leaving patients waiting and staff with no record of what was missed.',
+    solution: 'A professional voice assistant now answers overflow calls, captures what the caller needs, logs it centrally, and alerts the team the moment something is urgent.',
+    results: ['No unanswered calls, day or night', 'Every call logged and searchable', 'Urgent cases escalated in real time'],
     tags: ['Uptiq (GHL)', 'n8n', 'Power Automate', 'SharePoint'],
-    ctaLabel: 'Watch Demo',
+    ctaLabel: 'See How It Works',
     ctaHref: '#contact',
     themeClass: 'featured-project-wellness',
     ctaIcon: PlayCircle,
   },
   {
     name: 'Content Engine',
-    eyebrow: 'Autonomous Publishing OS',
+    eyebrow: 'Marketing Operations',
     headline: 'Autonomous Content Production Engine',
-    subheadline: 'Publishes fresh, on-brand content on autopilot with a human approval step, giving marketing teams consistent output without adding writers or losing editorial control.',
-    features: [
-      { icon: ShieldAlert, text: 'Gatekeeper Trigger. Airtable Active/Pending status eliminates runaway API costs and junk scraping.' },
-      { icon: MapPin, text: 'Dynamic City Routing. Event Resource tags route payloads to correct WordPress categories with no hardcoding.' },
-      { icon: CalendarRange, text: '8 Week Multiplier. Detects recurring events and auto calculates the next 8 weeks of unique dates.' },
-      { icon: UserCheck, text: 'HITL Staging. AI text is wrapped in HTML inside Airtable Rich Text for human approval before publishing.' },
-      { icon: Send, text: 'Decoupled Publisher. A segregated 5 minute polling workflow pushes only approved content to live WordPress.' },
-    ],
-    tags: ['n8n', 'Airtable', 'WordPress REST API', 'OpenAI / Claude'],
-    ctaLabel: 'View Architecture',
+    problem: 'Publishing consistently required writers, editors and manual uploads, so marketing output stalled whenever the team got busy.',
+    solution: 'We built a system that drafts on-brand content, routes it to the right place, and waits for one human approval before publishing everything for you.',
+    results: ['Consistent publishing without extra hires', 'Human approval keeps quality in control', 'Weeks of content scheduled in advance'],
+    tags: ['n8n', 'Airtable', 'WordPress', 'AI Writing'],
+    ctaLabel: 'See How It Works',
     ctaHref: '#contact',
     themeClass: 'featured-project-service',
   },
   {
     name: 'Render Engine',
-    eyebrow: 'Content & Render Pipeline',
-    headline: 'Autonomous AI Content & Render Engine',
-    subheadline: 'Keeps brands visible without a full content team. The system researches trending topics, drafts posts, and produces branded graphics twice a day, fully hands-off.',
-    features: [
-      { icon: Rss, text: 'Intelligent Research. Scrapes Hacker News, TechCrunch, and OpenAI RSS to aggregate trending data.' },
-      { icon: Cpu, text: 'AI Content Brain. Dynamically selects one of 8 frameworks (Tutorial, Workflow, Checklist, Case Study, more).' },
-      { icon: ImageIcon, text: 'Custom Render Microservice. Node.js/Puppeteer injects JSON payloads into HTML/SVG templates for hi res PNGs.' },
-      { icon: CloudUpload, text: 'Storage & Distribution. Uploads to Supabase storage and distributes via Buffer API.' },
-      { icon: RotateCcw, text: 'Idempotent Retries. 3 strike loops with 5s delays absorb cold starts for maximum uptime.' },
-    ],
-    tags: ['n8n', 'Node.js / Puppeteer', 'Supabase', 'Groq / OpenAI', 'Buffer API'],
+    eyebrow: 'Brand Visibility',
+    headline: 'Autonomous Content & Design Engine',
+    problem: 'Staying visible online meant researching topics, writing posts and designing graphics every single day, which no small team can sustain.',
+    solution: 'The system now researches what is trending, writes the post, produces a branded graphic and publishes it twice a day, completely hands-off.',
+    results: ['Daily brand presence with zero manual effort', 'Branded visuals produced automatically', 'Reliable output even when the team is busy'],
+    tags: ['n8n', 'Node.js', 'Supabase', 'AI Content', 'Buffer'],
     ctaLabel: 'View Case Study',
     ctaHref: '#contact',
     themeClass: 'featured-project-sales',
   },
   {
     name: 'AutoMatch',
-    eyebrow: 'AI Car Brokerage',
-    headline: 'AutoMatch: Zero Touch AI Car Brokerage',
-    subheadline: 'Removes manual coordination from car brokerage. Buyers get matched, dealers get notified, and transactions move forward automatically, so the team can focus on closing more deals.',
-    features: [
-      { icon: Brain, text: 'AI Consensus Engine. Cross validates Groq, Gemini, and OpenAI outputs to lock in high confidence matches.' },
-      { icon: Workflow, text: 'Zero Touch Pipeline. n8n orchestrates intake, scoring, dealer routing, and buyer notifications end to end.' },
-      { icon: Database, text: 'Supabase Backbone. Postgres, Realtime, and RLS power a secure, auditable transaction ledger.' },
-      { icon: Car, text: 'Lead to Deal Automation. Converts raw buyer intent into a closed loop brokerage workflow with zero manual ops.' },
-    ],
-    tags: ['n8n', 'Supabase', 'Groq', 'Gemini', 'OpenAI'],
-    ctaLabel: 'Launch App',
+    eyebrow: 'Brokerage Automation',
+    headline: 'AutoMatch: Hands-Off Car Brokerage',
+    problem: 'Matching buyers to dealers meant hours of phone calls, spreadsheets and back-and-forth, which limited how many deals the team could handle.',
+    solution: 'Buyer requests are now matched automatically, the right dealers are notified instantly, and every step of the deal is tracked in one secure place.',
+    results: ['More deals handled with the same team', 'Buyers matched in minutes, not days', 'Complete, auditable record of every transaction'],
+    tags: ['n8n', 'Supabase', 'AI Matching'],
+    ctaLabel: 'Explore Solution',
     ctaHref: 'https://driveway-dealer.lovable.app',
     themeClass: 'featured-project-wellness',
   },
   {
     name: 'JNK Logistics',
-    eyebrow: 'RevOps Command Center',
-    headline: 'JNK Logistics Flow: Real Time Dispatch & CRM Command Center',
-    subheadline: 'A live command center for a logistics business. Dispatchers see fleet activity and revenue in real time, clients track their shipments, and the whole operation stays clean and auditable.',
-    features: [
-      { icon: ShieldCheck, text: 'Identity & Data Integrity. Email based upsert logic eliminates database leakage and duplicate CRM records.' },
-      { icon: Route, text: 'Live Client Portal. Dynamic state machine with SVG routing animations and conditional POD document gating.' },
-      { icon: Truck, text: 'RevOps Command Center. Enterprise dispatch UI with Supabase Realtime fleet and revenue sync, no page reloads.' },
-      { icon: Lock, text: 'Secure Enterprise Messaging. RLS governed comms hub with an integrated Groq AI summarization assistant.' },
-    ],
-    tags: ['Lovable (React)', 'Supabase (Postgres, Realtime, RLS)', 'n8n', 'Groq (Llama 3)'],
-    ctaLabel: 'View Live Demo',
+    eyebrow: 'Operations Visibility',
+    headline: 'JNK Logistics Flow: Live Dispatch Command Center',
+    problem: 'Dispatchers worked from stale spreadsheets, clients called constantly for updates, and duplicate customer records made reporting unreliable.',
+    solution: 'We built a live command center where jobs, drivers and revenue update in real time, and gave clients their own tracking portal so they stop calling for status.',
+    results: ['Real-time visibility across the fleet', 'Fewer status calls from clients', 'Clean, duplicate-free customer records'],
+    tags: ['React', 'Supabase', 'n8n', 'AI Summaries'],
+    ctaLabel: 'Explore Solution',
     ctaHref: 'https://jnk-logistics-flow.lovable.app',
     themeClass: 'featured-project-service',
   },
   {
     name: 'Masterclass',
-    eyebrow: 'High-Ticket Funnel',
+    eyebrow: 'High-Ticket Sales',
     headline: 'Architecture Masterclass Funnel & Infrastructure',
-    subheadline: 'A premium, high-converting sales funnel for a high-ticket masterclass, with a checkout experience and backend routing designed to protect margins and build buyer trust.',
-    features: [
-      { icon: Code2, text: 'Custom-coded dark-mode UI engineered for premium brand trust and conversion.' },
-      { icon: LayoutTemplate, text: 'Interactive module previews that let prospects experience the curriculum before buying.' },
-      { icon: CreditCard, text: 'Secure checkout styling and trust signals for high-ticket course transactions.' },
-      { icon: Workflow, text: 'Automated backend routing between GoHighLevel, n8n, and Supabase.' },
-    ],
+    problem: 'A premium training programme was being sold through a generic page that failed to build trust, so high-ticket buyers hesitated at checkout.',
+    solution: 'We designed a premium buying experience that lets prospects preview the programme, then connected checkout to automated onboarding behind the scenes.',
+    results: ['Stronger buyer confidence at checkout', 'Onboarding handled automatically after purchase', 'Protected margins on every high-ticket sale'],
     tags: ['GoHighLevel', 'Custom HTML/CSS', 'n8n', 'Supabase'],
-    ctaLabel: 'View Live Preview',
+    ctaLabel: 'View Case Study',
     ctaHref: 'https://sites.leadconnectorhq.com/preview/WH0tMAV06vMVunjvnmgz?notrack=true',
     themeClass: 'featured-project-masterclass',
   },
 ];
 
 const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
-  <CardContent className="flex h-full flex-col p-5 sm:p-6">
-    <div className="mb-4 flex items-start justify-between gap-4">
+  <CardContent className="flex h-full flex-col p-5 sm:p-7">
+    <div className="mb-5 flex items-start justify-between gap-4">
       <div>
         <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
           {project.eyebrow}
         </p>
-        <h3 className="mt-1.5 max-w-xl font-display text-lg font-bold leading-tight sm:text-2xl">
+        <h3 className="mt-2 max-w-xl font-display text-lg font-bold leading-tight sm:text-2xl">
           {project.headline}
         </h3>
       </div>
@@ -201,30 +162,45 @@ const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
       </div>
     </div>
 
-    <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-      {project.subheadline}
-    </p>
-
-    <div className="mt-4 space-y-2">
-      {project.features.map((feature) => {
-        const Icon = feature.icon;
-        return (
-          <div key={feature.text} className="flex items-start gap-2.5 rounded-xl border border-border/60 bg-background/30 px-3 py-2.5 backdrop-blur-md">
-            <span className="featured-project-icon mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/40">
-              <Icon className="h-3.5 w-3.5" />
-            </span>
-            <p className="text-xs leading-relaxed text-foreground/90 sm:text-sm">{feature.text}</p>
-          </div>
-        );
-      })}
+    <div className="space-y-4">
+      <div>
+        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+          The Client Problem
+        </p>
+        <p className="text-sm leading-relaxed text-foreground/85 sm:text-[15px]">{project.problem}</p>
+      </div>
+      <div>
+        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
+          The Solution
+        </p>
+        <p className="text-sm leading-relaxed text-foreground/85 sm:text-[15px]">{project.solution}</p>
+      </div>
+      <div>
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
+          The Business Result
+        </p>
+        <ul className="space-y-2">
+          {project.results.map((result) => (
+            <li
+              key={result}
+              className="flex items-start gap-2.5 rounded-xl border border-border/50 bg-background/25 px-3 py-2.5 backdrop-blur-md"
+            >
+              <span className="featured-project-icon mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/40">
+                <TrendingUp className="h-3 w-3" />
+              </span>
+              <span className="text-xs leading-relaxed text-foreground/90 sm:text-sm">{result}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
 
-    <div className="mt-4 flex flex-wrap gap-1.5">
+    <div className="mt-5 flex flex-wrap gap-1.5 border-t border-border/40 pt-4">
       {project.tags.map((tag) => (
         <Badge
           key={tag}
           variant="secondary"
-          className="rounded-full border border-border/60 bg-background/40 px-2.5 py-0.5 text-[11px] font-medium text-foreground/85"
+          className="rounded-full border border-border/50 bg-background/30 px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground"
         >
           {tag}
         </Badge>
@@ -235,16 +211,21 @@ const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
       <Button
         asChild
         size="default"
-        className="featured-project-button min-h-10 w-full rounded-xl px-5 text-sm font-semibold sm:w-auto"
+        className="featured-project-button group/cta min-h-11 w-full rounded-xl px-5 text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_28px_-6px_hsl(var(--primary)/0.65)] active:scale-[0.98] sm:w-auto"
       >
         <a href={project.ctaHref} target="_blank" rel="noreferrer">
           {project.ctaLabel}
-          {project.ctaIcon ? <project.ctaIcon className="h-4 w-4" /> : <ArrowUpRight className="h-4 w-4" />}
+          {project.ctaIcon ? (
+            <project.ctaIcon className="h-4 w-4 transition-transform duration-300 group-hover/cta:scale-110" />
+          ) : (
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
+          )}
         </a>
       </Button>
     </div>
   </CardContent>
 );
+
 
 const AUTOPLAY_MS = 8000;
 
