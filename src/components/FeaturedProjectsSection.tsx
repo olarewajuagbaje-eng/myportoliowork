@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2, ShieldAlert, MapPin, CalendarRange, UserCheck, Send, Rss, Cpu, Image as ImageIcon, CloudUpload, RotateCcw, Car, Database, Radio, Truck, Route, Lock, LayoutTemplate, Code2, CreditCard } from 'lucide-react';
+import { TrendingUp, ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2, ShieldAlert, MapPin, CalendarRange, UserCheck, Send, Rss, Cpu, Image as ImageIcon, CloudUpload, RotateCcw, Car, Database, Radio, Truck, Route, Lock, LayoutTemplate, Code2, CreditCard } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
