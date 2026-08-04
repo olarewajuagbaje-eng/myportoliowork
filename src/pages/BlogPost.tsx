@@ -89,6 +89,10 @@ export default function BlogPost() {
         <meta property="og:url" content={canonical} />
         <meta property="og:type" content="article" />
         {post.cover_image_url && <meta property="og:image" content={post.cover_image_url} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.meta_description || post.summary || ""} />
+        {post.cover_image_url && <meta name="twitter:image" content={post.cover_image_url} />}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -121,7 +125,7 @@ export default function BlogPost() {
             </div>
             <CategoryTagChips category={category} tags={tags} />
             <div className="my-6">
-              <EngagementBar postId={post.id} postTitle={post.title} postUrl={canonical} />
+              <EngagementBar postId={post.id} postTitle={post.title} postUrl={canonical} postExcerpt={post.meta_description || post.summary || ""} />
             </div>
             {post.cover_image_url && (
               <img src={post.cover_image_url} alt={post.title} className="w-full aspect-[16/9] object-cover rounded-2xl mb-10" />
@@ -148,7 +152,7 @@ export default function BlogPost() {
               </div>
             )}
             <AuthorCard author={author} />
-            <div className="mt-8"><EngagementBar postId={post.id} postTitle={post.title} postUrl={canonical} /></div>
+            <div className="mt-8"><EngagementBar postId={post.id} postTitle={post.title} postUrl={canonical} postExcerpt={post.meta_description || post.summary || ""} /></div>
             <NewsletterInline source={`blog:${post.slug}`} />
             <RelatedArticles postId={post.id} categoryId={post.category_id} />
             <PrevNextArticles postId={post.id} publishedAt={post.published_at} />

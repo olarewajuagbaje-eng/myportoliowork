@@ -18,6 +18,15 @@ import {
   HeartHandshake,
   Plus,
   Minus,
+  Banknote,
+  Ruler,
+  Factory,
+  HardHat,
+  Cloud,
+  Megaphone,
+  Users,
+  Store,
+  MessagesSquare,
 } from 'lucide-react';
 
 const processSteps = [
@@ -49,34 +58,54 @@ const processSteps = [
 ];
 
 const industries = [
-  { icon: ShoppingBag, name: 'E-commerce & Retail' },
-  { icon: Building2, name: 'Real Estate & Property' },
-  { icon: Stethoscope, name: 'Healthcare & Wellness' },
-  { icon: Briefcase, name: 'Professional Services & Agencies' },
-  { icon: GraduationCap, name: 'Coaching & Education' },
-  { icon: Truck, name: 'Logistics & Operations' },
+  { icon: Stethoscope, name: 'Healthcare', desc: 'Automated patient intake, reminders and referrals free up clinical hours.' },
+  { icon: Building2, name: 'Real Estate', desc: 'Instant lead response and listing updates keep deals from going cold.' },
+  { icon: Truck, name: 'Logistics', desc: 'Live job tracking and proactive updates reduce status calls and delays.' },
+  { icon: Banknote, name: 'Finance', desc: 'Document collection, approvals and reporting run without manual chasing.' },
+  { icon: Ruler, name: 'Engineering', desc: 'Project documentation, approvals and handovers stay organised automatically.' },
+  { icon: Factory, name: 'Manufacturing', desc: 'Orders, stock levels and supplier updates stay in sync without spreadsheets.' },
+  { icon: Briefcase, name: 'Professional Services', desc: 'Client onboarding, delivery and invoicing move through one clean pipeline.' },
+  { icon: HardHat, name: 'Construction', desc: 'Quotes, site reports and subcontractor coordination happen in one flow.' },
+  { icon: GraduationCap, name: 'Education', desc: 'Enrolment, scheduling and student communication run on autopilot.' },
+  { icon: Cloud, name: 'SaaS', desc: 'Trials, onboarding and customer health alerts are handled automatically.' },
+  { icon: ShoppingBag, name: 'E-commerce', desc: 'Orders, abandoned carts and support replies are recovered without staff time.' },
+  { icon: Compass, name: 'Consulting', desc: 'Proposals, reporting and client updates stop eating billable hours.' },
+  { icon: Megaphone, name: 'Marketing Agencies', desc: 'Reporting, content delivery and client approvals are streamlined end to end.' },
+  { icon: Users, name: 'Recruitment', desc: 'Candidate screening, scheduling and follow-up run continuously in the background.' },
+  { icon: Store, name: 'Small Businesses', desc: 'Enquiries, bookings and invoices are handled without hiring extra admin.' },
+  { icon: Rocket, name: 'Startups', desc: 'Founders get repeatable systems instead of doing everything by hand.' },
 ];
 
 const whyChoose = [
   {
-    icon: ShieldCheck,
-    title: 'Reliable Systems',
-    description: 'I build for production, not demos. Everything is tested, monitored, and designed to keep running when your business is busiest.',
-  },
-  {
-    icon: Clock,
-    title: 'Real Time Back',
-    description: 'Clients typically win back 10 to 20+ hours a week that used to disappear into manual tasks, follow-ups, and status checks.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Measurable Growth',
-    description: 'Every project is tied to numbers you care about: leads captured, deals closed, revenue protected, hours saved.',
+    icon: Briefcase,
+    title: 'Business First',
+    description: 'I understand how your business operates before suggesting any technology.',
   },
   {
     icon: HeartHandshake,
-    title: 'Long-Term Partner',
-    description: 'I work with a small number of clients at a time so I can stay close to your business and grow with it.',
+    title: 'Long-Term Support',
+    description: "I don't disappear after deployment. I help improve your automation as your business grows.",
+  },
+  {
+    icon: Wrench,
+    title: 'Practical Solutions',
+    description: 'Every workflow solves a real business problem, not just a technical challenge.',
+  },
+  {
+    icon: MessagesSquare,
+    title: 'Transparent Communication',
+    description: "You'll always understand what's happening and why, in plain language.",
+  },
+  {
+    icon: TrendingUp,
+    title: 'Scalable Systems',
+    description: 'Your automation grows with your business instead of breaking under volume.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Reliable Delivery',
+    description: 'Clean documentation, testing, monitoring and ongoing improvements as standard.',
   },
 ];
 
@@ -205,7 +234,7 @@ const TrustSection = () => {
             </p>
           </motion.div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {whyChoose.map((item, i) => (
               <motion.div
                 key={item.title}
@@ -242,21 +271,27 @@ const TrustSection = () => {
             </p>
           </motion.div>
 
-          <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {industries.map((ind, i) => (
               <motion.div
                 key={ind.name}
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.97 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="glass-card p-4 flex flex-col items-center text-center gap-2"
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.4, delay: (i % 4) * 0.05 }}
+                className="glass-card hover-lift p-4 sm:p-5 rounded-2xl"
               >
-                <ind.icon className="w-5 h-5 text-primary" />
-                <span className="text-xs sm:text-sm text-foreground/90 font-medium">{ind.name}</span>
+                <div className="flex items-center gap-2.5 mb-2">
+                  <span className="inline-flex rounded-lg bg-primary/10 p-1.5 text-primary">
+                    <ind.icon className="w-4 h-4" />
+                  </span>
+                  <span className="text-sm font-semibold text-foreground">{ind.name}</span>
+                </div>
+                <p className="text-xs sm:text-sm leading-relaxed text-muted-foreground">{ind.desc}</p>
               </motion.div>
             ))}
           </div>
+
         </div>
 
         {/* FAQ */}

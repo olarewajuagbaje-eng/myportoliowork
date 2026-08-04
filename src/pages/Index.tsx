@@ -4,6 +4,8 @@ import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import BusinessImpactSection from '@/components/BusinessImpactSection';
 import FeaturedProjectsSection from '@/components/FeaturedProjectsSection';
+import HowProjectsStartSection from '@/components/HowProjectsStartSection';
+import TrustIndicatorsSection from '@/components/TrustIndicatorsSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import WhoIWorkWithSection from '@/components/WhoIWorkWithSection';
 import WhyDelaySection from '@/components/WhyDelaySection';
@@ -28,16 +30,19 @@ const Index = () => {
         <HeroSection />
         <AboutSection />
         <BusinessImpactSection />
+        <HowProjectsStartSection />
         <FeaturedProjectsSection />
         <WhoIWorkWithSection />
         <ProjectsSection />
         <WhyDelaySection />
         <ClientReviewsSection />
-        <AfterContactSection />
+        <TrustIndicatorsSection />
         <TrustSection />
         <FAQBeforeHiringSection />
+        <AfterContactSection />
         <ContactSection />
         <PreFooterTerminal />
+
       </main>
       <Footer />
     </div>
