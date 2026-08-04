@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Heart, Bookmark, Link2, Share2, Linkedin, Twitter, Facebook, MessageCircle, Send, Mail, Check } from "lucide-react";
+import { Heart, Bookmark, Link2, Share2, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
+import ShareDialog from "./ShareDialog";
 
-interface Props { postId: string; postTitle: string; postUrl: string; }
+interface Props { postId: string; postTitle: string; postUrl: string; postExcerpt?: string; }
 
-export default function EngagementBar({ postId, postTitle, postUrl }: Props) {
+export default function EngagementBar({ postId, postTitle, postUrl, postExcerpt = "" }: Props) {
   const { user } = useAuth();
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -14,6 +15,7 @@ export default function EngagementBar({ postId, postTitle, postUrl }: Props) {
   const [bookmarked, setBookmarked] = useState(false);
   const [copied, setCopied] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+
 
   useEffect(() => {
     supabase.functions.invoke("engagement", { body: { action: "post_stats", post_id: postId } })
