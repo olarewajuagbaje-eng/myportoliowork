@@ -289,6 +289,15 @@
     z-index: -1;
   }
 
+  .featured-project-card .kpi-value {
+    transition: text-shadow 0.35s ease, color 0.35s ease;
+  }
+  .featured-project-card:hover .kpi-value {
+    text-shadow:
+      0 0 14px hsl(var(--primary) / 0.65),
+      0 0 32px hsl(var(--primary) / 0.35);
+  }
+
   .featured-project-service {
     background-image: var(--gradient-service);
   }
