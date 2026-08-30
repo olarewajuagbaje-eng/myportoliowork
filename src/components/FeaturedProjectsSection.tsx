@@ -1,26 +1,28 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { TrendingUp, ArrowUpRight, Layers3, MessageCircleMore, ShieldCheck, Sparkles, Stethoscope, Pill, Bot, ChevronLeft, ChevronRight, PlayCircle, Gauge, Ghost, LineChart, Workflow, Brain, ShoppingCart, RefreshCw, Bell, Pause, Play, PhoneCall, Webhook, FileStack, Users2, ShieldAlert, MapPin, CalendarRange, UserCheck, Send, Rss, Cpu, Image as ImageIcon, CloudUpload, RotateCcw, Car, Database, Radio, Truck, Route, Lock, LayoutTemplate, Code2, CreditCard } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Bot, ChevronLeft, ChevronRight, PlayCircle, Pause, Play, FileStack } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ProjectCard, { type ProjectCardData } from '@/components/ProjectCard';
 
-interface FeaturedProject {
-  name: string;
-  eyebrow: string;
-  headline: string;
-  problem: string;
-  solution: string;
-  results: string[];
-  tags: string[];
-  ctaLabel: string;
-  ctaHref: string;
-  ctaIcon?: React.ComponentType<{ className?: string }>;
-  themeClass: string;
-}
-
-const featuredProjects: FeaturedProject[] = [
+const featuredProjects: ProjectCardData[] = [
+  {
+    name: 'DocExtract AI',
+    eyebrow: 'Logistics Automation',
+    headline: 'Automated Shipment Document Extraction',
+    kpis: [
+      { value: '100%', label: 'Manual Entry Eliminated' },
+      { value: '<5s', label: 'Near-Instant Processing' },
+      { value: '0', label: 'Data Errors' },
+    ],
+    problem: 'Logistics companies drown in messy shipping documents, slowing operations and burying staff in repetitive data entry.',
+    solution: 'An intelligent extraction system that reads every incoming document, pulls the key fields, and routes clean data directly into the core database without human touch.',
+    results: ['Staff freed from manual data entry entirely', 'Documents processed the moment they arrive', 'Clean, verified data in every downstream system'],
+    tags: ['n8n', 'Groq', 'Supabase'],
+    ctaLabel: 'Explore Solution',
+    ctaHref: '#contact',
+    themeClass: 'featured-project-service',
+    ctaIcon: FileStack,
+  },
   {
     name: 'FlowDesk',
     eyebrow: 'Small Business Operations',
@@ -146,87 +148,6 @@ const featuredProjects: FeaturedProject[] = [
   },
 ];
 
-const ProjectCardContent = ({ project }: { project: FeaturedProject }) => (
-  <CardContent className="flex h-full flex-col p-5 sm:p-7">
-    <div className="mb-5 flex items-start justify-between gap-4">
-      <div>
-        <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-          {project.eyebrow}
-        </p>
-        <h3 className="mt-2 max-w-xl font-display text-lg font-bold leading-tight sm:text-2xl">
-          {project.headline}
-        </h3>
-      </div>
-      <div className="featured-project-badge shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em]">
-        {project.name}
-      </div>
-    </div>
-
-    <div className="space-y-4">
-      <div>
-        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-          The Client Problem
-        </p>
-        <p className="text-sm leading-relaxed text-foreground/85 sm:text-[15px]">{project.problem}</p>
-      </div>
-      <div>
-        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-primary">
-          The Solution
-        </p>
-        <p className="text-sm leading-relaxed text-foreground/85 sm:text-[15px]">{project.solution}</p>
-      </div>
-      <div>
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-secondary">
-          The Business Result
-        </p>
-        <ul className="space-y-2">
-          {project.results.map((result) => (
-            <li
-              key={result}
-              className="flex items-start gap-2.5 rounded-xl border border-border/50 bg-background/25 px-3 py-2.5 backdrop-blur-md"
-            >
-              <span className="featured-project-icon mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/40">
-                <TrendingUp className="h-3 w-3" />
-              </span>
-              <span className="text-xs leading-relaxed text-foreground/90 sm:text-sm">{result}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-
-    <div className="mt-5 flex flex-wrap gap-1.5 border-t border-border/40 pt-4">
-      {project.tags.map((tag) => (
-        <Badge
-          key={tag}
-          variant="secondary"
-          className="rounded-full border border-border/50 bg-background/30 px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground"
-        >
-          {tag}
-        </Badge>
-      ))}
-    </div>
-
-    <div className="mt-auto pt-5">
-      <Button
-        asChild
-        size="default"
-        className="featured-project-button group/cta min-h-11 w-full rounded-xl px-5 text-sm font-semibold transition-all duration-300 hover:shadow-[0_0_28px_-6px_hsl(var(--primary)/0.65)] active:scale-[0.98] sm:w-auto"
-      >
-        <a href={project.ctaHref} target="_blank" rel="noreferrer">
-          {project.ctaLabel}
-          {project.ctaIcon ? (
-            <project.ctaIcon className="h-4 w-4 transition-transform duration-300 group-hover/cta:scale-110" />
-          ) : (
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
-          )}
-        </a>
-      </Button>
-    </div>
-  </CardContent>
-);
-
-
 const AUTOPLAY_MS = 8000;
 
 const FeaturedProjectsSection = () => {
@@ -297,11 +218,7 @@ const FeaturedProjectsSection = () => {
                   className="shrink-0 px-3"
                   style={{ width: `${slideWidthPct}%` }}
                 >
-                  <Card
-                    className={`featured-project-card ${project.themeClass} group h-full overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.015]`}
-                  >
-                    <ProjectCardContent project={project} />
-                  </Card>
+                  <ProjectCard project={project} />
                 </div>
               ))}
             </motion.div>
