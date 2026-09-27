@@ -7,6 +7,30 @@ import type { ProjectCardData } from '@/components/ProjectCard';
  */
 export const featuredProjectsFallback: ProjectCardData[] = [
   {
+    slug: 'stockguard',
+    name: 'StockGuard',
+    eyebrow: 'E-commerce Revenue Protection',
+    headline: 'StockGuard: Real-Time Shopify Inventory Intelligence',
+    kpis: [
+      { value: '24/7', label: 'Inventory Watchdog' },
+      { value: '0-100', label: 'Live Risk Score' },
+      { value: '0', label: 'Manual Spreadsheets' },
+    ],
+    problem:
+      'Shopify tracks current stock but never warns merchants of impending stockouts, so brands keep paying for ads that send traffic to sold-out products.',
+    solution:
+      'A real-time intelligence engine that intercepts every inventory change, scores stockout risk and runway days, and alerts the team the moment a product crosses a critical threshold.',
+    results: [
+      'Manual inventory tracking eliminated',
+      'Surprise stockouts caught before they cost revenue',
+      'Live, predictable reorder dashboard for operations',
+    ],
+    tags: ['Shopify Webhooks', 'n8n', 'Airtable', 'AI Summaries'],
+    themeClass: 'featured-project-sales',
+    cta: { label: 'View Full Case Study', actionType: 'route', href: '/projects/stockguard' },
+    secondaryCta: { label: 'Quick Summary', actionType: 'modal' },
+  },
+  {
     slug: 'docextract-ai',
     name: 'DocExtract AI',
     eyebrow: 'Logistics Automation',

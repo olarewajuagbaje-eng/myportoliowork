@@ -24,6 +24,7 @@ import AdminTags from "./pages/admin/AdminTags";
 import AdminComments from "./pages/admin/AdminComments";
 import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import SetupAdmin from "./pages/SetupAdmin";
+import StockGuard from "./pages/StockGuard";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/case-study/:slug" element={<CaseStudy />} />
+            <Route path="/projects/stockguard" element={<StockGuard />} />
             <Route path="/portal" element={<ClientPortal />} />
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
