@@ -147,6 +147,66 @@ export type Database = {
           },
         ]
       }
+      featured_projects: {
+        Row: {
+          created_at: string
+          cta: Json
+          eyebrow: string
+          headline: string
+          id: string
+          kpis: Json
+          name: string
+          problem: string
+          published: boolean
+          results: string[]
+          secondary_cta: Json | null
+          slug: string
+          solution: string
+          sort_order: number
+          tags: string[]
+          theme_class: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          cta: Json
+          eyebrow?: string
+          headline: string
+          id?: string
+          kpis?: Json
+          name: string
+          problem?: string
+          published?: boolean
+          results?: string[]
+          secondary_cta?: Json | null
+          slug: string
+          solution?: string
+          sort_order?: number
+          tags?: string[]
+          theme_class?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          cta?: Json
+          eyebrow?: string
+          headline?: string
+          id?: string
+          kpis?: Json
+          name?: string
+          problem?: string
+          published?: boolean
+          results?: string[]
+          secondary_cta?: Json | null
+          slug?: string
+          solution?: string
+          sort_order?: number
+          tags?: string[]
+          theme_class?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           auto_reply_message: string | null
@@ -459,6 +519,30 @@ export type Database = {
         }
         Relationships: []
       }
+      project_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          project_slug: string
+          session_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          project_slug: string
+          session_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          project_slug?: string
+          session_id?: string | null
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           created_at: string
@@ -503,7 +587,19 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      project_conversion_stats: {
+        Row: {
+          conversion_rate: number | null
+          converters: number | null
+          impressions: number | null
+          lift_pct_vs_avg: number | null
+          modal_opens: number | null
+          primary_clicks: number | null
+          project_slug: string | null
+          secondary_clicks: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       bump_comment_like_count: {

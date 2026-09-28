@@ -8,7 +8,6 @@
         "width": 620,
         "color": 4
       },
-      "id": "213eae26-ec9d-41fa-8730-e26072e0a0e7",
       "name": "📌 STOCKGUARD — BUILD & LLM NOTES",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -25,21 +24,18 @@
           "rawBody": true
         }
       },
-      "id": "c147acbc-0b21-497b-8f63-2d825049eaf3",
       "name": "Shopify Inventory Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
         -2640,
         304
-      ],
-      "webhookId": "dfea9b4d-307b-5310-b216-7009e3056ba9"
+      ]
     },
     {
       "parameters": {
         "jsCode": "// Verify Shopify HMAC (if secret available), validate payload, build event + idempotency key.\nconst item = $input.first();\nconst headers = item.json.headers || {};\nconst body = item.json.body || {};\nconst errors = [];\nlet valid = true;\nlet hmacStatus = 'skipped_no_secret';\nlet secret = '';\ntry { secret = $env.SHOPIFY_WEBHOOK_SECRET || ''; } catch (e) { secret = ''; }\nif (secret) {\n  try {\n    const crypto = require('crypto');\n    const raw = await this.helpers.getBinaryDataBuffer(0, 'data');\n    const digest = crypto.createHmac('sha256', secret).update(raw).digest('base64');\n    const sent = String(headers['x-shopify-hmac-sha256'] || '');\n    const a = Buffer.from(digest);\n    const b = Buffer.from(sent);\n    hmacStatus = (a.length === b.length && crypto.timingSafeEqual(a, b)) ? 'verified' : 'failed';\n    if (hmacStatus === 'failed') { valid = false; errors.push('HMAC verification failed'); }\n  } catch (e) {\n    hmacStatus = 'error';\n    valid = false;\n    errors.push('HMAC check error: ' + e.message);\n  }\n}\nconst inv = body.inventory_item_id;\nconst loc = body.location_id;\nconst avail = body.available;\nif (inv === undefined || inv === null || inv === '') { valid = false; errors.push('missing inventory_item_id'); }\nif (loc === undefined || loc === null || loc === '') { valid = false; errors.push('missing location_id'); }\nif (typeof avail !== 'number' || Number.isNaN(avail)) { valid = false; errors.push('missing or non-numeric available quantity'); }\nconst updatedAt = body.updated_at || null;\nconst event = {\n  inventory_item_id: inv === undefined || inv === null ? '' : String(inv),\n  location_id: loc === undefined || loc === null ? '' : String(loc),\n  available: typeof avail === 'number' ? avail : null,\n  updated_at: updatedAt,\n  topic: headers['x-shopify-topic'] || 'inventory_levels/update',\n  shop: headers['x-shopify-shop-domain'] || '',\n  webhook_id: headers['x-shopify-webhook-id'] || ''\n};\nconst eventKey = [event.inventory_item_id, event.location_id, event.available, event.updated_at || 'no-ts'].join('|');\nreturn [{ json: { valid, errors, hmac_status: hmacStatus, event, event_key: eventKey, received_at: new Date().toISOString() } }];\n"
       },
-      "id": "b6388fb4-20ac-4f98-a849-5a906022b14d",
       "name": "Verify & Normalize",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -53,67 +49,56 @@
         "assignments": {
           "assignments": [
             {
-              "id": "b0c96d9a-291d-5bab-a085-d0ce493ec9f5",
               "name": "baseId",
               "value": "=appXrNLemdGUd7Q6L",
               "type": "string"
             },
             {
-              "id": "d928ff90-f0a2-51b7-b73c-400a967204b8",
               "name": "alertEmail",
               "value": "merchant@example.com",
               "type": "string"
             },
             {
-              "id": "dabcc325-06ec-5b69-8d4f-b6531e435408",
               "name": "fromEmail",
               "value": "stockguard@example.com",
               "type": "string"
             },
             {
-              "id": "fa597eef-3132-57e5-b252-bcdb5f8219ef",
               "name": "defaultLowThreshold",
               "value": 10,
               "type": "number"
             },
             {
-              "id": "a2a17c29-49bc-5459-a6b4-d38419db2098",
               "name": "criticalRatio",
               "value": 0.5,
               "type": "number"
             },
             {
-              "id": "02f36af8-44e1-5053-bcab-bea8e9b05905",
               "name": "criticalDays",
               "value": 3,
               "type": "number"
             },
             {
-              "id": "cdb62f78-126d-564e-abbc-b86101718c11",
               "name": "runwayCapDays",
               "value": 14,
               "type": "number"
             },
             {
-              "id": "e780898e-eeb5-5b6d-9cc5-972947453f6a",
               "name": "anomalyDropPct",
               "value": 30,
               "type": "number"
             },
             {
-              "id": "b159d95a-7220-5117-aa8a-b7bb5bb60c4f",
               "name": "anomalyRisePct",
               "value": 150,
               "type": "number"
             },
             {
-              "id": "d3cdb651-2a9b-57af-b11f-07a8990e4f1f",
               "name": "anomalyMinUnits",
               "value": 5,
               "type": "number"
             },
             {
-              "id": "345c2e82-d973-5292-91f8-9f427dfbea93",
               "name": "cooldownMinutes",
               "value": 1440,
               "type": "number"
@@ -123,7 +108,6 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "33cb9363-263c-4c05-9b1e-b38134dd07d7",
       "name": "Config (Ingest)",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
@@ -143,7 +127,6 @@
           },
           "conditions": [
             {
-              "id": "f8e8a40e-1c57-5198-b806-a2b9cea4728b",
               "leftValue": "={{ $json.valid }}",
               "rightValue": "",
               "operator": {
@@ -157,7 +140,6 @@
         },
         "options": {}
       },
-      "id": "fa793adb-2983-4bc3-93c3-4f8920da3063",
       "name": "IF Valid",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
@@ -177,7 +159,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: { 'Summary': 'Rejected webhook', 'Time': new Date().toISOString(), 'Workflow': 'Ingest', 'Event Type': 'REJECTED', 'Product': String($json.event.inventory_item_id || ''), 'Status': 'REJECTED', 'Result': 'Payload rejected', 'Error': ($json.errors || []).join('; '), 'Execution ID': String($execution.id) } }) }}",
         "options": {}
       },
-      "id": "fc22e706-d065-4dec-8f59-0063dddafce9",
       "name": "Log Rejected",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -187,13 +168,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -215,7 +190,6 @@
         },
         "options": {}
       },
-      "id": "b62ba127-3ba0-407a-a4e0-c20171a6df85",
       "name": "Check Duplicate",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -225,13 +199,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -244,7 +212,6 @@
           },
           "conditions": [
             {
-              "id": "ce152736-2676-5dd3-8d8f-9e5fd2d240bd",
               "leftValue": "={{ $json.records.length }}",
               "rightValue": 0,
               "operator": {
@@ -257,7 +224,6 @@
         },
         "options": {}
       },
-      "id": "5f044b2e-441a-4b96-bc1f-48194ad8ea46",
       "name": "IF Is New",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
@@ -277,7 +243,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: { 'Summary': 'Duplicate webhook ignored', 'Time': new Date().toISOString(), 'Workflow': 'Ingest', 'Event Type': 'DUPLICATE', 'Product': $('Config (Ingest)').first().json.event.inventory_item_id, 'Status': 'DUPLICATE', 'Result': 'No action taken', 'Error': '', 'Execution ID': String($execution.id) } }) }}",
         "options": {}
       },
-      "id": "16df7cc9-8172-40a7-958a-725ea827ec30",
       "name": "Log Duplicate",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -287,13 +252,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -315,7 +274,6 @@
         },
         "options": {}
       },
-      "id": "1cec232f-df28-4de5-88d2-b508ab168b32",
       "name": "Get Product",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -325,19 +283,12 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
         "jsCode": "// STOCKGUARD deterministic intelligence. The AI is NOT involved here.\nconst cfg = $('Config (Ingest)').first().json;\nconst ev = cfg.event;\nconst recs = ($('Get Product').first().json.records) || [];\nconst nowIso = new Date().toISOString();\nif (recs.length === 0) {\n  return [{ json: { found: false, event: ev, reason: 'No Products row with Inventory Item ID ' + ev.inventory_item_id } }];\n}\nconst rec = recs[0];\nconst f = rec.fields || {};\nconst num = (v, d = null) => (v === undefined || v === null || v === '' || Number.isNaN(Number(v))) ? d : Number(v);\nconst esc = s => String(s === undefined || s === null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst warnings = [];\n\nlet stock = Number(ev.available);\nif (stock < 0) { warnings.push('Negative available quantity treated as 0'); stock = 0; }\nconst prev = num(f['Current Stock']);\nlet low = num(f['Low Threshold']);\nif (low === null || low <= 0) { warnings.push('Missing Low Threshold; default used'); low = cfg.defaultLowThreshold; }\nconst lead = num(f['Lead Time Days'], 0);\nconst safety = num(f['Safety Stock'], 0);\nlet avg = num(f['Avg Daily Sales']);\nif (avg !== null && avg <= 0) avg = null;\nif (avg === null) warnings.push('No sales velocity; runway not calculated');\nconst days = stock <= 0 ? 0 : (avg !== null ? Math.round((stock / avg) * 10) / 10 : null);\n\n// Status\nconst criticalThreshold = Math.max(1, Math.ceil(low * cfg.criticalRatio));\nlet status;\nif (stock <= 0) status = 'SOLD_OUT';\nelse if (stock <= criticalThreshold || (days !== null && days <= cfg.criticalDays)) status = 'CRITICAL';\nelse if (stock <= low || (days !== null && lead > 0 && days < lead)) status = 'LOW_STOCK';\nelse status = 'HEALTHY';\n\n// Risk score\nconst thrScore = 40 * (1 - Math.min(1, stock / (low * 2)));\nlet risk;\nif (status === 'SOLD_OUT') risk = 100;\nelse if (days !== null) {\n  const runScore = 50 * (1 - Math.min(1, days / cfg.runwayCapDays));\n  const ltScore = (lead > 0 && days < lead) ? 10 : 0;\n  risk = Math.min(99, Math.round(thrScore + runScore + ltScore));\n} else {\n  risk = Math.min(99, Math.round((thrScore / 40) * 80));\n}\n\n// Reorder recommendation (rule-based)\nconst target = avg !== null ? Math.ceil(avg * lead + safety) : null;\nconst reorderRequired = avg !== null ? stock < target : stock <= low;\nconst reorderQty = target !== null ? Math.max(0, target - stock) : null;\n\n// Event classification\nconst isStockout = stock <= 0 && (prev === null || prev > 0);\nconst isRestock = prev !== null && prev <= 0 && stock > 0;\nlet anomalyRule = null;\nlet changePct = null;\nif (prev !== null && prev > 0) {\n  changePct = Math.round(((stock - prev) / prev) * 1000) / 10;\n  const units = Math.abs(stock - prev);\n  if (stock < prev && (-changePct) >= cfg.anomalyDropPct && units >= cfg.anomalyMinUnits) {\n    anomalyRule = 'Large drop: ' + changePct + '% (' + units + ' units)';\n  } else if (stock > prev && changePct >= cfg.anomalyRisePct && units >= cfg.anomalyMinUnits) {\n    anomalyRule = 'Large increase: +' + changePct + '% (' + units + ' units)';\n  }\n}\nconst prevStatus = f['Stock Status'] || 'HEALTHY';\nlet eventType;\nif (isStockout) eventType = 'STOCKOUT';\nelse if (isRestock) eventType = 'RESTOCK';\nelse if (anomalyRule) eventType = 'ANOMALY';\nelse if (prev === null) eventType = 'BASELINE';\nelse if (status !== prevStatus) eventType = 'STATUS_CHANGE';\nelse eventType = 'UPDATE';\n\n// Alert decision with cooldown\nconst rank = { HEALTHY: 0, LOW_STOCK: 1, CRITICAL: 2, SOLD_OUT: 3 };\nconst worsened = (rank[status] || 0) > (rank[prevStatus] || 0);\nconst lastAlertStatus = f['Last Alert Status'] || null;\nconst lastAlertTime = f['Last Alert Time'] ? new Date(f['Last Alert Time']).getTime() : null;\nconst minsSince = lastAlertTime ? (Date.now() - lastAlertTime) / 60000 : null;\nconst suppressed = lastAlertStatus === status && minsSince !== null && minsSince < cfg.cooldownMinutes;\nlet alertType = null;\nif (isStockout) alertType = 'STOCKOUT';\nelse if (worsened && !suppressed && status === 'CRITICAL') alertType = 'CRITICAL';\nelse if (anomalyRule) alertType = 'ANOMALY';\nelse if (worsened && !suppressed && status === 'LOW_STOCK') alertType = 'LOW_STOCK';\nelse if (isRestock) alertType = 'RESTOCK';\nconst priorityMap = { STOCKOUT: 'URGENT', CRITICAL: 'HIGH', ANOMALY: 'REVIEW', LOW_STOCK: 'NORMAL', RESTOCK: 'INFO' };\nconst actionMap = {\n  STOCKOUT: 'Product is out of stock. Review replenishment and decide whether to pause promotion or offer an alternative.',\n  CRITICAL: 'Review replenishment immediately.',\n  ANOMALY: 'Inventory anomaly detected — manual review recommended.',\n  LOW_STOCK: 'Plan a reorder soon.',\n  RESTOCK: 'Confirm the restocked quantity is correct.'\n};\nconst emoji = { STOCKOUT: '🔴', CRITICAL: '🚨', ANOMALY: '⚠️', LOW_STOCK: '🟡', RESTOCK: '🟢' };\nconst name = f['Product Name'] || 'Unknown product';\nconst variant = f['Variant'] ? ' — ' + f['Variant'] : '';\nconst sku = f['SKU'] || '';\nlet alert = { needed: false };\nif (alertType) {\n  const rows = [\n    ['Product', esc(name + variant)], ['SKU', esc(sku)], ['Current stock', stock],\n    ['Previous stock', prev === null ? 'n/a' : prev], ['Low threshold', low], ['Status', status],\n    ['Risk score', risk + '/100'], ['Days of stock remaining', days === null ? 'n/a (no sales data)' : days],\n    ['Suggested reorder qty (rule-based)', reorderQty === null ? 'n/a' : reorderQty]\n  ];\n  if (anomalyRule) rows.push(['Anomaly rule', esc(anomalyRule)]);\n  rows.push(['Time (UTC)', nowIso]);\n  const html = '<h2>' + emoji[alertType] + ' ' + alertType.replace('_', ' ') + ' — ' + esc(name + variant) + '</h2>'\n    + '<table cellpadding=\"6\" style=\"border-collapse:collapse\">'\n    + rows.map(r => '<tr><td><b>' + r[0] + '</b></td><td>' + r[1] + '</td></tr>').join('') + '</table>'\n    + '<p><b>Recommended human action:</b> ' + actionMap[alertType] + '</p>'\n    + '<p style=\"color:#888\">Rule-based alert generated by StockGuard. Quantities come from Shopify webhook data.</p>';\n  alert = { needed: true, type: alertType, priority: priorityMap[alertType],\n    subject: emoji[alertType] + ' [' + priorityMap[alertType] + '] ' + alertType.replace('_', ' ') + ': ' + name + variant + ' (' + sku + ')', html };\n}\n\nconst productFields = {\n  'Current Stock': stock, 'Previous Stock': prev, 'Stock Status': status, 'Risk Score': risk,\n  'Days Remaining': days, 'Recommended Reorder Qty': reorderQty, 'Reorder Required': reorderRequired,\n  'Last Event Key': cfg.event_key, 'Last Updated': nowIso\n};\nif (alert.needed) { productFields['Last Alert Status'] = status; productFields['Last Alert Time'] = nowIso; }\nif (isStockout) { productFields['Stockout Open'] = true; productFields['Last Stockout'] = nowIso; }\nif (isRestock) { productFields['Stockout Open'] = false; productFields['Last Restock'] = nowIso; }\n\nconst eventFields = {\n  'Event Key': cfg.event_key, 'Webhook ID': ev.webhook_id, 'Event Time': ev.updated_at || nowIso,\n  'Product Name': name, 'Variant': f['Variant'] || '', 'SKU': sku, 'Inventory Item ID': ev.inventory_item_id,\n  'Location ID': ev.location_id, 'Previous Stock': prev, 'Current Stock': stock,\n  'Change': prev === null ? null : stock - prev, 'Event Type': eventType, 'Stock Status': status,\n  'Risk Score': risk, 'Days Remaining': days, 'Anomaly Flag': !!anomalyRule, 'Shop': ev.shop,\n  'Product': [rec.id]\n};\nconst stamp = nowIso.replace(/[-:.TZ]/g, '').slice(0, 14);\nconst stockoutFields = isStockout ? {\n  'Stockout ID': sku + '-' + stamp, 'Product Name': name, 'Variant': f['Variant'] || '', 'SKU': sku,\n  'Inventory Item ID': ev.inventory_item_id, 'Location ID': ev.location_id, 'Previous Stock': prev,\n  'Stockout Start': ev.updated_at || nowIso, 'Status': 'OPEN', 'Risk Score': 100, 'Product': [rec.id]\n} : null;\nconst anomalyFields = anomalyRule ? {\n  'Anomaly ID': sku + '-' + stamp, 'Detected At': nowIso, 'Product Name': name, 'SKU': sku,\n  'Previous Stock': prev, 'Current Stock': stock, 'Change Percent': changePct, 'Rule Triggered': anomalyRule,\n  'Status': 'NEW', 'Note': 'Inventory anomaly detected — manual review recommended.', 'Product': [rec.id]\n} : null;\n\nreturn [{ json: {\n  found: true, recordId: rec.id, event: ev, eventType, status, risk, days, stock, prev, low, reorderQty, reorderRequired,\n  isStockout, isRestock, isAnomaly: !!anomalyRule, anomalyRule, warnings, alert,\n  eventFields, productFields, stockoutFields, anomalyFields,\n  name, sku, variant: f['Variant'] || '', restockTime: ev.updated_at || nowIso, quantityRestored: isRestock ? stock : null\n} }];\n"
       },
-      "id": "42ef5f05-a724-4e0e-90e8-2156ee0eadfc",
       "name": "Intelligence",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -357,7 +308,6 @@
           },
           "conditions": [
             {
-              "id": "4672a109-240a-55e7-a2c7-5058556ba169",
               "leftValue": "={{ $json.found }}",
               "rightValue": "",
               "operator": {
@@ -371,7 +321,6 @@
         },
         "options": {}
       },
-      "id": "851cbf9f-ad28-4de0-8815-62ca67cae78b",
       "name": "IF Product Found",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
@@ -391,7 +340,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: { 'Summary': 'Unmapped inventory item', 'Time': new Date().toISOString(), 'Workflow': 'Ingest', 'Event Type': 'UNMAPPED', 'Product': $('Config (Ingest)').first().json.event.inventory_item_id, 'Status': 'UNMAPPED', 'Result': $json.reason, 'Error': '', 'Execution ID': String($execution.id) } }) }}",
         "options": {}
       },
-      "id": "e5a514bb-8103-4814-aeee-0312850a353e",
       "name": "Log Unmapped",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -401,13 +349,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -420,7 +362,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: $('Intelligence').first().json.eventFields }) }}",
         "options": {}
       },
-      "id": "b472d57d-4282-4015-847f-dfb2d6d74dab",
       "name": "Create Event",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -430,13 +371,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -449,7 +384,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: $('Intelligence').first().json.productFields }) }}",
         "options": {}
       },
-      "id": "8627e677-1b83-43c9-a1a1-cf4652578a4e",
       "name": "Update Product",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -459,13 +393,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -478,7 +406,6 @@
           },
           "conditions": [
             {
-              "id": "2e940884-5863-5ef3-bbf4-ed9db6c2221e",
               "leftValue": "={{ $('Intelligence').first().json.alert.needed }}",
               "rightValue": "",
               "operator": {
@@ -492,7 +419,6 @@
         },
         "options": {}
       },
-      "id": "faa3850b-c9d0-4c32-9fd2-601d755a829e",
       "name": "IF Send Alert",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
@@ -512,7 +438,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: { 'Alert ID': $('Intelligence').first().json.sku + '-' + Date.now(), 'Sent At': new Date().toISOString(), 'Alert Type': $('Intelligence').first().json.alert.type, 'Priority': $('Intelligence').first().json.alert.priority, 'Product Name': $('Intelligence').first().json.name, 'SKU': $('Intelligence').first().json.sku, 'Current Stock': $('Intelligence').first().json.stock, 'Risk Score': $('Intelligence').first().json.risk, 'Recipient': $('Config (Ingest)').first().json.alertEmail, 'Delivery Status': ($json.error ? 'EMAIL_FAILED' : 'SENT'), 'Product': [$('Intelligence').first().json.recordId] } }) }}",
         "options": {}
       },
-      "id": "e90e4685-8e8f-47e2-a9ab-85ba2349e444",
       "name": "Record Alert",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -522,13 +447,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -541,7 +460,6 @@
           },
           "conditions": [
             {
-              "id": "b756362c-e251-53e8-a15d-0cb326afd250",
               "leftValue": "={{ $('Intelligence').first().json.isStockout }}",
               "rightValue": "",
               "operator": {
@@ -555,7 +473,6 @@
         },
         "options": {}
       },
-      "id": "d6ad6d1b-b410-4386-9579-5fe3d282e8c4",
       "name": "IF Stockout",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
@@ -575,7 +492,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: $('Intelligence').first().json.stockoutFields }) }}",
         "options": {}
       },
-      "id": "d7c6e74c-6c81-4bde-86e2-1cddf59b1ab9",
       "name": "Create Stockout",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -585,13 +501,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -604,7 +514,6 @@
           },
           "conditions": [
             {
-              "id": "e65f9a0b-5049-5c26-ab40-5285a5642446",
               "leftValue": "={{ $('Intelligence').first().json.isRestock }}",
               "rightValue": "",
               "operator": {
@@ -618,7 +527,6 @@
         },
         "options": {}
       },
-      "id": "83e46932-3b4f-410a-a650-b9a02198e3c9",
       "name": "IF Restock",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
@@ -647,7 +555,6 @@
         },
         "options": {}
       },
-      "id": "e76c6ac0-af72-4589-9998-602953c35204",
       "name": "Find Open Stockout",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -657,19 +564,12 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
         "jsCode": "// Compute stockout duration for the OPEN stockout being closed.\nconst it = $('Intelligence').first().json;\nconst recs = ($input.first().json.records) || [];\nif (recs.length === 0) return [];\nconst rec = recs[0];\nconst start = rec.fields['Stockout Start'] ? new Date(rec.fields['Stockout Start']).getTime() : null;\nconst end = new Date(it.restockTime).getTime();\nconst hours = start ? Math.max(0, Math.round(((end - start) / 3600000) * 100) / 100) : null;\nreturn [{ json: { recordId: rec.id, fields: { 'Status': 'CLOSED', 'Restock Time': it.restockTime, 'Quantity Restored': it.quantityRestored, 'Duration Hours': hours } } }];\n"
       },
-      "id": "63c90495-d4b9-45cd-86e8-316f5ce55d43",
       "name": "Prepare Close Stockout",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -689,7 +589,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: $json.fields }) }}",
         "options": {}
       },
-      "id": "ef23bf85-205b-4bcb-b719-bd197eba7107",
       "name": "Close Stockout",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -699,13 +598,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -718,7 +611,6 @@
           },
           "conditions": [
             {
-              "id": "8be6d43a-0317-57f7-9420-1dc71bd4e6c3",
               "leftValue": "={{ $('Intelligence').first().json.isAnomaly }}",
               "rightValue": "",
               "operator": {
@@ -732,7 +624,6 @@
         },
         "options": {}
       },
-      "id": "244f5bd6-f9a4-4b05-bd74-32158fb8cf40",
       "name": "IF Anomaly",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
@@ -752,7 +643,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: $('Intelligence').first().json.anomalyFields }) }}",
         "options": {}
       },
-      "id": "c1b9b15b-7d15-4301-b91c-8711bdb14aec",
       "name": "Create Anomaly",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -762,13 +652,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -781,7 +665,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: { 'Summary': $('Intelligence').first().json.eventType + ': ' + $('Intelligence').first().json.sku, 'Time': new Date().toISOString(), 'Workflow': 'Ingest', 'Event Type': $('Intelligence').first().json.eventType, 'Product': $('Intelligence').first().json.sku, 'Status': 'OK', 'Result': 'Processed. Status=' + $('Intelligence').first().json.status + ' Risk=' + $('Intelligence').first().json.risk, 'Error': ($('Intelligence').first().json.warnings || []).join('; '), 'Execution ID': String($execution.id) } }) }}",
         "options": {}
       },
-      "id": "2db1c141-21d6-4cb8-93ea-032bc0b79e34",
       "name": "Log Success",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -791,17 +674,10 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {},
-      "id": "badf6b20-e464-48ec-8fb5-bd640cd3569f",
       "name": "Error Trigger",
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
@@ -815,67 +691,56 @@
         "assignments": {
           "assignments": [
             {
-              "id": "d82e02af-78e9-5b05-96e7-1693ec4dd37a",
               "name": "baseId",
               "value": "appXrNLemdGUd7Q6L",
               "type": "string"
             },
             {
-              "id": "0073b95c-62e6-554a-b7d5-f3e77d075575",
               "name": "alertEmail",
               "value": "merchant@example.com",
               "type": "string"
             },
             {
-              "id": "231fad73-3bf4-5c9e-8f1c-051d22a187f1",
               "name": "fromEmail",
               "value": "stockguard@example.com",
               "type": "string"
             },
             {
-              "id": "c8ff81d7-e555-5eeb-888c-84173df0991d",
               "name": "defaultLowThreshold",
               "value": 10,
               "type": "number"
             },
             {
-              "id": "3b527d23-9541-523a-8ffd-b2f75a249afc",
               "name": "criticalRatio",
               "value": 0.5,
               "type": "number"
             },
             {
-              "id": "66a3d77a-be7f-5bfc-86a4-042828a069aa",
               "name": "criticalDays",
               "value": 3,
               "type": "number"
             },
             {
-              "id": "97f2e4f2-9fd7-5bf2-ae40-bf1f84dab4b5",
               "name": "runwayCapDays",
               "value": 14,
               "type": "number"
             },
             {
-              "id": "07331c77-59d9-54cd-b924-7ad6a145de4b",
               "name": "anomalyDropPct",
               "value": 30,
               "type": "number"
             },
             {
-              "id": "246284b0-e9fc-56f8-9dc8-307af97af3c1",
               "name": "anomalyRisePct",
               "value": 150,
               "type": "number"
             },
             {
-              "id": "3d613ce6-03c1-5e17-8d5d-4db3a401bfcc",
               "name": "anomalyMinUnits",
               "value": 5,
               "type": "number"
             },
             {
-              "id": "6b661945-07d1-580c-9fa0-a4a48c062a79",
               "name": "cooldownMinutes",
               "value": 1440,
               "type": "number"
@@ -885,7 +750,6 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "dc1b786a-d850-4ba0-a2bb-28714f77faea",
       "name": "Config (Errors)",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
@@ -905,7 +769,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: { 'Summary': 'Workflow error: ' + ($('Error Trigger').first().json.execution.lastNodeExecuted || 'unknown node'), 'Time': new Date().toISOString(), 'Workflow': 'ErrorHandler', 'Event Type': 'ERROR', 'Product': '', 'Status': 'ERROR', 'Result': 'Execution failed', 'Error': String(($('Error Trigger').first().json.execution.error || {}).message || 'unknown').slice(0, 500), 'Execution ID': String($execution.id) } }) }}",
         "options": {}
       },
-      "id": "ea4ecb89-6cd0-48cf-bbf0-aa41e2037cf7",
       "name": "Log Error",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -915,13 +778,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -933,7 +790,6 @@
           ]
         }
       },
-      "id": "26c0f6f6-a6fb-42bb-ba46-2f990f14dda5",
       "name": "Daily 8AM Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -947,67 +803,56 @@
         "assignments": {
           "assignments": [
             {
-              "id": "7160fe8e-a3d6-5e83-9867-edb42dde7543",
               "name": "baseId",
               "value": "appXrNLemdGUd7Q6L",
               "type": "string"
             },
             {
-              "id": "d2f7c940-e2fd-5499-b5ac-506c9aba3f36",
               "name": "alertEmail",
               "value": "merchant@example.com",
               "type": "string"
             },
             {
-              "id": "388ae50a-a89d-5d77-98ed-ff559c49c68b",
               "name": "fromEmail",
               "value": "stockguard@example.com",
               "type": "string"
             },
             {
-              "id": "8ec02c76-b9a8-5131-bdb7-a27c5827e4de",
               "name": "defaultLowThreshold",
               "value": 10,
               "type": "number"
             },
             {
-              "id": "fc438ea5-95d1-5784-8acc-cba874417aca",
               "name": "criticalRatio",
               "value": 0.5,
               "type": "number"
             },
             {
-              "id": "8060c549-9cda-5b43-abb1-666674cbadb8",
               "name": "criticalDays",
               "value": 3,
               "type": "number"
             },
             {
-              "id": "ab3eae63-bbb7-5416-8a56-daae4f300cd6",
               "name": "runwayCapDays",
               "value": 14,
               "type": "number"
             },
             {
-              "id": "5710b943-593c-5561-995e-6f1c00add5d6",
               "name": "anomalyDropPct",
               "value": 30,
               "type": "number"
             },
             {
-              "id": "4c3b295d-7ded-5fe9-9150-fe3bd14a8cbb",
               "name": "anomalyRisePct",
               "value": 150,
               "type": "number"
             },
             {
-              "id": "c47ace31-8214-5adb-ac92-c2b878321765",
               "name": "anomalyMinUnits",
               "value": 5,
               "type": "number"
             },
             {
-              "id": "e219eca0-5830-5777-85e1-c895f4c60b7f",
               "name": "cooldownMinutes",
               "value": 1440,
               "type": "number"
@@ -1017,7 +862,6 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "c5e29f29-e365-465f-bfec-37c02bbb03da",
       "name": "Config (Report)",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
@@ -1042,7 +886,6 @@
         },
         "options": {}
       },
-      "id": "df4de2d3-eeca-4ca4-a163-00364304eca3",
       "name": "Get All Products",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -1052,13 +895,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -1080,7 +917,6 @@
         },
         "options": {}
       },
-      "id": "bfbb42ed-b436-40aa-a5b8-f108f8b43996",
       "name": "Get Recent Events",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -1090,19 +926,12 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
         "jsCode": "// Deterministic report facts. AI only summarizes these.\nconst prods = (($('Get All Products').first().json.records) || []).map(r => r.fields || {});\nconst evs = (($('Get Recent Events').first().json.records) || []).map(r => r.fields || {});\nconst esc = s => String(s === undefined || s === null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst counts = { HEALTHY: 0, LOW_STOCK: 0, CRITICAL: 0, SOLD_OUT: 0 };\nprods.forEach(p => { const s = p['Stock Status'] || 'HEALTHY'; counts[s] = (counts[s] || 0) + 1; });\nconst label = p => (p['Product Name'] || '?') + (p['Variant'] ? ' — ' + p['Variant'] : '') + ' (' + (p['SKU'] || '') + ')';\nconst top = [...prods].filter(p => (p['Risk Score'] || 0) > 0).sort((a, b) => (b['Risk Score'] || 0) - (a['Risk Score'] || 0)).slice(0, 5)\n  .map(p => ({ product: label(p), status: p['Stock Status'], risk: p['Risk Score'], stock: p['Current Stock'], daysRemaining: p['Days Remaining'] === undefined ? null : p['Days Remaining'] }));\nconst reorder = prods.filter(p => p['Reorder Required']).map(p => ({ product: label(p), stock: p['Current Stock'], suggestedQty: p['Recommended Reorder Qty'] === undefined ? null : p['Recommended Reorder Qty'] }));\nconst openStockouts = prods.filter(p => p['Stockout Open']).map(label);\nconst restocked = evs.filter(e => e['Event Type'] === 'RESTOCK').map(e => (e['Product Name'] || '?') + ' (' + (e['SKU'] || '') + ')');\nconst anomalies = evs.filter(e => e['Anomaly Flag']).map(e => (e['Product Name'] || '?') + ' (' + (e['SKU'] || '') + ')');\nconst date = new Date().toISOString().slice(0, 10);\nconst facts = { date, productsMonitored: prods.length, counts, topRisk: top, reorderRequired: reorder, openStockouts, restockedLast24h: restocked, anomaliesLast24h: anomalies, eventsLast24h: evs.length };\nconst list = a => a.length ? '<ul>' + a.map(x => '<li>' + esc(typeof x === 'string' ? x : JSON.stringify(x)) + '</li>').join('') + '</ul>' : '<p>None</p>';\nconst html = '<h2>📊 Daily Inventory Intelligence Report — ' + date + '</h2>'\n  + '<p>Products monitored: <b>' + prods.length + '</b></p>'\n  + '<p>🟢 Healthy: ' + counts.HEALTHY + ' | 🟡 Low: ' + counts.LOW_STOCK + ' | 🟠 Critical: ' + counts.CRITICAL + ' | 🔴 Sold out: ' + counts.SOLD_OUT + '</p>'\n  + '<h3>Top priorities</h3><ol>' + top.map(t => '<li>' + esc(t.product) + ' — risk ' + t.risk + '/100, stock ' + t.stock + ', days left: ' + (t.daysRemaining === null ? 'n/a' : t.daysRemaining) + '</li>').join('') + '</ol>'\n  + '<h3>Open stockouts</h3>' + list(openStockouts)\n  + '<h3>Restocked (24h)</h3>' + list(restocked)\n  + '<h3>Anomalies (24h) — manual review recommended</h3>' + list(anomalies)\n  + '<h3>Reorder required (rule-based)</h3>' + list(reorder.map(r => r.product + ': stock ' + r.stock + ', suggested qty ' + (r.suggestedQty === null ? 'n/a' : r.suggestedQty)));\nreturn [{ json: { facts, html } }];\n"
       },
-      "id": "c0094756-e150-4a59-af9c-1be24b834e40",
       "name": "Build Report Facts",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1119,7 +948,6 @@
           "systemMessage": "You are StockGuard's inventory report writer for a Shopify merchant. You receive a JSON object of facts that were already calculated by deterministic workflow logic. Write a short, plain-language summary (max 150 words): 1 sentence overall health, then up to 3 priorities in order of risk, then 1 sentence on anything needing manual review. RULES: Use ONLY numbers and product names present in the JSON. Never invent, adjust or estimate inventory quantities, sales velocity, supplier details, causes or dates. Never override statuses or risk scores. Do not claim fraud, theft or sync failure; for anomalies say 'manual review recommended'. If a field is null or missing, say the data is unavailable. You have no tools and cannot change any inventory. Do not use markdown tables."
         }
       },
-      "id": "4eacf3ec-c19a-4621-84e4-1f5b1c6a2fd7",
       "name": "AI Summary",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
@@ -1140,7 +968,6 @@
         "jsonBody": "={{ JSON.stringify({ typecast: true, fields: { 'Report Date': $('Build Report Facts').first().json.facts.date, 'Products Monitored': $('Build Report Facts').first().json.facts.productsMonitored, 'Healthy': $('Build Report Facts').first().json.facts.counts.HEALTHY, 'Low Stock': $('Build Report Facts').first().json.facts.counts.LOW_STOCK, 'Critical': $('Build Report Facts').first().json.facts.counts.CRITICAL, 'Sold Out': $('Build Report Facts').first().json.facts.counts.SOLD_OUT, 'Delivery Status': ($json.error ? 'EMAIL_FAILED' : 'SENT'), 'AI Summary': String($('AI Summary').first().json.output || '') } }) }}",
         "options": {}
       },
-      "id": "d5eb94e5-e4fa-411a-ad49-cba96a0ad56f",
       "name": "Record Report",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -1150,13 +977,7 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 2000,
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "5rrWb9ypR7xNeyR7",
-          "name": "StockGuard"
-        }
-      }
+      "waitBetweenTries": 2000
     },
     {
       "parameters": {
@@ -1168,14 +989,7 @@
         -1584,
         1216
       ],
-      "id": "9a567308-b395-49f7-8102-6234de1d4f28",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "fAXCPSbCbzFZlPZY",
-          "name": "Google Gemini(PaLM) Api account 2"
-        }
-      }
+      "name": "Google Gemini Chat Model"
     },
     {
       "parameters": {
@@ -1192,15 +1006,7 @@
         480,
         -64
       ],
-      "id": "9fc7b0a4-912c-4b92-8649-a269bd5b9ae9",
-      "name": "Send a message",
-      "webhookId": "f397310c-ff97-4bcd-9307-5838148cde2d",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "wzb6oR5Q8NsuR9ep",
-          "name": "Gmail account"
-        }
-      }
+      "name": "Send a message"
     },
     {
       "parameters": {
@@ -1217,15 +1023,7 @@
         -912,
         992
       ],
-      "id": "b3ad3c23-c7a7-4241-9058-27bafe27da50",
-      "name": "Send a message1",
-      "webhookId": "f397310c-ff97-4bcd-9307-5838148cde2d",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "wzb6oR5Q8NsuR9ep",
-          "name": "Gmail account"
-        }
-      }
+      "name": "Send a message1"
     },
     {
       "parameters": {
@@ -1242,15 +1040,7 @@
         -1808,
         1600
       ],
-      "id": "0717eb4b-cadd-4a83-b2be-43fa0de171f0",
-      "name": "Send a message2",
-      "webhookId": "f397310c-ff97-4bcd-9307-5838148cde2d",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "wzb6oR5Q8NsuR9ep",
-          "name": "Gmail account"
-        }
-      }
+      "name": "Send a message2"
     }
   ],
   "pinData": {},
@@ -1623,11 +1413,6 @@
     "availableInMCP": false
   },
   "versionId": "cc1e6175-f422-42b2-9afa-051df0d3abfa",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "a51907c4a8a8a039b9ee5a9e529c921d18335ea2d4905db3319723bb7f0b4beb"
-  },
   "nodeGroups": [],
-  "id": "sJRv5cFQmzOX9Eq5",
   "tags": []
 }
