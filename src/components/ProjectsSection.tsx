@@ -81,6 +81,8 @@ export interface Project {
   loomVideo?: string;
   media?: ProjectMedia[];
   categories?: ProjectCategory[];
+  architecture?: string[];
+  results?: string[];
   caseStudy?: {
     heroImage: string;
     summary: string;
@@ -105,6 +107,17 @@ export const projects: Project[] = [
       { label: "AI Voice Receptionist Walkthrough", embedUrl: "https://drive.google.com/file/d/1USte80S4Kp6Pt_7PknMWg97spnt2Ssgn/preview", sourceUrl: "https://drive.google.com/file/d/1USte80S4Kp6Pt_7PknMWg97spnt2Ssgn/view?usp=drivesdk" },
       { label: "CRM and Scheduling Workflow", embedUrl: "https://drive.google.com/file/d/1dyDKyXKMST4ou9FyevA0srjOgaXgOtWa/preview", sourceUrl: "https://drive.google.com/file/d/1dyDKyXKMST4ou9FyevA0srjOgaXgOtWa/view?usp=drivesdk" },
       { label: "Production Architecture Detail", embedUrl: "https://drive.google.com/file/d/101Z34ef8uk22SQ-_GvOTBk6obwh_56rk/preview", sourceUrl: "https://drive.google.com/file/d/101Z34ef8uk22SQ-_GvOTBk6obwh_56rk/view?usp=drivesdk" },
+    ],
+    architecture: [
+      "Identity and CRM verification matches existing patients by phone and last name, or creates validated leads before calendar access.",
+      "The availability engine enforces clinic hours, a two-hour lead window and conflict-free slot alternatives in the clinic time zone.",
+      "Atomic booking, rescheduling and cancellation use race-condition checks plus automatic rollback when a downstream CRM write fails.",
+      "Human handoff routes urgent and department-specific calls while deduplicated webhooks write post-call summaries into HubSpot.",
+    ],
+    results: [
+      "Zero double-bookings or ghost confirmations through race checks and compensation logic.",
+      "24/7 patient verification, lead capture, booking, rescheduling and cancellation.",
+      "Every call outcome and appointment change synced to the HubSpot contact and deal pipeline.",
     ],
     icon: Headphones,
     featured: true,
