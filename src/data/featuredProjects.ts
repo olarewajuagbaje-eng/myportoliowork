@@ -7,6 +7,53 @@ import type { ProjectCardData } from '@/components/ProjectCard';
  */
 export const featuredProjectsFallback: ProjectCardData[] = [
   {
+    slug: 'smilecare-dental-ai-voice',
+    name: 'SmileCare Dental',
+    eyebrow: 'Production AI Voice and CRM Orchestration',
+    headline: 'SmileCare Dental: AI Voice Receptionist and Autonomous Scheduling Engine',
+    kpis: [
+      { value: '24/7', label: 'Patient Intake' },
+      { value: '0', label: 'Double Bookings' },
+      { value: '100%', label: 'CRM Visibility' },
+    ],
+    problem:
+      'Dental teams miss high-intent calls during peak hours and after hours, while unreliable voice bots can create duplicate contacts, double-book calendars or confirm appointments that were never saved.',
+    solution:
+      'Ava is a production AI voice receptionist that verifies patients, checks real-time availability and manages bookings through deterministic n8n workflows connected to HubSpot CRM and Google Calendar.',
+    results: [
+      'Zero double bookings or ghost confirmations through race checks and automatic rollback',
+      'Round-the-clock patient intake, booking, rescheduling and cancellation',
+      'Every call outcome and appointment change synced to the CRM pipeline',
+    ],
+    tags: ['Retell AI', 'n8n', 'HubSpot CRM', 'Google Calendar API', 'JavaScript (ES6)', 'Webhooks & REST APIs'],
+    themeClass: 'featured-project-wellness',
+    media: [
+      {
+        label: 'AI Voice Receptionist Walkthrough',
+        embedUrl: 'https://drive.google.com/file/d/1USte80S4Kp6Pt_7PknMWg97spnt2Ssgn/preview',
+        sourceUrl: 'https://drive.google.com/file/d/1USte80S4Kp6Pt_7PknMWg97spnt2Ssgn/view?usp=drivesdk',
+      },
+      {
+        label: 'CRM and Scheduling Workflow',
+        embedUrl: 'https://drive.google.com/file/d/1dyDKyXKMST4ou9FyevA0srjOgaXgOtWa/preview',
+        sourceUrl: 'https://drive.google.com/file/d/1dyDKyXKMST4ou9FyevA0srjOgaXgOtWa/view?usp=drivesdk',
+      },
+      {
+        label: 'Production Architecture Detail',
+        embedUrl: 'https://drive.google.com/file/d/101Z34ef8uk22SQ-_GvOTBk6obwh_56rk/preview',
+        sourceUrl: 'https://drive.google.com/file/d/101Z34ef8uk22SQ-_GvOTBk6obwh_56rk/view?usp=drivesdk',
+      },
+    ],
+    architecture: [
+      'Verifies existing patients by exact phone and last-name match, or creates validated new leads before any calendar write.',
+      'Checks Google Calendar in America/New_York, enforces clinic hours and lead time, then offers conflict-free alternatives.',
+      'Books, reschedules and cancels atomically, with post-create race checks and automatic rollback if a CRM write fails.',
+      'Routes emergency and department handoffs, deduplicates webhook retries and logs post-call AI summaries in HubSpot.',
+    ],
+    cta: { label: 'View Case Study', actionType: 'modal', icon: 'PlayCircle' },
+    secondaryCta: { label: 'Book A Strategy Call', actionType: 'anchor', href: '#contact' },
+  },
+  {
     slug: 'stockguard',
     name: 'StockGuard',
     eyebrow: 'E-commerce Revenue Protection',

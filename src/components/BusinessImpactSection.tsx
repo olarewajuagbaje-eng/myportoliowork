@@ -25,7 +25,7 @@ export default function BusinessImpactSection() {
           className="text-center max-w-2xl mx-auto mb-10"
         >
           <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">Business Impact</p>
-          <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight">Measurable outcomes, not just tools</h2>
+          <h2 className="text-3xl md:text-5xl font-display font-bold">The numbers clients actually track</h2>
           <p className="text-muted-foreground mt-3">
             The numbers below reflect the operational lift my automation systems have delivered for clients across
             SaaS, healthcare, real estate, logistics and professional services.

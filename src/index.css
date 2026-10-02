@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-
 /* Cyber-Minimalist Dark Mode Design System */
 
 @layer base {
@@ -89,11 +87,11 @@
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-display);
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
-    letter-spacing: -0.011em;
+    letter-spacing: 0;
   }
 
   h1, h2, h3, h4, h5 {
-    letter-spacing: -0.025em;
+    letter-spacing: 0;
   }
 
   /* Refined typography hierarchy */
@@ -191,6 +189,10 @@
   }
   .cta-glow:active {
     transform: translateY(0) scale(0.98);
+  }
+
+  .hero-focus-glow {
+    background: radial-gradient(ellipse at center, hsl(var(--primary) / 0.3) 0%, transparent 70%);
   }
 }
 

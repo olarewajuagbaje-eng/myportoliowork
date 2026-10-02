@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { ProjectCardData } from '@/components/ProjectCard';
 import { trackProjectEvent } from '@/lib/projectAnalytics';
+import ProjectMediaShowcase from '@/components/ProjectMediaShowcase';
 
 interface Props {
   project: ProjectCardData | null;
@@ -24,6 +25,10 @@ const CaseStudyModal = ({ project, onClose }: Props) => {
               <DialogTitle className="font-display text-xl sm:text-2xl">{project.headline}</DialogTitle>
               <DialogDescription className="sr-only">Case study: problem, solution, result and technologies.</DialogDescription>
             </DialogHeader>
+
+            {project.media && project.media.length > 0 && (
+              <ProjectMediaShowcase media={project.media} projectTitle={project.headline} />
+            )}
 
             {project.kpis && project.kpis.length > 0 && (
               <dl className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border/60 bg-border/40 sm:grid-cols-3">
@@ -56,6 +61,20 @@ const CaseStudyModal = ({ project, onClose }: Props) => {
                 </ul>
               </section>
             </div>
+
+            {project.architecture && project.architecture.length > 0 && (
+              <section className="rounded-2xl border border-border/70 bg-background/40 p-4">
+                <h3 className="mb-3 text-xs font-semibold uppercase text-primary">System architecture</h3>
+                <ul className="space-y-2">
+                  {project.architecture.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/85">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
             <ul aria-label="Technologies used" className="flex flex-wrap gap-1.5">
               {project.tags.map((t) => (

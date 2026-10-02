@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen, Video, BookText, GraduationCap } from 'lucide-react';
+import { useMemo, useRef, useState } from 'react';
+import { Shield, Users, MessageSquare, Mail, Youtube, Bot, ChevronDown, Maximize2, BookOpen, Video, BookText, GraduationCap, Search, X, Headphones } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProjectDetailModal from './ProjectDetailModal';
+import ProjectMediaShowcase, { type ProjectMedia } from './ProjectMediaShowcase';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 // Import real workflow images
 import revenueShield from '@/assets/revenue-shield.jpg';
@@ -76,6 +79,10 @@ export interface Project {
   impact?: ProjectImpact;
   roiImpact?: string;
   loomVideo?: string;
+  media?: ProjectMedia[];
+  categories?: ProjectCategory[];
+  architecture?: string[];
+  results?: string[];
   caseStudy?: {
     heroImage: string;
     summary: string;
@@ -83,7 +90,41 @@ export interface Project {
   };
 }
 
+type ProjectCategory = 'n8n' | 'ghl' | 'saas';
+type ProjectFilter = 'all' | ProjectCategory;
+
 export const projects: Project[] = [
+  {
+    id: 12,
+    title: "SmileCare Dental: AI Voice Receptionist & Autonomous Scheduling Engine",
+    slug: "smilecare-dental-ai-voice",
+    description: "A production AI voice receptionist that verifies patients, manages appointments and keeps HubSpot CRM and Google Calendar synchronised without double-booking.",
+    problem: "Dental front-desk teams miss high-intent calls during peak hours and after hours. Unreliable voice bots can duplicate contacts, double-book calendars or confirm appointments that were never saved.",
+    solution: "Engineered Ava with Retell AI and deterministic n8n workflows for identity checks, real-time availability, atomic booking, rescheduling, cancellation, human handoff and complete HubSpot audit logging.",
+    tools: ["Retell AI", "n8n", "HubSpot CRM", "Google Calendar API", "JavaScript (ES6)", "Webhooks & REST APIs"],
+    images: [{ src: "/placeholder.svg", label: "AI Voice Receptionist" }],
+    media: [
+      { label: "AI Voice Receptionist Walkthrough", embedUrl: "https://drive.google.com/file/d/1USte80S4Kp6Pt_7PknMWg97spnt2Ssgn/preview", sourceUrl: "https://drive.google.com/file/d/1USte80S4Kp6Pt_7PknMWg97spnt2Ssgn/view?usp=drivesdk" },
+      { label: "CRM and Scheduling Workflow", embedUrl: "https://drive.google.com/file/d/1dyDKyXKMST4ou9FyevA0srjOgaXgOtWa/preview", sourceUrl: "https://drive.google.com/file/d/1dyDKyXKMST4ou9FyevA0srjOgaXgOtWa/view?usp=drivesdk" },
+      { label: "Production Architecture Detail", embedUrl: "https://drive.google.com/file/d/101Z34ef8uk22SQ-_GvOTBk6obwh_56rk/preview", sourceUrl: "https://drive.google.com/file/d/101Z34ef8uk22SQ-_GvOTBk6obwh_56rk/view?usp=drivesdk" },
+    ],
+    architecture: [
+      "Identity and CRM verification matches existing patients by phone and last name, or creates validated leads before calendar access.",
+      "The availability engine enforces clinic hours, a two-hour lead window and conflict-free slot alternatives in the clinic time zone.",
+      "Atomic booking, rescheduling and cancellation use race-condition checks plus automatic rollback when a downstream CRM write fails.",
+      "Human handoff routes urgent and department-specific calls while deduplicated webhooks write post-call summaries into HubSpot.",
+    ],
+    results: [
+      "Zero double-bookings or ghost confirmations through race checks and compensation logic.",
+      "24/7 patient verification, lead capture, booking, rescheduling and cancellation.",
+      "Every call outcome and appointment change synced to the HubSpot contact and deal pipeline.",
+    ],
+    icon: Headphones,
+    featured: true,
+    categories: ['n8n'],
+    roiImpact: "24/7 patient intake with zero double-bookings and complete CRM visibility",
+    impact: { timeSaved: "24/7 coverage", protection: "Zero ghost confirmations" },
+  },
   {
     id: 1,
     title: "The Autonomous Fulfillment & Revenue Shield",
@@ -393,9 +434,7 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
     transition={{ duration: 0.6, delay: index * 0.1 }}
     whileHover={{ scale: 1.02, y: -5 }}
     onClick={onClick}
-    className={`glass-card p-6 cursor-pointer hover-lift cyber-border group relative ${
-      project.featured ? 'md:col-span-2 lg:col-span-2' : ''
-    }`}
+    className="glass-card group relative cursor-pointer p-6 hover-lift cyber-border"
   >
     {/* Featured Badge */}
     {project.featured && (
@@ -405,6 +444,11 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
       </div>
     )}
     
+    {project.media && project.media.length > 0 ? (
+      <div onClick={(event) => event.stopPropagation()}>
+        <ProjectMediaShowcase media={project.media} projectTitle={project.title} compact />
+      </div>
+    ) : (
     <div className="relative aspect-video mb-4 rounded-lg overflow-hidden bg-muted">
       <img 
         src={project.images[0].src} 
@@ -438,6 +482,7 @@ const ProjectCard = ({ project, onClick, index, isInView }: { project: Project; 
         <project.icon className="w-5 h-5 text-primary" />
       </div>
     </div>
+    )}
 
     {/* Case Study link — moved out of image to avoid mobile overlap */}
     {project.caseStudy && (
@@ -494,7 +539,44 @@ const ProjectsSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showAll, setShowAll] = useState(false);
-  const displayedProjects = showAll ? projects : projects.slice(0, 5);
+  const [activeFilter, setActiveFilter] = useState<ProjectFilter>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const getCategories = (project: Project): ProjectCategory[] => {
+    if (project.categories) return project.categories;
+    const searchable = `${project.title} ${project.description} ${project.solution} ${project.tools.join(' ')}`.toLowerCase();
+    const categories: ProjectCategory[] = [];
+    if (/n8n|workflow|ai agent|automation|api|webhook/.test(searchable)) categories.push('n8n');
+    if (/gohighlevel|leadconnector|\bghl\b|funnel|pipeline/.test(searchable)) categories.push('ghl');
+    if (/react|supabase|saas|web app|portal|dashboard|full-stack/.test(searchable)) categories.push('saas');
+    return categories.length ? categories : ['n8n'];
+  };
+
+  const counts = useMemo(() => ({
+    all: projects.length,
+    n8n: projects.filter((project) => getCategories(project).includes('n8n')).length,
+    ghl: projects.filter((project) => getCategories(project).includes('ghl')).length,
+    saas: projects.filter((project) => getCategories(project).includes('saas')).length,
+  }), []);
+
+  const filteredProjects = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return projects.filter((project) => {
+      const matchesCategory = activeFilter === 'all' || getCategories(project).includes(activeFilter);
+      const searchable = `${project.title} ${project.description} ${project.problem} ${project.solution} ${project.tools.join(' ')} ${getCategories(project).join(' ')}`.toLowerCase();
+      return matchesCategory && (!query || searchable.includes(query));
+    });
+  }, [activeFilter, searchQuery]);
+
+  const displayedProjects = showAll || activeFilter !== 'all' || searchQuery
+    ? filteredProjects
+    : filteredProjects.slice(0, 5);
+  const filters: { value: ProjectFilter; label: string }[] = [
+    { value: 'all', label: 'All Projects' },
+    { value: 'n8n', label: 'n8n Workflows' },
+    { value: 'ghl', label: 'GoHighLevel' },
+    { value: 'saas', label: 'SaaS & Web Apps' },
+  ];
 
   return (
     <>
@@ -504,6 +586,47 @@ const ProjectsSection = () => {
             <h2 className="text-3xl md:text-5xl font-bold font-display mb-4">Featured <span className="gradient-text">Projects</span></h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Real world automation solutions that deliver measurable results</p>
           </motion.div>
+          <div className="glass-card mb-8 grid gap-4 p-4 lg:grid-cols-[1fr_minmax(280px,0.65fr)] lg:items-center">
+            <div className="flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Filter projects by category">
+              {filters.map((filter) => (
+                <Button
+                  key={filter.value}
+                  type="button"
+                  variant={activeFilter === filter.value ? 'default' : 'ghost'}
+                  onClick={() => { setActiveFilter(filter.value); setShowAll(true); }}
+                  className="min-h-11 shrink-0 rounded-lg"
+                  role="tab"
+                  aria-selected={activeFilter === filter.value}
+                >
+                  {filter.label}
+                  <span className="rounded-full bg-background/40 px-1.5 py-0.5 text-[10px]">{counts[filter.value]}</span>
+                </Button>
+              ))}
+            </div>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+              <Input
+                type="search"
+                value={searchQuery}
+                onChange={(event) => { setSearchQuery(event.target.value); setShowAll(true); }}
+                placeholder="Search by tool, category, or keyword..."
+                className="h-11 rounded-lg bg-background/50 pl-10 pr-10"
+                aria-label="Search projects by tool, category, or keyword"
+              />
+              {searchQuery && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-0 top-0 h-11 w-11"
+                  aria-label="Clear project search"
+                >
+                  <X aria-hidden="true" />
+                </Button>
+              )}
+            </div>
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
             {displayedProjects.map((project, index) => (
               <ProjectCard 
@@ -515,7 +638,16 @@ const ProjectsSection = () => {
               />
             ))}
           </div>
-          {!showAll && projects.length > 5 && (
+          {displayedProjects.length === 0 && (
+            <div className="glass-card mb-8 py-12 text-center">
+              <p className="font-semibold">No matching projects found</p>
+              <p className="mt-1 text-sm text-muted-foreground">Try another tool or reset the filters.</p>
+              <Button type="button" variant="outline" className="mt-4" onClick={() => { setSearchQuery(''); setActiveFilter('all'); setShowAll(false); }}>
+                Reset Filters
+              </Button>
+            </div>
+          )}
+          {!showAll && activeFilter === 'all' && !searchQuery && projects.length > 5 && (
             <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : { opacity: 0 }} transition={{ delay: 0.5 }} className="text-center">
               <button onClick={() => setShowAll(true)} className="inline-flex items-center gap-2 px-6 py-3 rounded-lg glass-card hover:bg-muted transition-colors font-medium">
                 <ChevronDown className="w-4 h-4" />

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import type { Project, ProjectImage } from './ProjectsSection';
 import ImageMarquee from './ImageMarquee';
+import ProjectMediaShowcase from './ProjectMediaShowcase';
 
 interface ProjectDetailModalProps {
   project: Project | null;
@@ -202,6 +203,11 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
 
             <div className="grid lg:grid-cols-2 gap-0">
               {/* Image Gallery */}
+              {project.media && project.media.length > 0 ? (
+                <div className="self-start bg-muted p-4 lg:sticky lg:top-0">
+                  <ProjectMediaShowcase media={project.media} projectTitle={project.title} />
+                </div>
+              ) : (
               <div 
                 className="relative aspect-video lg:aspect-auto lg:min-h-[500px] overflow-hidden bg-muted"
                 onMouseEnter={() => setIsAutoPlaying(false)}
@@ -289,6 +295,7 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                   </>
                 )}
               </div>
+              )}
 
               {/* Content */}
               <div className="p-8 lg:p-10 space-y-6">
@@ -300,6 +307,34 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                     {project.description}
                   </p>
                 </div>
+
+                {project.architecture && project.architecture.length > 0 && (
+                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
+                    <h3 className="mb-3 font-semibold text-primary">System Architecture</h3>
+                    <ul className="space-y-2">
+                      {project.architecture.map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/80">
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {project.results && project.results.length > 0 && (
+                  <div className="rounded-xl border border-secondary/20 bg-secondary/5 p-4">
+                    <h3 className="mb-3 font-semibold text-secondary">Business Result</h3>
+                    <ul className="space-y-2">
+                      {project.results.map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/80">
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 {/* Impact Stats for Featured */}
                 {project.featured && project.impact && (

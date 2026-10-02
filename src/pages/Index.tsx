@@ -28,10 +28,10 @@ const Index = () => {
       <MobileStickyContact />
       <main className="relative z-10">
         <HeroSection />
-        <AboutSection />
         <BusinessImpactSection />
-        <HowProjectsStartSection />
         <FeaturedProjectsSection />
+        <AboutSection />
+        <HowProjectsStartSection />
         <WhoIWorkWithSection />
         <ProjectsSection />
         <WhyDelaySection />
