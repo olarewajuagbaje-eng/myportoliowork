@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Zap, Linkedin } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Header = () => {
   const handleAuditClick = (e: React.MouseEvent) => {
@@ -27,7 +28,10 @@ const Header = () => {
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center font-bold text-primary-foreground">
             AO
           </div>
-          <span className="font-display font-semibold text-lg">Agbaje Olarewaju</span>
+          <div>
+            <span className="block font-display text-base font-semibold leading-tight sm:text-lg">Agbaje Olarewaju</span>
+            <span className="hidden text-[10px] uppercase text-muted-foreground sm:block">AI Automation Architect</span>
+          </div>
         </div>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -52,13 +56,14 @@ const Header = () => {
             <span className="status-dot bg-secondary" />
             <span className="text-muted-foreground hidden sm:inline">Systems Operational</span>
           </div>
-          <button
+          <Button
             onClick={handleAuditClick}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity flex items-center gap-2"
+            className="min-h-11 rounded-lg bg-gradient-to-r from-primary to-secondary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
             <Zap className="w-4 h-4" />
-            Free Audit
-          </button>
+            <span className="hidden sm:inline">Strategy Call</span>
+            <span className="sm:hidden">Let's Talk</span>
+          </Button>
         </div>
       </div>
     </motion.header>

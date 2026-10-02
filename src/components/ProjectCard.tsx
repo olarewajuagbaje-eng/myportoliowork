@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { trackProjectEvent } from '@/lib/projectAnalytics';
+import ProjectMediaShowcase, { type ProjectMedia } from '@/components/ProjectMediaShowcase';
 
 export interface ProjectKpi {
   value: string;
@@ -34,6 +35,8 @@ export interface ProjectCardData {
   themeClass: string;
   cta: ProjectCta;
   secondaryCta?: ProjectCta;
+  media?: ProjectMedia[];
+  architecture?: string[];
 }
 
 const ICONS = { PlayCircle, FileStack, BookOpen, Calendar, ArrowUpRight };
@@ -113,6 +116,9 @@ const ProjectCard = ({ project, onOpenCaseStudy }: Props) => {
       className={`featured-project-card ${project.themeClass} group h-full overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.015] focus-within:ring-1 focus-within:ring-primary/50`}
     >
       <CardContent className="flex h-full flex-col p-5 sm:p-7">
+        {project.media && project.media.length > 0 && (
+          <ProjectMediaShowcase media={project.media} projectTitle={project.headline} compact />
+        )}
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">{project.eyebrow}</p>

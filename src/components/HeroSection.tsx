@@ -1,17 +1,23 @@
 import { motion } from 'framer-motion';
 import { Sparkles, Zap, Cog } from 'lucide-react';
 import Marquee from './Marquee';
+import { Button } from '@/components/ui/button';
 
 const techStack = [
-  'Lead Capture',
-  'Sales Automation',
-  'CRM Orchestration',
-  'AI Customer Support',
-  'Ops Efficiency',
-  'Revenue Recovery',
-  'Reporting & Insights',
-  'Client Onboarding',
-  'Multi-Channel Workflows',
+  'n8n',
+  'GoHighLevel',
+  'AI Voice Agents',
+  'CRM Automation',
+  'REST APIs',
+  'Cloud Databases',
+  'React',
+  'Webhook Orchestration',
+];
+
+const proofPoints = [
+  { value: '10,000+', label: 'Hours eliminated' },
+  { value: '150+', label: 'Workflows built' },
+  { value: '99.8%', label: 'System uptime' },
 ];
 
 const impactResults = [
@@ -38,11 +44,7 @@ const HeroSection = () => {
 
   return (
     <section className="relative overflow-hidden pt-24 pb-8 sm:pt-28 sm:pb-12">
-      {/* Gradient Glow */}
-      <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, hsl(263 70% 66% / 0.3) 0%, transparent 70%)' }}
-      />
+      <div className="hero-focus-glow pointer-events-none absolute left-1/2 top-1/4 h-[600px] w-[800px] -translate-x-1/2 rounded-full opacity-30 blur-3xl" />
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
@@ -58,26 +60,26 @@ const HeroSection = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-5"
           >
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm text-muted-foreground">Automation for founders, executives & growth teams</span>
+            <span className="text-sm text-foreground/80">AI Automation Architect for founders and growth teams</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold font-display leading-[1.02] mb-4 tracking-[-0.03em]"
+            className="mb-4 text-4xl font-bold leading-[1.02] sm:text-5xl md:text-7xl"
           >
-            Turn Manual Work Into{' '}
-            <span className="gradient-text">Predictable Revenue</span>
+            AI Automation Systems That Turn{' '}
+            <span className="gradient-text">Manual Work Into Revenue</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
-            className="text-base md:text-lg text-muted-foreground mb-6 font-light max-w-2xl mx-auto leading-relaxed"
+            className="mx-auto mb-6 max-w-3xl text-base font-normal leading-relaxed text-foreground/75 md:text-lg"
           >
-            I help business owners, founders and executives remove the manual work slowing their teams down. From lead capture to customer follow-up, I design AI-powered systems that run quietly in the background, protect revenue, and give you back your time.
+            I design and build production-ready AI agents, CRM workflows and connected business systems that capture leads, accelerate follow-up, protect revenue and give teams back their time.
           </motion.p>
 
           <motion.div
@@ -86,33 +88,44 @@ const HeroSection = () => {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <button
+            <Button
               onClick={handleAuditClick}
-              className="cta-glow group px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-lg hover:opacity-95 transition-all flex items-center gap-2"
+              className="cta-glow group h-auto min-h-12 rounded-xl bg-gradient-to-r from-primary to-secondary px-8 py-3.5 text-base font-semibold text-primary-foreground hover:opacity-95 sm:text-lg"
             >
               <Zap className="w-5 h-5 group-hover:animate-pulse" />
               Book a Strategy Call
-            </button>
-            <a
-              href="#projects"
-              className="px-8 py-4 rounded-xl glass-card text-foreground font-semibold text-lg hover-lift cyber-border flex items-center gap-2"
-            >
-              <Cog className="w-5 h-5" />
-              See Client Results
-            </a>
+            </Button>
+            <Button asChild variant="outline" className="glass-card cyber-border h-auto min-h-12 rounded-xl px-8 py-3.5 text-base font-semibold sm:text-lg">
+              <a href="#featured-projects"><Cog className="w-5 h-5" />See Client Results</a>
+            </Button>
           </motion.div>
+
+          <motion.dl
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.95, duration: 0.7 }}
+            className="mx-auto mt-8 grid max-w-2xl grid-cols-3 divide-x divide-border/70 border-y border-border/70 py-4"
+            aria-label="Selected business impact"
+          >
+            {proofPoints.map((point) => (
+              <div key={point.label} className="px-2 text-center sm:px-4">
+                <dt className="mt-1 text-[9px] uppercase text-muted-foreground sm:text-xs">{point.label}</dt>
+                <dd className="text-lg font-extrabold text-foreground sm:text-2xl">{point.value}</dd>
+              </div>
+            ))}
+          </motion.dl>
 
           {/* Tech Stack Marquee */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.0, duration: 0.8 }}
-            className="mt-10"
+            className="mt-6"
           >
             <Marquee
               speed={55}
               items={techStack.map((t) => (
-                <span key={t} className="font-mono text-sm sm:text-base font-medium text-foreground/85 tracking-wide">
+                <span key={t} className="font-mono text-xs font-medium text-foreground/75 sm:text-sm">
                   {t}
                 </span>
               ))}
@@ -125,7 +138,7 @@ const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.15, duration: 0.8 }}
-            className="mt-5"
+            className="mt-4"
           >
             <div className="glass-card rounded-2xl px-4 py-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <span className="inline-flex shrink-0 items-center gap-1.5 self-start sm:self-auto px-2.5 py-1 rounded-full bg-secondary/15 border border-secondary/30 text-[10px] font-mono uppercase tracking-[0.2em] text-secondary">

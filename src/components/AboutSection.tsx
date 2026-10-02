@@ -74,15 +74,15 @@ const AboutSection = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div variants={itemVariants}>
               <h2 className="text-3xl md:text-5xl font-bold font-display mb-8">
-                About <span className="gradient-text">Me</span>
+                The Architect <span className="gradient-text">Behind the Systems</span>
               </h2>
               
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  Hi, I'm <span className="text-foreground font-semibold">Agbaje Olarewaju</span>. I help business owners, founders and executives fix the operational bottlenecks that quietly drain revenue, burn out their teams, and cap their growth.
+                  I am <span className="text-foreground font-semibold">Agbaje Olarewaju</span>, an AI Automation Architect who helps founders and executives remove operational bottlenecks that drain revenue, exhaust teams and limit growth.
                 </p>
                 <p>
-                  My work sits where <span className="text-foreground font-medium">strategy, operations and technology</span> meet. I design AI-powered systems that capture leads, follow up with customers, keep data clean across tools, and give leadership a clear view of what is actually happening in the business.
+                  My work sits where <span className="text-foreground font-medium">strategy, operations and engineering</span> meet. I architect AI agents, n8n workflows, CRM automation, APIs and cloud data systems that keep revenue operations connected and measurable.
                 </p>
                 <p>
                   I am not just a technical implementer. I partner with clients long-term, understand their business goals first, and then build systems that support real growth, not just automation for automation's sake.
