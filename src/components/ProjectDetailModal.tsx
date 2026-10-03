@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import ConversionPrompt from '@/components/ConversionPrompt';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield, BookOpen, Play } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
@@ -437,24 +438,18 @@ const ProjectDetailModal = ({ project, isOpen, onClose }: ProjectDetailModalProp
                 )}
 
                 {/* CTAs */}
-                <div className="flex gap-3 pt-4">
+                <div className="space-y-3 pt-4">
                   {project.caseStudy && (
                     <Link
                       to={`/case-study/${project.slug}`}
                       onClick={onClose}
-                      className="flex-1 py-3 px-6 rounded-xl bg-secondary/10 border border-secondary/20 text-secondary font-semibold text-center hover:bg-secondary/20 transition-colors flex items-center justify-center gap-2"
+                      className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-secondary/20 bg-secondary/10 px-6 py-3 font-semibold text-secondary transition-colors hover:bg-secondary/20"
                     >
                       <BookOpen className="w-4 h-4" />
                       Read Case Study
                     </Link>
                   )}
-                  <a
-                    href="#contact"
-                    onClick={onClose}
-                    className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold text-center hover:opacity-90 transition-opacity"
-                  >
-                    Build My Workflow
-                  </a>
+                  <ConversionPrompt onBefore={onClose} />
                 </div>
               </div>
             </div>

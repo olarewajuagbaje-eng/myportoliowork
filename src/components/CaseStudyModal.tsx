@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import type { ProjectCardData } from '@/components/ProjectCard';
 import { trackProjectEvent } from '@/lib/projectAnalytics';
 import ProjectMediaShowcase from '@/components/ProjectMediaShowcase';
+import ConversionPrompt from '@/components/ConversionPrompt';
 
 interface Props {
   project: ProjectCardData | null;
@@ -82,11 +83,7 @@ const CaseStudyModal = ({ project, onClose }: Props) => {
               ))}
             </ul>
 
-            <Button asChild className="min-h-11 rounded-xl cta-glow">
-              <a href="#contact" onClick={() => { trackProjectEvent(project.slug, 'cta_click'); onClose(); }}>
-                Book A Strategy Call
-              </a>
-            </Button>
+            <ConversionPrompt onBefore={() => { trackProjectEvent(project.slug, 'cta_click'); onClose(); }} />
           </>
         )}
       </DialogContent>
