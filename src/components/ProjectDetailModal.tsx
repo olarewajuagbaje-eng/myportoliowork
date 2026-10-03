@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import ConversionPrompt from '@/components/ConversionPrompt';
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Shield, BookOpen, Play } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
