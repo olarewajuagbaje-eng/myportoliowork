@@ -12,10 +12,10 @@ const CATEGORY: Record<string, Cat> = {
   stockguard: 'n8n', 'docextract-ai': 'n8n', flowdesk: 'saas', vitaflow: 'saas',
   'b2b-sales-engine': 'ghl', 'ror-ai-engine': 'ghl', 'voice-ai-overflow': 'ghl',
   'content-production-engine': 'n8n', 'render-engine': 'n8n', 'jnk-logistics-flow': 'n8n',
-  'architecture-masterclass': 'ghl', 'smilecare-dental-ai-voice': 'n8n',
+  'architecture-masterclass': 'ghl', 'smilecare-dental-ai-voice': 'n8n', automatch: 'n8n',
 };
-const ORDER = ['stockguard','docextract-ai','flowdesk','vitaflow','b2b-sales-engine','ror-ai-engine','voice-ai-overflow','content-production-engine','render-engine','jnk-logistics-flow','architecture-masterclass','smilecare-dental-ai-voice'];
-const EXCLUDED = new Set(['automatch']);
+const ORDER = ['stockguard','docextract-ai','flowdesk','vitaflow','b2b-sales-engine','ror-ai-engine','voice-ai-overflow','content-production-engine','render-engine','jnk-logistics-flow','automatch','architecture-masterclass','smilecare-dental-ai-voice'];
+const EXCLUDED = new Set<string>();
 const N8N_TITLES = ['Automated Recruitment Pipeline','AI Research & Content Factory','YouTube-to-Social Content Architect','Video Cinematic Engine','The Autonomous Literary Architect'];
 const n8nWorkflows: ProjectCardData[] = workflowLibrary
   .filter((p) => N8N_TITLES.includes(p.title))
