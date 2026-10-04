@@ -113,9 +113,9 @@ const ProjectCard = ({ project, onOpenCaseStudy }: Props) => {
       ref={ref}
       role="article"
       aria-labelledby={titleId}
-      className={`featured-project-card ${project.themeClass} group h-full overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.015] focus-within:ring-1 focus-within:ring-primary/50`}
+      className={`featured-project-card ${project.themeClass} group overflow-hidden rounded-[1.75rem] border-border/70 bg-card/70 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-transform duration-300 hover:scale-[1.015] focus-within:ring-1 focus-within:ring-primary/50`}
     >
-      <CardContent className="flex h-full flex-col p-5 sm:p-7">
+      <CardContent className="flex flex-col p-5 sm:p-7">
         {project.media && project.media.length > 0 && (
           <ProjectMediaShowcase media={project.media} projectTitle={project.headline} compact />
         )}
@@ -186,7 +186,7 @@ const ProjectCard = ({ project, onOpenCaseStudy }: Props) => {
           ))}
         </ul>
 
-        <div className="mt-auto flex flex-col gap-2 pt-5 sm:flex-row sm:flex-wrap">
+        <div className="flex flex-col gap-2 pt-5 sm:flex-row sm:flex-wrap">
           <CtaAction cta={project.cta} project={project} variant="primary" onOpenCaseStudy={onOpenCaseStudy} />
           {project.secondaryCta && (
             <CtaAction cta={project.secondaryCta} project={project} variant="secondary" onOpenCaseStudy={onOpenCaseStudy} />
