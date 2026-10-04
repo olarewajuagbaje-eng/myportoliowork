@@ -149,7 +149,7 @@ const FeaturedProjectsSection = () => {
         >
           <div className="overflow-hidden -mx-3">
             <motion.div
-              className="flex items-stretch touch-pan-y"
+              className="flex items-start touch-pan-y"
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.2}
@@ -165,7 +165,7 @@ const FeaturedProjectsSection = () => {
                 return (
                 <div
                   key={project.slug}
-                  className="flex shrink-0 px-3 [&>*]:w-full"
+                  className="shrink-0 px-3 [&>*]:w-full"
                   style={{ width: `${slideWidthPct}%` }}
                   role="group"
                   aria-roledescription="slide"
