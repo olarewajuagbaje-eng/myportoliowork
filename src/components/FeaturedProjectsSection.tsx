@@ -1,20 +1,76 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Bot, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ProjectCard, { type ProjectCardData } from '@/components/ProjectCard';
 import CaseStudyModal from '@/components/CaseStudyModal';
 import { useFeaturedProjects } from '@/hooks/useFeaturedProjects';
+import { projects as workflowLibrary } from '@/components/ProjectsSection';
+
+type Cat = 'n8n' | 'ghl' | 'saas';
+const CATEGORY: Record<string, Cat> = {
+  stockguard: 'n8n', 'docextract-ai': 'n8n', flowdesk: 'saas', vitaflow: 'saas',
+  'b2b-sales-engine': 'ghl', 'ror-ai-engine': 'ghl', 'voice-ai-overflow': 'ghl',
+  'content-production-engine': 'n8n', 'render-engine': 'n8n', 'jnk-logistics-flow': 'n8n',
+  'architecture-masterclass': 'ghl', 'smilecare-dental-ai-voice': 'n8n',
+};
+const ORDER = ['stockguard','docextract-ai','flowdesk','vitaflow','b2b-sales-engine','ror-ai-engine','voice-ai-overflow','content-production-engine','render-engine','jnk-logistics-flow','architecture-masterclass','smilecare-dental-ai-voice'];
+const EXCLUDED = new Set(['automatch']);
+const N8N_TITLES = ['Automated Recruitment Pipeline','AI Research & Content Factory','YouTube-to-Social Content Architect','Video Cinematic Engine','The Autonomous Literary Architect'];
+const n8nWorkflows: ProjectCardData[] = workflowLibrary
+  .filter((p) => N8N_TITLES.includes(p.title))
+  .map((p) => ({
+    slug: `wf-${p.slug}`,
+    name: p.title,
+    eyebrow: 'n8n Workflow Automation',
+    headline: p.title,
+    kpis: p.caseStudy?.metrics.slice(0, 3).map((m) => ({ value: m.value, label: m.label })),
+    problem: p.problem,
+    solution: p.solution,
+    results: p.results ?? (p.roiImpact ? [p.roiImpact] : []),
+    tags: p.tools.filter((t) => !/ghl|gohighlevel/i.test(t)),
+    themeClass: 'featured-project-service',
+    cta: { label: 'View Case Study', actionType: 'modal' },
+    secondaryCta: { label: 'Book A Strategy Call', actionType: 'anchor', href: '#contact' },
+  }) as ProjectCardData);
+const FILTERS: { value: 'all' | Cat; label: string }[] = [
+  { value: 'all', label: 'All Projects' }, { value: 'n8n', label: 'n8n' },
+  { value: 'ghl', label: 'GHL (GoHighLevel)' }, { value: 'saas', label: 'SaaS' },
+];
 
 const AUTOPLAY_MS = 8000;
 
 const FeaturedProjectsSection = () => {
   const isMobile = useIsMobile();
-  const cardsPerView = isMobile ? 1 : 2;
+  const [isXl, setIsXl] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1280px)');
+    const on = () => setIsXl(mq.matches); on();
+    mq.addEventListener('change', on); return () => mq.removeEventListener('change', on);
+  }, []);
+  const cardsPerView = isMobile ? 1 : isXl ? 3 : 2;
+  const [filter, setFilter] = useState<'all' | Cat>('all');
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [openProject, setOpenProject] = useState<ProjectCardData | null>(null);
-  const { data: featuredProjects = [] } = useFeaturedProjects();
+  const { data: rawProjects = [] } = useFeaturedProjects();
+  const allProjects = useMemo(() => {
+    const core = rawProjects
+      .filter((p) => !EXCLUDED.has(p.slug) && CATEGORY[p.slug])
+      .sort((a, b) => ORDER.indexOf(a.slug) - ORDER.indexOf(b.slug))
+      .map((p) => ({ p, c: CATEGORY[p.slug] }));
+    return [...core, ...n8nWorkflows.map((p) => ({ p, c: 'n8n' as Cat }))];
+  }, [rawProjects]);
+  const counts = useMemo(() => ({
+    all: allProjects.length,
+    n8n: allProjects.filter((x) => x.c === 'n8n').length,
+    ghl: allProjects.filter((x) => x.c === 'ghl').length,
+    saas: allProjects.filter((x) => x.c === 'saas').length,
+  }), [allProjects]);
+  const featuredProjects = useMemo(
+    () => allProjects.filter((x) => filter === 'all' || x.c === filter).map((x) => x.p),
+    [allProjects, filter],
+  );
   const total = featuredProjects.length;
   const maxIndex = Math.max(0, total - cardsPerView);
 
@@ -24,7 +80,7 @@ const FeaturedProjectsSection = () => {
   // Reset index when viewport changes
   useEffect(() => {
     setActiveIndex(0);
-  }, [cardsPerView]);
+  }, [cardsPerView, filter]);
 
   // Autoplay
   useEffect(() => {
@@ -60,6 +116,22 @@ const FeaturedProjectsSection = () => {
           </p>
         </motion.div>
 
+        <div className="mb-6 flex flex-wrap justify-center gap-2" role="tablist" aria-label="Filter projects by category">
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              role="tab"
+              aria-selected={filter === f.value}
+              onClick={() => setFilter(f.value)}
+              className={`min-h-[44px] rounded-full border px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                filter === f.value ? 'border-primary bg-primary text-primary-foreground' : 'border-border/70 bg-card/60 text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              {f.label} <span className="ml-1 opacity-70">({counts[f.value]})</span>
+            </button>
+          ))}
+        </div>
+
         {/* Auto-slider carousel */}
         <div
           className="relative"
@@ -77,7 +149,14 @@ const FeaturedProjectsSection = () => {
         >
           <div className="overflow-hidden -mx-3">
             <motion.div
-              className="flex"
+              className="flex items-stretch touch-pan-y"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -50) next();
+                else if (info.offset.x > 50) prev();
+              }}
               animate={{ x: `-${translatePct}%` }}
               transition={{ type: 'spring', stiffness: 90, damping: 20 }}
             >
@@ -86,7 +165,7 @@ const FeaturedProjectsSection = () => {
                 return (
                 <div
                   key={project.slug}
-                  className="shrink-0 px-3"
+                  className="flex shrink-0 px-3 [&>*]:w-full"
                   style={{ width: `${slideWidthPct}%` }}
                   role="group"
                   aria-roledescription="slide"
@@ -125,6 +204,9 @@ const FeaturedProjectsSection = () => {
                 />
               ))}
             </div>
+            <span className="text-xs text-muted-foreground tabular-nums" aria-live="polite">
+              {Math.min(activeIndex + 1, total)} / {maxIndex + 1}
+            </span>
 
             <button
               onClick={next}

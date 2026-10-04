@@ -6,7 +6,6 @@ import BusinessImpactSection from '@/components/BusinessImpactSection';
 import FeaturedProjectsSection from '@/components/FeaturedProjectsSection';
 import HowProjectsStartSection from '@/components/HowProjectsStartSection';
 import TrustIndicatorsSection from '@/components/TrustIndicatorsSection';
-import ProjectsSection from '@/components/ProjectsSection';
 import WhoIWorkWithSection from '@/components/WhoIWorkWithSection';
 import WhyDelaySection from '@/components/WhyDelaySection';
 import AfterContactSection from '@/components/AfterContactSection';
@@ -33,7 +32,6 @@ const Index = () => {
         <AboutSection />
         <HowProjectsStartSection />
         <WhoIWorkWithSection />
-        <ProjectsSection />
         <WhyDelaySection />
         <ClientReviewsSection />
         <TrustIndicatorsSection />
