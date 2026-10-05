@@ -9,3 +9,4 @@
 - [x] Portfolio clarity and conversion upgrade
 - [x] Add SmileCare Dental featured project with media carousel and expanded case study
 - [x] Reorganize projects with category filtering, counts, real-time search, and empty state
+- [x] Remove forced equal heights and excess empty space from every project card
