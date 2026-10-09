@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Clock, Shield, Target, Zap } from 'lucide-react';
 import { projects } from '@/components/ProjectsSection';
@@ -15,9 +16,30 @@ const CaseStudy = () => {
   }
 
   const { caseStudy } = project;
+  const url = `https://agbajeautomation.me/case-study/${project.slug}`;
+  const title = `${project.title} Case Study | Agbaje Olarewaju`;
+  const description = (project.description ?? '').slice(0, 158);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={url} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="article" />
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: title,
+          description,
+          url,
+          author: { '@type': 'Person', name: 'Agbaje Olarewaju', url: 'https://agbajeautomation.me' },
+          about: project.tools,
+        })}</script>
+      </Helmet>
       <N8nWorkflowBackground />
       <Header />
       

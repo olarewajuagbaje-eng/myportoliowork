@@ -10,3 +10,5 @@
 - [x] Add SmileCare Dental featured project with media carousel and expanded case study
 - [x] Reorganize projects with category filtering, counts, real-time search, and empty state
 - [x] Remove forced equal heights and excess empty space from every project card
+- [x] Final audit: five-second clarity, search and AI-search visibility fixes
+- [ ] Groq model failover for the AI assistant — blocked: assistant runs in a separate project (agbaje-assistance.lovable.app)
